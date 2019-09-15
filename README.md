@@ -7,6 +7,7 @@
 - ExpressJs
 - MongoDB
 - Bootstrap (Botswatch theme `Material`)
+- JWT
 
 ## How to start
 
