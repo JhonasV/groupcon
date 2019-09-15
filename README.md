@@ -1,5 +1,3 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
 ## Groups Directory (whatsapp, telegram)
 
 ### Technologies
@@ -17,3 +15,5 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - 3. to start the project use `npm run dev`
 
 ## Preview
+
+![Preview](https://github.com/JhonasV/groupcon/blob/master/client/src/preview.gif?raw=true)
