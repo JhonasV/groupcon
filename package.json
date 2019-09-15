@@ -5,8 +5,11 @@
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "concurrently": "^4.1.2",
     "express": "^4.17.1",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.0",
     "morgan": "^1.9.1",
     "nodemon": "^1.19.2"
