@@ -3,20 +3,20 @@ import React from "react";
 const SearchGroupForm = ({ onChange, onSubmit }) => {
   return (
     <div
-      className="mt-5 card"
+      className="card"
       style={{
-        height: "50vh"
+        height: "25vh"
       }}
     >
       <div className="card-header bg-primary">
-        <h3 style={{ color: "#fff" }}>Find the group you are looking for!</h3>
+        <h3 className="text-white">Find the group you are looking for!</h3>
       </div>
       <form className="card-body" onSubmit={e => onSubmit(e)}>
         <div className="form-group">
           <input
             autoFocus={true}
             type="text"
-            className="form-control"
+            className="form-control form-control-lg "
             placeholder="Search your group name..."
             name="name"
             onChange={e => onChange(e)}
