@@ -8,7 +8,8 @@ const Footer = () => (
     <div className="footer-copyright ">
       <h4>
         Made with{" "}
-        <i class={`fa fa-heart ${style.text_red}`} aria-hidden="true"></i> by{" "}
+        <i className={`fa fa-heart ${style.text_red}`} aria-hidden="true"></i>{" "}
+        by{" "}
         <a className="text-white" href="https://github.com/JhonasV">
           Jhonas Veras
         </a>

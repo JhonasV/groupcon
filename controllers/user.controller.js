@@ -9,7 +9,8 @@ exports.create = async (req, res, next) => {
   let { email, password } = req.body;
 
   let emailExists = await User.findOne({ email });
-  if (emailExists) return res.status(400).send("Email already exists");
+  if (emailExists)
+    return res.status(400).json({ error: "Email already exists" });
 
   let userCreated = await new User({ email, password }).save();
   let token = tokenHelper.generateToken({ email, password });

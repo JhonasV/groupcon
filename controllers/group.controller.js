@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 const Group = mongoose.model("Groups");
-
+const User = mongoose.model("user");
 exports.create = async (req, res, next) => {
   let group = {
     name: req.body.name,
-    url: req.body.url
+    url: req.body.url,
+    user: req.body.user
   };
 
-  console.log("Group object from client ", group);
   try {
     let isCreated = await new Group(group).save();
     res.json(isCreated);
@@ -51,11 +51,13 @@ exports.getById = async (req, res, next) => {
   }
 };
 
-exports.getByName = async (req, res, next) => {
-  let groupName = req.params.name;
+exports.getByUserEmail = async (req, res, next) => {
+  let email = req.params.email;
   try {
-    let group = await Group.findOne({ name: groupName });
-    res.json(group);
+    let user = await User.findOne({ email: email });
+    let groups = await Group.find({ user: user._id });
+
+    res.json(groups);
 
     next();
   } catch (error) {

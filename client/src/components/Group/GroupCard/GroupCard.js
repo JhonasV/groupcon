@@ -14,7 +14,7 @@ const GroupCard = ({ name, url }) => {
     <div className="card">
       <div className={`card-header ${groupCardColor(url)}`}>
         <h3 className="text-white">
-          {name} <i class={`fa ${groupCardIcon(url)}`}></i>
+          {name} <i className={`fa ${groupCardIcon(url)}`}></i>
         </h3>
       </div>
       <div className="card-body text-center">
@@ -23,6 +23,7 @@ const GroupCard = ({ name, url }) => {
       <div className={`card-footer ${groupCardColor(url)}`}>
         <a
           target="_blank"
+          rel="noopener noreferrer"
           href={url ? url : "#"}
           className="text-white font-weight-bold"
         >
