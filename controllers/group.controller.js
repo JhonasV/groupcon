@@ -67,3 +67,19 @@ exports.getByUserEmail = async (req, res, next) => {
     return res.status(500).json("Something wen't wrong");
   }
 };
+
+exports.getByUserId = async (req, res, next) => {
+  let userId = req.params.userId;
+  try {
+    let groups = await Group.find({ user: userId });
+
+    res.json(groups);
+
+    next();
+  } catch (error) {
+    if (error.name === "CastError")
+      return res.status(404).json("The resources doesn't exists");
+
+    return res.status(500).json("Something wen't wrong");
+  }
+};

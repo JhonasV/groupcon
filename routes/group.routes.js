@@ -4,4 +4,5 @@ module.exports = app => {
   // app.get("/api/v1/group/:id", groupController.getById);
   app.get("/api/v1/group/:email", groupController.getByUserEmail);
   app.post("/api/v1/group", groupController.create);
+  app.get("/api/v1/:userId/groups", groupController.getByUserId);
 };

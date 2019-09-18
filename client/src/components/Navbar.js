@@ -1,17 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { deleteToken } from "../Helpers/auth-helper";
 
 import { NavLink, Link } from "react-router-dom";
-import { getCurrentUser, deleteToken } from "../Helpers/auth-helper";
-const Navbar = () => {
-  const [currentUser, setCurrentUser] = useState(null);
-  useEffect(() => {
-    const saveCurrentUser = async () => {
-      let currentUser = await getCurrentUser();
-      setCurrentUser(currentUser ? currentUser : false);
-    };
-    saveCurrentUser();
-  }, []);
-
+const Navbar = ({ currentUser }) => {
   const renderNav = () => {
     switch (currentUser) {
       case null:
@@ -48,7 +39,7 @@ const Navbar = () => {
             <li className="nav-item">
               <NavLink
                 className="nav-link"
-                to={`dashboard/${currentUser.email}`}
+                to={`/dashboard`}
                 style={{ fontSize: "17px" }}
               >
                 {currentUser.email} <span className="sr-only">(current)</span>

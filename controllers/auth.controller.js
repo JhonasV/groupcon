@@ -17,7 +17,7 @@ exports.login = async (req, res, next) => {
   if (!validPass)
     return res.status(400).json({ error: "Email or password is wrong" });
 
-  const token = tokenHelper.generateToken({ email, password });
+  const token = tokenHelper.generateToken({ id: user._id, email, password });
 
   res.json({ ...token, current: req.user });
   next();

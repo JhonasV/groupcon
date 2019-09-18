@@ -3,10 +3,10 @@ import React from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
-const Layout = ({ children }) => (
+const Layout = ({ children, currentUser }) => (
   <div>
     <div>
-      <Navbar />
+      <Navbar currentUser={currentUser} />
     </div>
     <div className="container">{children}</div>
     <div className="fixed-bottom">

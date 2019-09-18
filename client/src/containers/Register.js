@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { setToken } from "../Helpers/auth-helper";
-import LoginForm from "../components/LoginForm/LoginForm";
+import RegisterForm from "../components/RegisterForm/RegisterForm";
 
 const Register = ({ history }) => {
   const [formValues, setFormValues] = useState({ email: "", password: "" });
@@ -28,7 +28,7 @@ const Register = ({ history }) => {
       let data = await response.json();
       console.log(data);
       if (response.ok) {
-        setToken(data.token.token);
+        setToken(data.token);
       } else {
         let messageFormatted = data.error
           .split('"')
@@ -44,18 +44,18 @@ const Register = ({ history }) => {
   };
 
   return (
-    <div>
-      <div className="row">
+    <div className="mb-5">
+      <div className="row ">
         {getError.error !== "" ? (
-          <div className="col-sm-12 col-md-6 col-lg-8 ml-auto mr-auto mt-3 alert alert-danger">
+          <div className="col-sm-12 col-md-6 col-lg-8 ml-auto mr-auto mt-1 alert alert-danger">
             {getError.error}
           </div>
         ) : null}
       </div>
 
       <div className="row">
-        <div className="col-sm-12 col-md-6 col-lg-8 ml-auto mr-auto mt-5">
-          <LoginForm title="Register" onChange={onChange} onSubmit={onSubmit} />
+        <div className="col-sm-12 col-md-6 col-lg-8 ml-auto mr-auto mt-2">
+          <RegisterForm onChange={onChange} onSubmit={onSubmit} />
         </div>
       </div>
     </div>

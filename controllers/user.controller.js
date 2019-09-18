@@ -13,9 +13,13 @@ exports.create = async (req, res, next) => {
     return res.status(400).json({ error: "Email already exists" });
 
   let userCreated = await new User({ email, password }).save();
-  let token = tokenHelper.generateToken({ email, password });
+  let token = tokenHelper.generateToken({
+    id: userCreated._id,
+    email,
+    password
+  });
 
-  res.json({ token, userCreated });
+  res.json({ ...token, ...userCreated, current: req.user });
   next();
 };
 

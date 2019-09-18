@@ -18,11 +18,12 @@ export function deleteToken() {
 export async function getCurrentUser() {
   if (!getToken()) return;
   try {
-    let response = await Axios.get("/api/v1/user/current", {
-      headers: {
-        Authorization: getToken()
-      }
-    });
+    // let response = await Axios.get("/api/v1/user/current", {
+    //   headers: {
+    //     Authorization: getToken()
+    //   }
+    // });
+    let response = await Axios.get("/api/v1/user/current");
     return response.data;
   } catch (error) {
     return false;
