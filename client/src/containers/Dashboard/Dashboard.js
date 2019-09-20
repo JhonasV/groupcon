@@ -4,7 +4,8 @@ import CardUserInfo from "../../components/Dashboard/CardUserInfo";
 import { getCurrentUser } from "../../Helpers/auth-helper";
 import GroupList from "../../components/Group/GroupList/GroupList";
 import { Link } from "react-router-dom";
-const Dashboard = ({ location }) => {
+import Axios from "axios";
+const Dashboard = ({ location, history }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [getGroups, setGroups] = useState({
     groups: []
@@ -18,7 +19,11 @@ const Dashboard = ({ location }) => {
     };
 
     getCurrentUserAsync();
-    setMessage(location.state ? location.state.message : "");
+    if (message === "") {
+      setMessage(location.state ? location.state.message : "");
+    } else {
+      history.replace();
+    }
   }, []);
 
   const getAllGroups = async currentUserId => {
@@ -28,6 +33,7 @@ const Dashboard = ({ location }) => {
     );
     let groups = await response.json();
     console.log(groups);
+
     setGroups({ groups });
   };
 
@@ -46,10 +52,10 @@ const Dashboard = ({ location }) => {
         )}
       </div>
       <div className="row mt-2">
-        <div className="col-md-2 col-lg-2 col-sm-2  ">
+        {/* <div className="col-md-2 col-lg-2 col-sm-2  ">
           <CardUserInfo user={currentUser} />
-        </div>
-        <div className="col-md-10">
+        </div> */}
+        <div className="col-md-12 col-sm-12">
           <Link to="/dashboard/create" className="btn btn-primary mb-2">
             {" "}
             <i className="fa fa-plus"></i> New
@@ -58,7 +64,10 @@ const Dashboard = ({ location }) => {
           <div className="alert bg-primary">
             <h3>Your groups!</h3>
           </div>
-          <GroupList groups={getGroups.groups} />
+          <GroupList
+            groups={getGroups.groups}
+            currentUserId={currentUser ? currentUser.id : ""}
+          />
         </div>
       </div>
     </main>

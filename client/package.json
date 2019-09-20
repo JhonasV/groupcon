@@ -7,6 +7,7 @@
     "http-proxy-middleware": "^0.20.0",
     "qrcode.react": "^0.9.3",
     "react": "^16.9.0",
+    "react-confirm-alert": "^2.4.1",
     "react-dom": "^16.9.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1",

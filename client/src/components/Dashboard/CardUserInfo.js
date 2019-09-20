@@ -8,6 +8,8 @@ const CardUserInfo = ({ user }) => {
       </div>
       <div className="card-body">
         <p>Email: {user ? user.email : "loading"}</p>
+        <br />
+        <p>NickName: {user ? user.nickname : "loading"}</p>
       </div>
     </div>
   );

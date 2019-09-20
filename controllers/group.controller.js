@@ -13,29 +13,26 @@ exports.create = async (req, res, next) => {
   let group = {
     name: req.body.name,
     url: req.body.url,
-    user: req.body.id
+    user: req.user.id,
+    password: req.body.password
   };
 
-  console.log(req.user);
+  console.log(group);
 
   try {
+    let groupExists = await Group.findOne({ name: group.name });
+    if (groupExists)
+      return res.status(400).json({
+        error: "Group Name already exists"
+      });
+
     let isCreated = await new Group(group).save();
+    console.log(isCreated);
     res.json(isCreated);
-    console.log("Created response ", isCreated);
 
     next();
   } catch (error) {
-    let duplicatedKey = 11000;
-    if (error.code === duplicatedKey) {
-      return res
-        .status(400)
-        .json(`Already exists a group with the name: ${group.name}`);
-    }
-
-    if (!group.name) return res.status(400).json(error.errors.url.message);
-    if (!group.url) return res.status(400).json(error.errors.url.message);
-
-    return res.json("Something wen't wrong");
+    return res.json({ error: "Something wen't wrong" });
   }
 };
 
@@ -54,6 +51,7 @@ exports.getById = async (req, res, next) => {
 
     next();
   } catch (error) {
+    console.log(error);
     if (error.name === "CastError")
       return res.json("The resources doesn't exists");
 
@@ -91,5 +89,23 @@ exports.getByUserId = async (req, res, next) => {
       return res.status(404).json("The resources doesn't exists");
 
     return res.status(500).json("Something wen't wrong");
+  }
+};
+
+exports.update = async (req, res, next) => {
+  let { url, name, _id } = req.body;
+  let { id } = req.params;
+  let { error } = validateGroups({ url, name });
+  if (error)
+    return res
+      .status(400)
+      .json({ error: error.details[0].message.split('"').join(" ") });
+
+  try {
+    let isModified = await Group.findByIdAndUpdate(id, { url, name });
+    if (isModified) res.json(isModified);
+    next();
+  } catch (error) {
+    return res.status(500).json({ error: "Something went wrong" });
   }
 };

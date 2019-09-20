@@ -1,6 +1,6 @@
 import React from "react";
 
-const RegisterForm = ({ onChange, onSubmit, title }) => (
+const RegisterForm = ({ onChange, onSubmit, onConfirm }) => (
   <form className="card" onSubmit={e => onSubmit(e)}>
     <div className="card-header bg-primary text-white">
       <h3>Register</h3>
@@ -23,11 +23,11 @@ const RegisterForm = ({ onChange, onSubmit, title }) => (
           <h4>NickName</h4>
         </label>
         <input
-          name="text"
+          name="nickname"
           onChange={e => onChange(e)}
           className="form-control"
           id="login-nickname"
-          type="nickname"
+          type="text"
         />
       </div>
       <div className="form-group">
@@ -43,18 +43,21 @@ const RegisterForm = ({ onChange, onSubmit, title }) => (
         />
       </div>
 
-      <div className="form-group">
-        <label htmlFor="login-password">
+      {/* <div className={onConfirm ? "form-group" : " form-group has-danger"}>
+        <label htmlFor="confirm-password">
           <h4>Password Confirm</h4>
         </label>
         <input
-          name="password"
-          onChange={e => onChange(e)}
-          id="login-password"
+          name="confirm"
+          // onChange={e => onChange(e)}
+          id="confirm-password"
           className="form-control"
           type="password"
         />
-      </div>
+        <div className="invalid-feedback">
+          Sorry, that username's taken. Try another?
+        </div>
+      </div> */}
     </div>
     <div className="card-footer">
       <button className="btn btn-primary btn-block" type="submit">

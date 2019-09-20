@@ -5,21 +5,27 @@ const { validateRegister } = require("../validation");
 const tokenHelper = require("../helpers/token.helper");
 exports.create = async (req, res, next) => {
   let { error } = validateRegister(req.body);
+
   if (error) return res.status(400).json(error.details[0].message);
-  let { email, password } = req.body;
+  let { email, password, nickname } = req.body;
 
   let emailExists = await User.findOne({ email });
   if (emailExists)
     return res.status(400).json({ error: "Email already exists" });
 
-  let userCreated = await new User({ email, password }).save();
+  let nickNameExists = await User.findOne({ nickname });
+  if (nickNameExists)
+    return res.status(400).json({ error: "NickName already exists" });
+
+  let userCreated = await new User({ email, password, nickname }).save();
   let token = tokenHelper.generateToken({
     id: userCreated._id,
     email,
-    password
+    password,
+    nickname
   });
 
-  res.json({ ...token, ...userCreated, current: req.user });
+  res.json({ ...token, ...userCreated });
   next();
 };
 

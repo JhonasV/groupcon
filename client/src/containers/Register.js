@@ -2,15 +2,22 @@ import React, { useState } from "react";
 import { setToken } from "../Helpers/auth-helper";
 import RegisterForm from "../components/RegisterForm/RegisterForm";
 
-const Register = ({ history }) => {
-  const [formValues, setFormValues] = useState({ email: "", password: "" });
+const Register = () => {
+  const [formValues, setFormValues] = useState({
+    email: "",
+    password: "",
+    nickname: ""
+  });
+  const [confirmPassword, setConfirmPassword] = useState(true);
   const [getError, setError] = useState({ error: "" });
   const onChange = e => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
+    // isSamePassword();
   };
 
   const onSubmit = async e => {
     e.preventDefault();
+    // if (!confirmPassword) return;
     await signIn();
   };
 
@@ -30,7 +37,8 @@ const Register = ({ history }) => {
       if (response.ok) {
         setToken(data.token);
       } else {
-        let messageFormatted = data.error
+        let error = data.error ? data.error : data;
+        let messageFormatted = error
           .split('"')
           .join(" ")
           .toUpperCase();
@@ -38,9 +46,16 @@ const Register = ({ history }) => {
       }
     } catch (error) {
       setError({
-        error: "Something went wrong! /n Try again in some minutes!"
+        error: "Something went wrong!"
       });
     }
+  };
+
+  const isSamePassword = () => {
+    if (formValues.password === "") return;
+    if (formValues.confirm === "") return;
+    setConfirmPassword(formValues.password === formValues.confirm);
+    // console.log(formValues.password === formValues.confirm);
   };
 
   return (
@@ -55,7 +70,11 @@ const Register = ({ history }) => {
 
       <div className="row">
         <div className="col-sm-12 col-md-6 col-lg-8 ml-auto mr-auto mt-2">
-          <RegisterForm onChange={onChange} onSubmit={onSubmit} />
+          <RegisterForm
+            onConfirm={confirmPassword}
+            onChange={onChange}
+            onSubmit={onSubmit}
+          />
         </div>
       </div>
     </div>

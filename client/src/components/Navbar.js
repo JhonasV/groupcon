@@ -42,7 +42,8 @@ const Navbar = ({ currentUser }) => {
                 to={`/dashboard`}
                 style={{ fontSize: "17px" }}
               >
-                {currentUser.email} <span className="sr-only">(current)</span>
+                {currentUser.nickname}{" "}
+                <span className="sr-only">(current)</span>
               </NavLink>
             </li>
             <li className="nav-item ">

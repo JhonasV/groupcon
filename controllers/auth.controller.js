@@ -1,11 +1,11 @@
 const tokenHelper = require("../helpers/token.helper");
-const { validateRegister } = require("../validation");
+const { validateLogin } = require("../validation");
 const mongoose = require("mongoose");
 const User = mongoose.model("user");
 const bcrypt = require("bcrypt");
 
 exports.login = async (req, res, next) => {
-  let { error } = validateRegister(req.body);
+  let { error } = validateLogin(req.body);
   if (error) return res.status(400).json({ error: error.details[0].message });
   let { email, password } = req.body;
 
@@ -16,8 +16,13 @@ exports.login = async (req, res, next) => {
   let validPass = await bcrypt.compare(password, user.password);
   if (!validPass)
     return res.status(400).json({ error: "Email or password is wrong" });
-
-  const token = tokenHelper.generateToken({ id: user._id, email, password });
+  console.log(user);
+  const token = tokenHelper.generateToken({
+    id: user._id,
+    email,
+    password,
+    nickname: user.nickname
+  });
 
   res.json({ ...token, current: req.user });
   next();

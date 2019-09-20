@@ -3,8 +3,9 @@ import React from "react";
 import GroupCard from "../GroupCard/GroupCard";
 import { CSSTransition } from "react-transition-group";
 
-const GroupList = ({ groups }) => {
+const GroupList = ({ groups, currentUserId }) => {
   const renderGroupList = group => {
+    let editable = group.user === currentUserId;
     return (
       <CSSTransition
         key={group._id}
@@ -14,7 +15,14 @@ const GroupList = ({ groups }) => {
         classNames="fade"
       >
         <div key={group._id} className="col-md-6 col-sm-1 col-lg-4 mb-3">
-          <GroupCard key={group._id} name={group.name} url={group.url} />
+          <GroupCard
+            key={group._id}
+            id={group._id}
+            password={group.password}
+            name={group.name}
+            url={group.url}
+            editable={editable}
+          />
         </div>
       </CSSTransition>
     );

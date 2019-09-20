@@ -1,6 +1,7 @@
 import React from "react";
 import QRCode from "qrcode.react";
-const GroupCard = ({ name, url }) => {
+import { Link } from "react-router-dom";
+const GroupCard = ({ name, url, id, password, editable }) => {
   const groupCardColor = url => {
     let color = url.includes("chat.whatsapp.com") ? "bg-success" : "bg-primary";
     return color;
@@ -13,22 +14,49 @@ const GroupCard = ({ name, url }) => {
   return (
     <div className="card">
       <div className={`card-header ${groupCardColor(url)}`}>
-        <h3 className="text-white">
-          {name} <i className={`fa ${groupCardIcon(url)}`}></i>
-        </h3>
+        <div className="row">
+          <div className="col-sm-10">
+            <h3 className="text-white">{name}</h3>
+          </div>
+          <div className="col-sm-2">
+            <h3 className="text-white">
+              {password !== "" ? <i className="fa fa-lock"></i> : ""}
+              <i className={`fa ${groupCardIcon(url)}`}></i>
+            </h3>
+          </div>
+        </div>
       </div>
       <div className="card-body text-center">
         <QRCode size={230} value={url} />
       </div>
       <div className={`card-footer ${groupCardColor(url)}`}>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href={url ? url : "#"}
-          className="text-white font-weight-bold"
-        >
-          Direct Link
-        </a>
+        <div class="row">
+          <div className="col-sm-4">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={url ? url : "#"}
+              className="text-white font-weight-bold btn btn-secundary"
+            >
+              Direct Link
+            </a>
+          </div>
+          <div className="col-sm-3 ">
+            {editable ? (
+              <Link
+                className="btn btn-warning"
+                to={{
+                  pathname: `/dashboard/edit`,
+                  state: { id }
+                }}
+              >
+                <i class="fa fa-edit"></i>Edit
+              </Link>
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

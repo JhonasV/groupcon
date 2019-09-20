@@ -2,12 +2,7 @@ import React from "react";
 
 const SearchGroupForm = ({ onChange, onSubmit }) => {
   return (
-    <div
-      className="card"
-      style={{
-        height: "25vh"
-      }}
-    >
+    <div className="card">
       <div className="card-header bg-primary">
         <h3 className="text-white">Find the group you are looking for!</h3>
       </div>
