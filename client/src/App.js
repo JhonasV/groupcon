@@ -4,8 +4,8 @@ import Layout from "./components/Layout";
 import Home from "./containers/Home";
 import Login from "./containers/Login";
 import Register from "./containers/Register";
-import Dashboard from "./containers/Dashboard";
-
+import Dashboard from "./containers/Dashboard/Dashboard";
+import Create from "./containers/Dashboard/Create";
 import { getCurrentUser, initAxiosInterceptors } from "./Helpers/auth-helper";
 initAxiosInterceptors();
 
@@ -28,6 +28,11 @@ function App() {
         exact
         render={props => <Dashboard {...props} />}
       />
+      <Route
+        path="/dashboard/create"
+        exact
+        render={props => <Create {...props} />}
+      />
     </Switch>
   );
 
@@ -43,7 +48,6 @@ function App() {
     <BrowserRouter>
       <Layout currentUser={currentUser}>
         {currentUser ? <AutenticatedRoutes /> : <GuessRoutes />}
-        <Route component={NotFound} />
       </Layout>
     </BrowserRouter>
   );

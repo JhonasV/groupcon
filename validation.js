@@ -13,3 +13,13 @@ exports.validateRegister = data => {
 
   return Joi.validate(data, schema);
 };
+
+exports.validateGroups = data => {
+  const schema = {
+    name: Joi.string().required(),
+    url: Joi.string().required(),
+    user: Joi.string().required()
+  };
+
+  return Joi.validate(data, schema);
+};

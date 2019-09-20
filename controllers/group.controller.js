@@ -1,12 +1,22 @@
 const mongoose = require("mongoose");
 const Group = mongoose.model("Groups");
 const User = mongoose.model("user");
+
+const { validateGroups } = require("../validation");
 exports.create = async (req, res, next) => {
+  let { error } = validateGroups(req.body);
+  if (error)
+    return res.status(400).json({
+      error: error.details[0].message.split('"').join(" ")
+    });
+
   let group = {
     name: req.body.name,
     url: req.body.url,
-    user: req.body.user
+    user: req.body.id
   };
+
+  console.log(req.user);
 
   try {
     let isCreated = await new Group(group).save();
