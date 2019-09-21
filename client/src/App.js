@@ -7,6 +7,7 @@ import Register from "./containers/Register";
 import Dashboard from "./containers/Dashboard/Dashboard";
 import Create from "./containers/Dashboard/Create";
 import Edit from "./containers/Dashboard/Edit";
+import NotFound from "./components/NotFound";
 import { getCurrentUser, initAxiosInterceptors } from "./Helpers/auth-helper";
 initAxiosInterceptors();
 
@@ -39,6 +40,7 @@ function App() {
         exact
         render={props => <Edit {...props} />}
       />
+      <Route component={NotFound} />
     </Switch>
   );
 
@@ -47,6 +49,7 @@ function App() {
       <Route path="/" exact render={props => <Home {...props} />} />
       <Route path="/login" exact render={props => <Login {...props} />} />
       <Route path="/register" exact render={props => <Register {...props} />} />
+      <Route component={NotFound} />
     </Switch>
   );
 

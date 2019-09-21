@@ -64,10 +64,20 @@ const Dashboard = ({ location, history }) => {
           <div className="alert bg-primary">
             <h3>Your groups!</h3>
           </div>
-          <GroupList
-            groups={getGroups.groups}
-            currentUserId={currentUser ? currentUser.id : ""}
-          />
+          {getGroups.groups.length === 0 ? (
+            <div className="card col-sm-12 col-md-6 col-lg-6 bg-secondary ml-auto mr-auto">
+              <div className="card-body">
+                <h3 className="text-primary text-center">
+                  You don't have any group created yet!!
+                </h3>
+              </div>
+            </div>
+          ) : (
+            <GroupList
+              groups={getGroups.groups}
+              currentUserId={currentUser ? currentUser.id : ""}
+            />
+          )}
         </div>
       </div>
     </main>
