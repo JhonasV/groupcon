@@ -1,6 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-const CreateGroupForm = ({ group, onChange, onSubmit, create }) => {
+const CreateGroupForm = ({
+  group,
+  onChange,
+  onSubmit,
+  create,
+  loading,
+  setLoading
+}) => {
+  let buttonTitle = create ? "CREATE" : "UPDATE";
   return (
     <div className="row mt-5">
       <div className="col-md-8 ml-auto mr-auto">
@@ -25,6 +33,7 @@ const CreateGroupForm = ({ group, onChange, onSubmit, create }) => {
                   name="name"
                   placeholder="Group Name"
                   value={group ? group.name : ""}
+                  disabled={loading}
                 />
               </div>
 
@@ -36,6 +45,7 @@ const CreateGroupForm = ({ group, onChange, onSubmit, create }) => {
                   name="url"
                   placeholder="Group URL"
                   value={group ? group.url : ""}
+                  disabled={loading}
                 />
               </div>
               <div className="form-group">
@@ -46,16 +56,27 @@ const CreateGroupForm = ({ group, onChange, onSubmit, create }) => {
                   name="password"
                   placeholder="Group password (empty for public groups)"
                   value={group ? group.password : ""}
+                  disabled={loading}
                 />
               </div>
             </div>
             <div className="card-footer">
               <div className="form-group">
-                <input
+                <button
                   type="submit"
                   className="form-control btn btn-primary btn-block"
-                  value={create ? "CREATE" : "UPDATE"}
-                />
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <span
+                      class="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                  ) : (
+                    buttonTitle
+                  )}
+                </button>
               </div>
             </div>
           </div>

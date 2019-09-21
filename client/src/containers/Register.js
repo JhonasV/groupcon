@@ -10,6 +10,7 @@ const Register = () => {
   });
   const [confirmPassword, setConfirmPassword] = useState(true);
   const [getError, setError] = useState({ error: "" });
+  const [loading, setLoading] = useState(false);
   const onChange = e => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
     // isSamePassword();
@@ -18,6 +19,8 @@ const Register = () => {
   const onSubmit = async e => {
     e.preventDefault();
     // if (!confirmPassword) return;
+    setLoading(true);
+    setError({ error: "" });
     await signIn();
   };
 
@@ -44,10 +47,12 @@ const Register = () => {
           .toUpperCase();
         setError({ error: messageFormatted });
       }
+      setLoading(false);
     } catch (error) {
       setError({
         error: "Something went wrong!"
       });
+      setLoading(false);
     }
   };
 
@@ -74,6 +79,8 @@ const Register = () => {
             onConfirm={confirmPassword}
             onChange={onChange}
             onSubmit={onSubmit}
+            loading={loading}
+            setLoading={setLoading}
           />
         </div>
       </div>

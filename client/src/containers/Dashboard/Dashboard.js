@@ -10,12 +10,15 @@ const Dashboard = ({ location, history }) => {
   const [getGroups, setGroups] = useState({
     groups: []
   });
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   useEffect(() => {
     const getCurrentUserAsync = async () => {
+      setLoading(true);
       let user = await getCurrentUser();
       setCurrentUser(user ? user : false);
       await getAllGroups(user ? user.id : null);
+      setLoading(false);
     };
 
     getCurrentUserAsync();
@@ -35,6 +38,23 @@ const Dashboard = ({ location, history }) => {
     console.log(groups);
 
     setGroups({ groups });
+  };
+
+  const renderGroups = () => {
+    return getGroups.groups.length !== 0 ? (
+      <GroupList
+        groups={getGroups.groups}
+        currentUserId={currentUser ? currentUser.id : ""}
+      />
+    ) : (
+      <div className="card col-sm-12 col-md-6 col-lg-6 bg-secondary ml-auto mr-auto">
+        <div className="card-body">
+          <h3 className="text-primary text-center">
+            You don't have any group created yet!
+          </h3>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -64,19 +84,14 @@ const Dashboard = ({ location, history }) => {
           <div className="alert bg-primary">
             <h3>Your groups!</h3>
           </div>
-          {getGroups.groups.length === 0 ? (
-            <div className="card col-sm-12 col-md-6 col-lg-6 bg-secondary ml-auto mr-auto">
-              <div className="card-body">
-                <h3 className="text-primary text-center">
-                  You don't have any group created yet!!
-                </h3>
+          {loading ? (
+            <div className="d-flex justify-content-center ">
+              <div className="spinner-border mt-5" role="status">
+                <span className="sr-only">Loading...</span>
               </div>
             </div>
           ) : (
-            <GroupList
-              groups={getGroups.groups}
-              currentUserId={currentUser ? currentUser.id : ""}
-            />
+            renderGroups()
           )}
         </div>
       </div>

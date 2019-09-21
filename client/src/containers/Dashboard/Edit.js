@@ -9,6 +9,7 @@ const Edit = props => {
   const [group, setGroup] = useState({ name: "", url: "", _id: "", user: "" });
   const [message, setMessage] = useState("");
   const [redirect, setRedirect] = useState(false);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     let groupId = props.location.state.id;
 
@@ -17,24 +18,18 @@ const Edit = props => {
   }, []);
 
   const fetchGroup = async id => {
+    setLoading(true);
     let response = await Axios.get(`/api/v1/${id}/group`);
     console.log(response);
     if (response.status === 200) {
       setGroup(response.data);
     } else {
     }
+    setLoading(false);
   };
 
   const onSubmit = async e => {
     e.preventDefault();
-    // confirmAlert({
-    //   title: "Update Confirmation!",
-    //   message: "Are you sure to do this?",
-    //   buttons: [
-    //     { label: "Yes", onClick: async () => await updateGroup() },
-    //     { label: "Cancel", onClick: () => {} }
-    //   ]
-    // });
     confirmAlert({
       customUI: ({ onClose }) => {
         return (
@@ -63,8 +58,6 @@ const Edit = props => {
         );
       }
     });
-
-    // await updateGroup();
   };
 
   const onChange = e => {
@@ -72,6 +65,7 @@ const Edit = props => {
   };
 
   const updateGroup = async () => {
+    setLoading(true);
     try {
       let response = await Axios.put(`/api/v1/${group._id}/group`, {
         name: group.name,
@@ -83,8 +77,10 @@ const Edit = props => {
       } else {
         setMessage(response.data.error);
       }
+      setLoading(false);
     } catch (error) {
       setMessage(error.response.data.error);
+      setLoading(false);
     }
   };
   if (redirect) {
@@ -112,6 +108,8 @@ const Edit = props => {
           group={group}
           onChange={onChange}
           onSubmit={onSubmit}
+          loading={loading}
+          setLoading={setLoading}
         />
       </div>
     </div>

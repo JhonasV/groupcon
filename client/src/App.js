@@ -13,10 +13,13 @@ initAxiosInterceptors();
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const saveCurrentUser = async () => {
+      setLoading(true);
       let currentUser = await getCurrentUser();
       setCurrentUser(currentUser ? currentUser : false);
+      setLoading(false);
     };
     saveCurrentUser();
   }, []);
@@ -52,11 +55,21 @@ function App() {
       <Route component={NotFound} />
     </Switch>
   );
-
+  const correctRoutes = () => {
+    return currentUser ? <AutenticatedRoutes /> : <GuessRoutes />;
+  };
   return (
     <BrowserRouter>
       <Layout currentUser={currentUser}>
-        {currentUser ? <AutenticatedRoutes /> : <GuessRoutes />}
+        {loading ? (
+          <div className="d-flex justify-content-center ">
+            <div className="spinner-border mt-5" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </div>
+        ) : (
+          correctRoutes()
+        )}
       </Layout>
     </BrowserRouter>
   );

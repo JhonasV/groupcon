@@ -1,6 +1,12 @@
 import React from "react";
 
-const RegisterForm = ({ onChange, onSubmit, onConfirm }) => (
+const RegisterForm = ({
+  onChange,
+  onSubmit,
+  onConfirm,
+  loading,
+  setLoading
+}) => (
   <form className="card" onSubmit={e => onSubmit(e)}>
     <div className="card-header bg-primary text-white">
       <h3>Register</h3>
@@ -11,6 +17,7 @@ const RegisterForm = ({ onChange, onSubmit, onConfirm }) => (
           <h4>Email</h4>
         </label>
         <input
+          disabled={loading}
           name="email"
           onChange={e => onChange(e)}
           className="form-control"
@@ -24,6 +31,7 @@ const RegisterForm = ({ onChange, onSubmit, onConfirm }) => (
         </label>
         <input
           name="nickname"
+          disabled={loading}
           onChange={e => onChange(e)}
           className="form-control"
           id="login-nickname"
@@ -35,6 +43,7 @@ const RegisterForm = ({ onChange, onSubmit, onConfirm }) => (
           <h4>Password</h4>
         </label>
         <input
+          disabled={loading}
           name="password"
           onChange={e => onChange(e)}
           id="login-password"
@@ -60,8 +69,20 @@ const RegisterForm = ({ onChange, onSubmit, onConfirm }) => (
       </div> */}
     </div>
     <div className="card-footer">
-      <button className="btn btn-primary btn-block" type="submit">
-        Submit
+      <button
+        className="btn btn-primary btn-block"
+        disabled={loading}
+        type="submit"
+      >
+        {loading ? (
+          <span
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+          ></span>
+        ) : (
+          "Submit"
+        )}
       </button>
     </div>
   </form>

@@ -5,12 +5,15 @@ import LoginForm from "../components/LoginForm/LoginForm";
 const Login = ({ history }) => {
   const [formValues, setFormValues] = useState({ email: "", password: "" });
   const [getError, setError] = useState({ error: "" });
+  const [loading, setLoading] = useState(false);
   const onChange = e => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
   };
 
   const onSubmit = async e => {
     e.preventDefault();
+    setError({ error: "" });
+    setLoading(true);
     await signIn();
   };
 
@@ -36,10 +39,12 @@ const Login = ({ history }) => {
           .toUpperCase();
         setError({ error: messageFormatted });
       }
+      setLoading(false);
     } catch (error) {
       setError({
-        error: "Something went wrong! /n Try again in some minutes!"
+        error: "Something went wrong!"
       });
+      setLoading(false);
     }
   };
 
@@ -55,7 +60,12 @@ const Login = ({ history }) => {
 
       <div className="row">
         <div className="col-sm-12 col-md-6 col-lg-8 ml-auto mr-auto mt-5">
-          <LoginForm onChange={onChange} onSubmit={onSubmit} />
+          <LoginForm
+            loading={loading}
+            setLoading={setLoading}
+            onChange={onChange}
+            onSubmit={onSubmit}
+          />
         </div>
       </div>
     </div>

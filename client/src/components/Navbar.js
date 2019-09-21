@@ -6,7 +6,13 @@ const Navbar = ({ currentUser }) => {
   const renderNav = () => {
     switch (currentUser) {
       case null:
-        return <p className="text-white">Loading</p>;
+        return (
+          <span
+            class="spinner-border spinner-border-sm text-white"
+            role="status"
+            aria-hidden="true"
+          ></span>
+        );
       case false: {
         return (
           <ul className="navbar-nav ml-auto">
