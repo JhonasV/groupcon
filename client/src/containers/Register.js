@@ -8,7 +8,7 @@ const Register = () => {
     password: "",
     nickname: ""
   });
-  const [confirmPassword, setConfirmPassword] = useState(true);
+  // const [confirmPassword, setConfirmPassword] = useState(true);
   const [getError, setError] = useState({ error: "" });
   const [loading, setLoading] = useState(false);
   const onChange = e => {
@@ -56,12 +56,12 @@ const Register = () => {
     }
   };
 
-  const isSamePassword = () => {
-    if (formValues.password === "") return;
-    if (formValues.confirm === "") return;
-    setConfirmPassword(formValues.password === formValues.confirm);
-    // console.log(formValues.password === formValues.confirm);
-  };
+  // const isSamePassword = () => {
+  //   if (formValues.password === "") return;
+  //   if (formValues.confirm === "") return;
+  //   setConfirmPassword(formValues.password === formValues.confirm);
+  //   // console.log(formValues.password === formValues.confirm);
+  // };
 
   return (
     <div className="mb-5">
@@ -76,7 +76,7 @@ const Register = () => {
       <div className="row">
         <div className="col-sm-12 col-md-6 col-lg-8 ml-auto mr-auto mt-2">
           <RegisterForm
-            onConfirm={confirmPassword}
+            // onConfirm={confirmPassword}
             onChange={onChange}
             onSubmit={onSubmit}
             loading={loading}

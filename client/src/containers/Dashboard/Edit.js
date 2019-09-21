@@ -15,12 +15,11 @@ const Edit = props => {
 
     const fetchGroupAsync = async groupId => await fetchGroup(groupId);
     fetchGroupAsync(groupId);
-  }, []);
+  }, [props.location.state.id]);
 
   const fetchGroup = async id => {
     setLoading(true);
     let response = await Axios.get(`/api/v1/${id}/group`);
-    console.log(response);
     if (response.status === 200) {
       setGroup(response.data);
     } else {
@@ -95,15 +94,17 @@ const Edit = props => {
   }
 
   return (
-    <div className="row mt-3">
-      <div className="col-md-12">
+    <div className="row mt-1">
+      <div className="col-md-8 ml-auto mr-auto">
         {message !== "" ? (
           <div className={"alert alert-danger"}>
-            <h4>{message}</h4>
+            <h4>{message.toUpperCase()}</h4>
           </div>
         ) : (
           ""
         )}
+      </div>
+      <div className="col-md-12">
         <CreateGroupForm
           group={group}
           onChange={onChange}

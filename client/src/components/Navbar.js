@@ -8,7 +8,7 @@ const Navbar = ({ currentUser }) => {
       case null:
         return (
           <span
-            class="spinner-border spinner-border-sm text-white"
+            className="spinner-border spinner-border-sm text-white"
             role="status"
             aria-hidden="true"
           ></span>
@@ -52,16 +52,26 @@ const Navbar = ({ currentUser }) => {
                 <span className="sr-only">(current)</span>
               </NavLink>
             </li>
-            <li className="nav-item ">
+            <li className="nav-item">
               <NavLink
-                activeClassName="active"
                 className="nav-link"
-                to="/logout"
+                to={`/dashboard/create`}
                 style={{ fontSize: "17px" }}
-                onClick={() => deleteToken()}
+              >
+                <i className="fa fa-chart-line"></i>
+                Create a new group
+                <span className="sr-only">(current)</span>
+              </NavLink>
+            </li>
+            <li className="nav-item ">
+              <a
+                href="/"
+                className="nav-link"
+                style={{ fontSize: "17px" }}
+                onClick={e => deleteToken(e)}
               >
                 Logout <span className="sr-only">(current)</span>
-              </NavLink>
+              </a>
             </li>
           </ul>
         );
@@ -79,15 +89,15 @@ const Navbar = ({ currentUser }) => {
           className="navbar-toggler"
           type="button"
           data-toggle="collapse"
-          data-target="#navbarColor01"
-          aria-controls="navbarColor01"
+          data-target="#navbar-group"
+          aria-controls="navbar-group"
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className="collapse navbar-collapse" id="navbarColor01">
+        <div className="collapse navbar-collapse" id="navbar-group">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item ">
               <NavLink

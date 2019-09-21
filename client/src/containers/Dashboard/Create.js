@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import CreateGroupForm from "../../components/Dashboard/CreateGroupForm/CreateGroupForm";
-import { getCurrentUser } from "../../Helpers/auth-helper";
 import Axios from "axios";
 
 const Create = () => {
-  const [values, setValues] = useState(null);
+  const [values, setValues] = useState({ name: "", url: "", password: "" });
   const [message, setMessage] = useState("");
   const [isRedirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -16,6 +15,7 @@ const Create = () => {
   const onSubmit = async e => {
     e.preventDefault();
     // Send data here
+
     setLoading(true);
     setMessage("");
     await createGroup();
@@ -43,25 +43,25 @@ const Create = () => {
   }
 
   return (
-    <div>
-      <div className="row mt-1 container">
-        <div className="col-md-12 ">
-          {message !== "" ? (
-            <div className={"alert alert-danger"}>
-              <h4>{message}</h4>
-            </div>
-          ) : (
-            ""
-          )}
-          <CreateGroupForm
-            create={true}
-            onChange={onChange}
-            onSubmit={onSubmit}
-            group={values}
-            loading={loading}
-            setLoading={setLoading}
-          />
-        </div>
+    <div className="row mt-1 container">
+      <div className="col-md-8 ml-auto mr-auto">
+        {message !== "" ? (
+          <div className={"alert alert-danger"}>
+            <h4>{message.toUpperCase()}</h4>
+          </div>
+        ) : (
+          ""
+        )}
+      </div>
+      <div className="col-md-12 ">
+        <CreateGroupForm
+          create={true}
+          onChange={onChange}
+          onSubmit={onSubmit}
+          group={values}
+          loading={loading}
+          setLoading={setLoading}
+        />
       </div>
     </div>
   );

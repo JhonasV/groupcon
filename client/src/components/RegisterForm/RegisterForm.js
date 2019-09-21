@@ -3,9 +3,8 @@ import React from "react";
 const RegisterForm = ({
   onChange,
   onSubmit,
-  onConfirm,
-  loading,
-  setLoading
+
+  loading
 }) => (
   <form className="card" onSubmit={e => onSubmit(e)}>
     <div className="card-header bg-primary text-white">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SearchGroupForm from "../components/SearchGroup/SearchGroupForm";
 import GroupList from "../components/Group/GroupList/GroupList";
-
+import Axios from "axios";
 const Home = () => {
   const [values, setValues] = useState({ name: "", filteredGroups: [] });
   const [getGroups, setGroups] = useState({
@@ -24,13 +24,14 @@ const Home = () => {
   };
 
   useEffect(() => {
-    getAllGroups();
+    const getGroupsAsync = async () => await getAllGroups();
+    getGroupsAsync();
   }, []);
 
   const getAllGroups = async () => {
-    let response = await fetch(`http://localhost:3000/api/v1/group`);
-    let groups = await response.json();
-    setGroups({ groups });
+    let response = await Axios.get(`/api/v1/group`);
+    console.log(response);
+    setGroups({ groups: response.data });
   };
   const onSubmit = async e => {
     e.preventDefault();

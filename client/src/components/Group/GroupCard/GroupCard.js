@@ -1,7 +1,7 @@
 import React from "react";
 import QRCode from "qrcode.react";
 import { Link } from "react-router-dom";
-const GroupCard = ({ name, url, id, password, editable }) => {
+const GroupCard = ({ name, url, id, password, editable, onDelete }) => {
   const groupCardColor = url => {
     let color = url.includes("chat.whatsapp.com") ? "bg-success" : "bg-primary";
     return color;
@@ -11,8 +11,9 @@ const GroupCard = ({ name, url, id, password, editable }) => {
     let icon = url.includes("chat.whatsapp.com") ? "fa-whatsapp" : "";
     return icon;
   };
+
   return (
-    <div className="card">
+    <div className="card " style={{ height: "460px" }}>
       <div className={`card-header ${groupCardColor(url)}`}>
         <div className="row">
           <div className="col-sm-10">
@@ -30,8 +31,8 @@ const GroupCard = ({ name, url, id, password, editable }) => {
         <QRCode size={230} value={url} />
       </div>
       <div className={`card-footer ${groupCardColor(url)}`}>
-        <div class="row">
-          <div className="col-sm-4">
+        <div className="row">
+          <div className="col">
             <a
               target="_blank"
               rel="noopener noreferrer"
@@ -41,7 +42,7 @@ const GroupCard = ({ name, url, id, password, editable }) => {
               Direct Link
             </a>
           </div>
-          <div className="col-sm-3 ">
+          <div className="col">
             {editable ? (
               <Link
                 className="btn btn-warning"
@@ -50,8 +51,18 @@ const GroupCard = ({ name, url, id, password, editable }) => {
                   state: { id }
                 }}
               >
-                <i class="fa fa-edit"></i>Edit
+                <i className="fa fa-edit"></i>
+                Edit
               </Link>
+            ) : (
+              ""
+            )}
+          </div>
+          <div className="col">
+            {editable ? (
+              <button className="btn btn-danger" onClick={e => onDelete(e, id)}>
+                <i className="fa fa-trash"></i> Delete
+              </button>
             ) : (
               ""
             )}

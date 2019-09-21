@@ -1,7 +1,8 @@
 
 # Created by https://www.gitignore.io/api/node,windows,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=node,windows,visualstudiocode
-
+### Prod keys
+prod.js
 ### Node ###
 # Logs
 logs

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-import CardUserInfo from "../../components/Dashboard/CardUserInfo";
+// import CardUserInfo from "../../components/Dashboard/CardUserInfo";
 import { getCurrentUser } from "../../Helpers/auth-helper";
 import GroupList from "../../components/Group/GroupList/GroupList";
 import { Link } from "react-router-dom";
 import Axios from "axios";
+import { confirmAlert } from "react-confirm-alert";
+
 const Dashboard = ({ location, history }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [getGroups, setGroups] = useState({
@@ -27,7 +29,7 @@ const Dashboard = ({ location, history }) => {
     } else {
       history.replace();
     }
-  }, []);
+  }, [location.state, history, message]);
 
   const getAllGroups = async currentUserId => {
     if (currentUserId === null) return;
@@ -35,15 +37,69 @@ const Dashboard = ({ location, history }) => {
       `http://localhost:3000/api/v1/${currentUserId}/groups`
     );
     let groups = await response.json();
-    console.log(groups);
-
     setGroups({ groups });
+  };
+  const onDelete = async (e, id) => {
+    e.preventDefault();
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className="custom-ui card">
+            <div className="card-header bg-warning">
+              <h1 className="text-white">Delete Warning!</h1>
+            </div>
+            <div className="card-body">
+              <p>Are you sure to do this?</p>
+            </div>
+            <div className="card-footer bg-warning">
+              <button
+                disabled={loading}
+                className="btn btn-secondary"
+                onClick={onClose}
+              >
+                No
+              </button>
+              <button
+                disabled={loading}
+                className="btn btn-primary"
+                onClick={async () => {
+                  await deleteGroup(id);
+                  onClose();
+                }}
+              >
+                {loading ? (
+                  <span
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                ) : (
+                  "Yes"
+                )}
+              </button>
+            </div>
+          </div>
+        );
+      }
+    });
+  };
+  const deleteGroup = async id => {
+    setLoading(true);
+    let response = await Axios.delete(`/api/v1/group/${id}`);
+    if (response.status === 200) {
+      setMessage("Group deleted succesfully!");
+      await getAllGroups(currentUser ? currentUser.id : null);
+    } else {
+      setMessage(response.data);
+    }
+    setLoading(false);
   };
 
   const renderGroups = () => {
     return getGroups.groups.length !== 0 ? (
       <GroupList
         groups={getGroups.groups}
+        onDelete={onDelete}
         currentUserId={currentUser ? currentUser.id : ""}
       />
     ) : (

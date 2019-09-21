@@ -109,3 +109,11 @@ exports.update = async (req, res, next) => {
     return res.status(500).json({ error: "Something went wrong" });
   }
 };
+
+exports.delete = async (req, res, next) => {
+  let { id } = req.params;
+
+  let groupRemoved = await Group.findOneAndRemove({ _id: id });
+  res.json(groupRemoved);
+  next();
+};

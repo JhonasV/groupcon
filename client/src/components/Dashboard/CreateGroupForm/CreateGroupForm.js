@@ -10,7 +10,7 @@ const CreateGroupForm = ({
 }) => {
   let buttonTitle = create ? "CREATE" : "UPDATE";
   return (
-    <div className="row mt-5">
+    <div className="row mb-5">
       <div className="col-md-8 ml-auto mr-auto">
         <Link to="/dashboard" className="btn btn-primary mb-2">
           {" "}
@@ -69,7 +69,7 @@ const CreateGroupForm = ({
                 >
                   {loading ? (
                     <span
-                      class="spinner-border spinner-border-sm"
+                      className="spinner-border spinner-border-sm"
                       role="status"
                       aria-hidden="true"
                     ></span>

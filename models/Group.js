@@ -3,9 +3,9 @@ const { Schema } = mongoose;
 
 const groupSchema = new Schema({
   name: { type: String, required: true, unique: true },
+  passsword: { type: String, required: false },
   url: { type: String, required: true },
-  user: { type: mongoose.Types.ObjectId, ref: "user" },
-  passsword: { type: String }
+  user: { type: mongoose.Types.ObjectId, ref: "user" }
 });
 
 mongoose.model("Groups", groupSchema);
