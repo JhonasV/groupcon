@@ -3,8 +3,10 @@ const Group = mongoose.model("Groups");
 const User = mongoose.model("user");
 
 const { validateGroups } = require("../validation");
+const { sendInviteLinkMail } = require("../services/mailer");
 exports.create = async (req, res, next) => {
-  let { error } = validateGroups(req.body);
+  let { url, name } = req.body;
+  let { error } = validateGroups({ url, name });
   if (error)
     return res.status(400).json({
       error: error.details[0].message.split('"').join(" ")
@@ -17,8 +19,6 @@ exports.create = async (req, res, next) => {
     password: req.body.password
   };
 
-  console.log(group);
-
   try {
     let groupExists = await Group.findOne({ name: group.name });
     if (groupExists)
@@ -27,7 +27,6 @@ exports.create = async (req, res, next) => {
       });
 
     let isCreated = await new Group(group).save();
-    console.log(isCreated);
     res.json(isCreated);
 
     next();
@@ -115,5 +114,14 @@ exports.delete = async (req, res, next) => {
 
   let groupRemoved = await Group.findOneAndRemove({ _id: id });
   res.json(groupRemoved);
+  next();
+};
+
+exports.sendEmail = async (req, res, next) => {
+  let { toEmail, inviteUrl, groupName } = req.body;
+  await sendInviteLinkMail(toEmail, inviteUrl, groupName).catch(err =>
+    res.status(500).json({ error: "Error sending the email, try later." })
+  );
+  res.json("Email sended!");
   next();
 };

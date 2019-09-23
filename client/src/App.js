@@ -27,7 +27,6 @@ function App() {
   const AutenticatedRoutes = () => (
     <Switch>
       <Route path="/" exact render={props => <Home {...props} />} />
-
       <Route
         path="/dashboard"
         exact

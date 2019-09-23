@@ -33,8 +33,7 @@ exports.validateLogin = data => {
 exports.validateGroups = data => {
   const schema = {
     name: Joi.string().required(),
-    url: Joi.string().required(),
-    password: Joi.string().min(4)
+    url: Joi.string().required()
   };
 
   return Joi.validate(data, schema);

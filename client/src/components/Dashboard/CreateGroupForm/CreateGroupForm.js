@@ -1,13 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-const CreateGroupForm = ({
-  group,
-  onChange,
-  onSubmit,
-  create,
-  loading,
-  setLoading
-}) => {
+const CreateGroupForm = ({ group, onChange, onSubmit, create, loading }) => {
   let buttonTitle = create ? "CREATE" : "UPDATE";
   return (
     <div className="row mb-5">

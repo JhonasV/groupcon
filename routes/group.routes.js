@@ -8,4 +8,5 @@ module.exports = app => {
   app.get("/api/v1/:userId/groups", groupController.getByUserId);
   app.put("/api/v1/:id/group", verifyToken, groupController.update);
   app.delete("/api/v1/group/:id", verifyToken, groupController.delete);
+  app.post("/api/v1/group/mail", groupController.sendEmail);
 };

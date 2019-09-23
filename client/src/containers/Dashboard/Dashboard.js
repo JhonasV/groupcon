@@ -33,12 +33,10 @@ const Dashboard = ({ location, history }) => {
 
   const getAllGroups = async currentUserId => {
     if (currentUserId === null) return;
-    let response = await fetch(
-      `http://localhost:3000/api/v1/${currentUserId}/groups`
-    );
-    let groups = await response.json();
-    setGroups({ groups });
+    let response = await Axios(`/api/v1/${currentUserId}/groups`);
+    if (response.status === 200) setGroups({ groups: response.data });
   };
+
   const onDelete = async (e, id) => {
     e.preventDefault();
     confirmAlert({

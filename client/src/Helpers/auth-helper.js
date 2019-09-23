@@ -19,12 +19,7 @@ export function deleteToken(e) {
 export async function getCurrentUser() {
   if (!getToken()) return;
   try {
-    // let response = await Axios.get("/api/v1/user/current", {
-    //   headers: {
-    //     Authorization: getToken()
-    //   }
-    // });
-    let response = await Axios.get("/api/v1/user/current");
+    let response = await Axios.get("/api/v1/auth/current");
     return response.data;
   } catch (error) {
     return false;
@@ -36,7 +31,7 @@ export function initAxiosInterceptors() {
     const token = getToken();
 
     if (token) {
-      config.headers.Authorization = token;
+      config.headers.Authorization = `Bearer ${token}`;
     }
 
     return config;

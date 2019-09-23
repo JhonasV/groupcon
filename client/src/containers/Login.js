@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { setToken } from "../Helpers/auth-helper";
 import LoginForm from "../components/LoginForm/LoginForm";
-
+import Axios from "axios";
 const Login = ({ history }) => {
   const [formValues, setFormValues] = useState({ email: "", password: "" });
   const [getError, setError] = useState({ error: "" });
@@ -18,19 +18,15 @@ const Login = ({ history }) => {
   };
 
   const signIn = async () => {
-    let config = {
-      method: "POST",
-      body: JSON.stringify(formValues),
-      headers: { "Content-Type": "application/json" }
-    };
+    // let config = {
+    //   method: "POST",
+    //   body: ,
+    //   headers: { "Content-Type": "application/json" }
+    // };
     try {
-      let response = await fetch(
-        `http://localhost:3000/api/v1/auth/login`,
-        config
-      );
-      let data = await response.json();
+      let response = await Axios.post(`/api/v1/auth/login`, formValues);
 
-      if (response.ok) {
+      if (response.status === 200) {
         setToken(data.token);
       } else {
         let messageFormatted = data.error
@@ -39,13 +35,12 @@ const Login = ({ history }) => {
           .toUpperCase();
         setError({ error: messageFormatted });
       }
-      setLoading(false);
     } catch (error) {
       setError({
         error: "Something went wrong!"
       });
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   return (

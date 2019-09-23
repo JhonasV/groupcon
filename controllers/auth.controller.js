@@ -16,11 +16,9 @@ exports.login = async (req, res, next) => {
   let validPass = await bcrypt.compare(password, user.password);
   if (!validPass)
     return res.status(400).json({ error: "Email or password is wrong" });
-  console.log(user);
   const token = tokenHelper.generateToken({
     id: user._id,
     email,
-    password,
     nickname: user.nickname
   });
 

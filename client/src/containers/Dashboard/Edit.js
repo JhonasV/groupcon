@@ -76,11 +76,10 @@ const Edit = props => {
       } else {
         setMessage(response.data.error);
       }
-      setLoading(false);
     } catch (error) {
       setMessage(error.response.data.error);
-      setLoading(false);
     }
+    setLoading(false);
   };
   if (redirect) {
     return (

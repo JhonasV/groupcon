@@ -21,7 +21,6 @@ exports.create = async (req, res, next) => {
   let token = tokenHelper.generateToken({
     id: userCreated._id,
     email,
-    password,
     nickname
   });
 

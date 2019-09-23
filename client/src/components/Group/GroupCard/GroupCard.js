@@ -1,6 +1,7 @@
 import React from "react";
 import QRCode from "qrcode.react";
 import { Link } from "react-router-dom";
+
 const GroupCard = ({ name, url, id, password, editable, onDelete }) => {
   const groupCardColor = url => {
     let color = url.includes("chat.whatsapp.com") ? "bg-success" : "bg-primary";
@@ -21,7 +22,7 @@ const GroupCard = ({ name, url, id, password, editable, onDelete }) => {
           </div>
           <div className="col-sm-2">
             <h3 className="text-white">
-              {password !== "" ? <i className="fa fa-lock"></i> : ""}
+              {password ? <i className="fa fa-lock"></i> : ""}
               <i className={`fa ${groupCardIcon(url)}`}></i>
             </h3>
           </div>
@@ -33,19 +34,9 @@ const GroupCard = ({ name, url, id, password, editable, onDelete }) => {
       <div className={`card-footer ${groupCardColor(url)}`}>
         <div className="row">
           <div className="col">
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={url ? url : "#"}
-              className="text-white font-weight-bold btn btn-secundary"
-            >
-              Direct Link
-            </a>
-          </div>
-          <div className="col">
-            {editable ? (
+            {editable && onDelete ? (
               <Link
-                className="btn btn-warning"
+                className="btn btn-warning btn-block"
                 to={{
                   pathname: `/dashboard/edit`,
                   state: { id }
@@ -59,13 +50,43 @@ const GroupCard = ({ name, url, id, password, editable, onDelete }) => {
             )}
           </div>
           <div className="col">
-            {editable ? (
-              <button className="btn btn-danger" onClick={e => onDelete(e, id)}>
+            {editable && onDelete ? (
+              <button
+                className="btn btn-danger btn-block"
+                onClick={e => onDelete(e, id)}
+              >
                 <i className="fa fa-trash"></i> Delete
               </button>
             ) : (
               ""
             )}
+          </div>
+        </div>
+        <div className="row mt-2">
+          <div className="col">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={url ? url : "#"}
+              className="text-white font-weight-bold btn btn-secundary btn-block"
+            >
+              Direct Link
+            </a>
+          </div>
+          <div className="col">
+            <button
+              className="btn btn-secundary btn-block text-white font-weight-"
+              data-placement="top"
+              title="Send a email with the invite link"
+              data-toggle="modal"
+              data-target="#emailmodaltoggle"
+              data-backdrop="static"
+              data-keyboard="false"
+
+              // onClick={e => showEmailModal(setEmail, loading)}
+            >
+              <i className="fa fa-envelope"></i>
+            </button>
           </div>
         </div>
       </div>

@@ -14,8 +14,6 @@ const Create = () => {
 
   const onSubmit = async e => {
     e.preventDefault();
-    // Send data here
-
     setLoading(true);
     setMessage("");
     await createGroup();
@@ -28,14 +26,15 @@ const Create = () => {
         setMessage(`Group '${response.data.name}' created succesfully!`);
         setRedirect(true);
       } else {
-        let errorMessage = response.data ? response.data.error : response.data;
-        setMessage(errorMessage.toUpperCase());
+        let errorMessage = response.data.error
+          ? response.data.error
+          : response.data;
+        setMessage(errorMessage);
       }
-      setLoading(false);
     } catch (error) {
       setMessage(error.response.data.error);
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   if (isRedirect) {

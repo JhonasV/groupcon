@@ -58,8 +58,8 @@ const Navbar = ({ currentUser }) => {
                 to={`/dashboard/create`}
                 style={{ fontSize: "17px" }}
               >
-                <i className="fa fa-chart-line"></i>
-                Create a new group
+                <i className="fa fa-chart"></i>
+                New Group
                 <span className="sr-only">(current)</span>
               </NavLink>
             </li>

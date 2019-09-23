@@ -7,6 +7,7 @@ const Home = () => {
   const [getGroups, setGroups] = useState({
     groups: [{ _id: "", name: "", url: "" }]
   });
+
   const onChange = e => {
     setValues({ [e.target.name]: e.target.value });
     showGroups(e.target.value);
@@ -24,19 +25,19 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const getGroupsAsync = async () => await getAllGroups();
-    getGroupsAsync();
+    getAllGroups();
   }, []);
 
-  const getAllGroups = async () => {
-    let response = await Axios.get(`/api/v1/group`);
-    console.log(response);
-    setGroups({ groups: response.data });
+  const getAllGroups = () => {
+    Axios.get(`/api/v1/group`)
+      .then(res => setGroups({ groups: res.data }))
+      .catch(err => console.error(err));
   };
-  const onSubmit = async e => {
-    e.preventDefault();
-    if (values.name === "") return;
 
+  const onSubmit = e => {
+    e.preventDefault();
+
+    if (values.name === "") return;
     showGroups(values.name);
   };
 
