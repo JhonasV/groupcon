@@ -27,9 +27,9 @@ const Login = ({ history }) => {
       let response = await Axios.post(`/api/v1/auth/login`, formValues);
 
       if (response.status === 200) {
-        setToken(data.token);
+        setToken(response.data.token);
       } else {
-        let messageFormatted = data.error
+        let messageFormatted = response.data.error
           .split('"')
           .join(" ")
           .toUpperCase();
