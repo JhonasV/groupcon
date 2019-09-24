@@ -18,4 +18,4 @@
 
 ## Preview
 
-![Preview](https://github.com/JhonasV/groupcon/blob/master/client/src/preview2.gif?raw=true)
+![Preview](https://github.com/JhonasV/groupcon/blob/master/client/src/preview3.gif?raw=true)
