@@ -1,6 +1,12 @@
 import React from "react";
 
-const EmailModal = ({ onSubmit, setEmail, loading, emailSendResponse }) => {
+const EmailModal = ({
+  onSubmit,
+  setEmail,
+  loading,
+  emailSendResponse,
+  email
+}) => {
   return (
     <div
       className="modal fade"
@@ -47,6 +53,7 @@ const EmailModal = ({ onSubmit, setEmail, loading, emailSendResponse }) => {
                   placeholder="Email..."
                   onChange={e => setEmail(e.target.value)}
                   required={true}
+                  value={email}
                 />
               </div>
               <div className="form-group">

@@ -39,6 +39,7 @@ const GroupList = ({ groups, currentUserId, onDelete }) => {
 
       if (response.status === 200) {
         setEmailResponse({ message: response.data, type: "success" });
+        setEmail("");
       } else {
         setEmailResponse({ message: response.data.error, type: "warning" });
       }
@@ -50,7 +51,6 @@ const GroupList = ({ groups, currentUserId, onDelete }) => {
     }
     localStorage.removeItem("GROUP");
     setLoading(false);
-    setEmail("");
   };
 
   const renderGroupList = group => {
@@ -75,6 +75,7 @@ const GroupList = ({ groups, currentUserId, onDelete }) => {
     <div className="row mt-3 mb-5">
       {groups ? groups.map(group => renderGroupList(group)) : null}
       <EmailModal
+        email={email}
         setEmail={setEmail}
         loading={loading}
         onSubmit={sendInviteLinkEmail}

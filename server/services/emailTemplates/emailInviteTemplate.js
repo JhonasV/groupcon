@@ -1,20 +1,19 @@
 module.exports = (groupName, inviteUrl) => {
-  return `<!DOCTYPE html>
-                <html>
-                    <head>
-                        <link rel='stylesheet' href='/../../client/public/css/bootstrap.min.css'/>
-                    </head>
-                    <body>                
-                        <div class='row'>
-                            <div class='col card'>
-                                <div class='card-header bg-primary'>
-                                    <h3 class='text-white'>GroupCon invitation to ${groupName}</h3>
-                                </div>
-                                <div class='card-body'>
-                                    <a class='btn btn-primary btn-block' target='_blank' href='${inviteUrl}'>Go to group</a>
-                                </div>
-                            </div>
+  return `
+            <body>           
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">     
+                <div class="col s12 m7">
+                    <h2 class="header">URL INVITE FROM GROUPCON</h2>
+                    <div class="card horizontal">
+                    <div class="card-stacked">
+                        <div class="card-content">
+                        <p>YOU HAVE BEEN INVITE TO BE PART OF THE GROUP '${groupName.toUpperCase()}'</p>
                         </div>
-                    </body>
-                </html>`;
+                        <div class="card-action">
+                        <a target='_blank' class='waves-effect waves-blue btn' href="${inviteUrl}">CLICK HERE</a>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </body>`;
 };
