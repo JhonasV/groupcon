@@ -6,6 +6,7 @@ import GroupList from "../../components/Group/GroupList/GroupList";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import { confirmAlert } from "react-confirm-alert";
+import Alert from "../../components/Alert";
 
 const Dashboard = ({ location, history }) => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -114,16 +115,7 @@ const Dashboard = ({ location, history }) => {
   return (
     <main>
       <div className="row mt-2">
-        {message !== "" ? (
-          <span
-            style={{ width: "100%" }}
-            className="alert alert-success text-bold"
-          >
-            {message}
-          </span>
-        ) : (
-          ""
-        )}
+        <Alert message={message} type={"success"} />
       </div>
       <div className="row mt-2">
         {/* <div className="col-md-2 col-lg-2 col-sm-2  ">

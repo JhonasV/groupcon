@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { setToken } from "../Helpers/auth-helper";
 import LoginForm from "../components/LoginForm/LoginForm";
 import Axios from "axios";
+import Alert from "../components/Alert";
 const Login = () => {
   const [formValues, setFormValues] = useState({ email: "", password: "" });
   const [getError, setError] = useState({ error: "" });
@@ -39,15 +40,12 @@ const Login = () => {
   return (
     <div>
       <div className="row">
-        {getError.error !== "" ? (
-          <div className="col-sm-12 col-md-6 col-lg-8 ml-auto mr-auto mt-3 alert alert-danger">
-            {getError.error.toUpperCase()}
-          </div>
-        ) : null}
+        <div className="col-md-8 ml-auto mr-auto mt-3">
+          <Alert message={getError.error} />
+        </div>
       </div>
-
       <div className="row">
-        <div className="col-sm-12 col-md-6 col-lg-8 ml-auto mr-auto mt-5">
+        <div className="col-sm-12 col-md-6 col-lg-8 ml-auto mr-auto mt-3">
           <LoginForm
             loading={loading}
             setLoading={setLoading}

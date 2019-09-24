@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { setToken } from "../Helpers/auth-helper";
 import RegisterForm from "../components/RegisterForm/RegisterForm";
 import Axios from "axios";
-
+import Alert from "../components/Alert";
 const Register = () => {
   const [formValues, setFormValues] = useState({
     email: "",
@@ -27,6 +27,7 @@ const Register = () => {
     setPasswordMatch(true);
     return true;
   };
+
   const onSubmit = async e => {
     e.preventDefault();
     let match = verifyPasswordMatch();
@@ -68,14 +69,12 @@ const Register = () => {
   return (
     <div className="mb-5">
       <div className="row ">
-        {getError.error !== "" ? (
-          <div className="col-sm-12 col-md-6 col-lg-8 ml-auto mr-auto mt-1 alert alert-danger">
-            {getError.error}
-          </div>
-        ) : null}
+        <div className="col-md-8 ml-auto mr-auto mt-3">
+          <Alert message={getError.error} />
+        </div>
       </div>
       <div className="row">
-        <div className="col-sm-12 col-md-6 col-lg-8 ml-auto mr-auto mt-2">
+        <div className="col-sm-12 col-md-6 col-lg-8 ml-auto mr-auto mb-5 mt-2">
           <RegisterForm
             passwordMatch={passwordMatch}
             onChange={onChange}

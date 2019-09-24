@@ -41,7 +41,7 @@ const CreateGroupForm = ({ group, onChange, onSubmit, create, loading }) => {
                   disabled={loading}
                 />
               </div>
-              <div className="form-group">
+              {/* <div className="form-group">
                 <input
                   type="text"
                   className="form-control"
@@ -51,7 +51,7 @@ const CreateGroupForm = ({ group, onChange, onSubmit, create, loading }) => {
                   value={group ? group.password : ""}
                   disabled={loading}
                 />
-              </div>
+              </div> */}
             </div>
             <div className="card-footer">
               <div className="form-group">

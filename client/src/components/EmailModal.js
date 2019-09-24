@@ -32,11 +32,11 @@ const EmailModal = ({ onSubmit, setEmail, loading, emailSendResponse }) => {
           <div className="modal-body" style={{ backgroundColor: "#ffff" }}>
             <form onSubmit={onSubmit}>
               {emailSendResponse !== "" ? (
-                <span
-                  className={`text-white alert alert-${emailSendResponse.type} w-100 text-weight-bold`}
+                <div
+                  className={`text-white text-weight-bold alert alert-${emailSendResponse.type} w-100 text-weight-bold`}
                 >
-                  {emailSendResponse.message}
-                </span>
+                  {emailSendResponse.message.toUpperCase()}
+                </div>
               ) : null}
 
               <div className="form-group">

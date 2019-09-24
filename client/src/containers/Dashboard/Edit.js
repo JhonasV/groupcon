@@ -4,6 +4,7 @@ import CreateGroupForm from "../../components/Dashboard/CreateGroupForm/CreateGr
 import { Redirect } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import Alert from "../../components/Alert";
 
 const Edit = props => {
   const [group, setGroup] = useState({ name: "", url: "", _id: "", user: "" });
@@ -95,13 +96,14 @@ const Edit = props => {
   return (
     <div className="row mt-1">
       <div className="col-md-8 ml-auto mr-auto">
-        {message !== "" ? (
+        {/* {message !== "" ? (
           <div className={"alert alert-danger"}>
             <h4>{message.toUpperCase()}</h4>
           </div>
         ) : (
           ""
-        )}
+        )} */}
+        <Alert message={message} />
       </div>
       <div className="col-md-12">
         <CreateGroupForm

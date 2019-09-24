@@ -6,7 +6,10 @@ import GroupCard from "../GroupCard/GroupCard";
 
 const GroupList = ({ groups, currentUserId, onDelete }) => {
   const [email, setEmail] = useState("");
-  const [emailResponse, setEmailResponse] = useState({ message: "", type: "" });
+  const [emailResponse, setEmailResponse] = useState({
+    message: "",
+    type: ""
+  });
   const [loading, setLoading] = useState(false);
   const [url, setUrl] = useState("");
   const onModalOpen = id => {

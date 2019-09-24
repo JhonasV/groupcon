@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import CreateGroupForm from "../../components/Dashboard/CreateGroupForm/CreateGroupForm";
 import Axios from "axios";
-
+import Alert from "../../components/Alert";
 const Create = () => {
   const [values, setValues] = useState({ name: "", url: "", password: "" });
   const [message, setMessage] = useState("");
@@ -44,13 +44,14 @@ const Create = () => {
   return (
     <div className="row mt-1 container">
       <div className="col-md-8 ml-auto mr-auto">
-        {message !== "" ? (
+        {/* {message !== "" ? (
           <div className={"alert alert-danger"}>
             <h4>{message.toUpperCase()}</h4>
           </div>
         ) : (
           ""
-        )}
+        )} */}
+        <Alert message={message} />
       </div>
       <div className="col-md-12 ">
         <CreateGroupForm
