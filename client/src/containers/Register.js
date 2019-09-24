@@ -1,67 +1,69 @@
 import React, { useState } from "react";
 import { setToken } from "../Helpers/auth-helper";
 import RegisterForm from "../components/RegisterForm/RegisterForm";
+import Axios from "axios";
 
 const Register = () => {
   const [formValues, setFormValues] = useState({
     email: "",
     password: "",
-    nickname: ""
+    nickname: "",
+    confirmPassword: ""
   });
-  // const [confirmPassword, setConfirmPassword] = useState(true);
   const [getError, setError] = useState({ error: "" });
   const [loading, setLoading] = useState(false);
+  const [passwordMatch, setPasswordMatch] = useState(true);
+
   const onChange = e => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
-    // isSamePassword();
   };
 
+  const verifyPasswordMatch = () => {
+    if (!(formValues.password === formValues.confirmPassword)) {
+      setPasswordMatch(!passwordMatch);
+      setError({ error: "Password and Password confirmation not match" });
+      return !passwordMatch;
+    }
+    setPasswordMatch(true);
+    return true;
+  };
   const onSubmit = async e => {
     e.preventDefault();
-    // if (!confirmPassword) return;
+    let match = verifyPasswordMatch();
+    if (!match) return;
     setLoading(true);
+
     setError({ error: "" });
     await signIn();
   };
 
   const signIn = async () => {
-    let config = {
-      method: "POST",
-      body: JSON.stringify(formValues),
-      headers: { "Content-Type": "application/json" }
-    };
     try {
-      let response = await fetch(
-        `http://localhost:3000/api/v1/auth/register`,
-        config
-      );
-      let data = await response.json();
-      console.log(data);
-      if (response.ok) {
-        setToken(data.token);
+      let { email, password, nickname } = formValues;
+      let response = await Axios.post(`/api/v1/auth/register`, {
+        email,
+        password,
+        nickname
+      });
+      if (response.status === 200) {
+        setToken(response.data.token);
       } else {
-        let error = data.error ? data.error : data;
+        let error = response.data.error;
         let messageFormatted = error
           .split('"')
           .join(" ")
           .toUpperCase();
         setError({ error: messageFormatted });
       }
-      setLoading(false);
     } catch (error) {
       setError({
-        error: "Something went wrong!"
+        error: error.response.data.error
+          ? error.response.data.error
+          : error.response.data
       });
-      setLoading(false);
     }
+    setLoading(false);
   };
-
-  // const isSamePassword = () => {
-  //   if (formValues.password === "") return;
-  //   if (formValues.confirm === "") return;
-  //   setConfirmPassword(formValues.password === formValues.confirm);
-  //   // console.log(formValues.password === formValues.confirm);
-  // };
 
   return (
     <div className="mb-5">
@@ -72,11 +74,10 @@ const Register = () => {
           </div>
         ) : null}
       </div>
-
       <div className="row">
         <div className="col-sm-12 col-md-6 col-lg-8 ml-auto mr-auto mt-2">
           <RegisterForm
-            // onConfirm={confirmPassword}
+            passwordMatch={passwordMatch}
             onChange={onChange}
             onSubmit={onSubmit}
             loading={loading}

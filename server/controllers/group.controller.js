@@ -118,10 +118,17 @@ exports.delete = async (req, res, next) => {
 };
 
 exports.sendEmail = async (req, res, next) => {
-  let { toEmail, inviteUrl, groupName } = req.body;
-  await sendInviteLinkMail(toEmail, inviteUrl, groupName).catch(err =>
-    res.status(500).json({ error: "Error sending the email, try later." })
-  );
+  let { groupId, toEmail } = req.body;
+
+  let group = await Group.findById(groupId);
+
+  try {
+    await sendInviteLinkMail(toEmail, group.url, group.name);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error sending the email, try later." });
+  }
+
   res.json("Email sended!");
   next();
 };

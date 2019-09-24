@@ -1,8 +1,16 @@
 import React from "react";
-import QRCode from "qrcode.react";
 import { Link } from "react-router-dom";
 
-const GroupCard = ({ name, url, id, password, editable, onDelete }) => {
+const GroupCard = ({
+  name,
+  url,
+  id,
+  password,
+  editable,
+  onDelete,
+  onModalOpen,
+  setUrl
+}) => {
   const groupCardColor = url => {
     let color = url.includes("chat.whatsapp.com") ? "bg-success" : "bg-primary";
     return color;
@@ -14,12 +22,13 @@ const GroupCard = ({ name, url, id, password, editable, onDelete }) => {
   };
 
   return (
-    <div className="card " style={{ height: "460px" }}>
+    <div className="card " style={{ height: "130px" }}>
       <div className={`card-header ${groupCardColor(url)}`}>
         <div className="row">
           <div className="col-sm-10">
             <h3 className="text-white">{name}</h3>
           </div>
+
           <div className="col-sm-2">
             <h3 className="text-white">
               {password ? <i className="fa fa-lock"></i> : ""}
@@ -28,9 +37,7 @@ const GroupCard = ({ name, url, id, password, editable, onDelete }) => {
           </div>
         </div>
       </div>
-      <div className="card-body text-center">
-        <QRCode size={230} value={url} />
-      </div>
+
       <div className={`card-footer ${groupCardColor(url)}`}>
         <div className="row">
           <div className="col">
@@ -68,7 +75,7 @@ const GroupCard = ({ name, url, id, password, editable, onDelete }) => {
               target="_blank"
               rel="noopener noreferrer"
               href={url ? url : "#"}
-              className="text-white font-weight-bold btn btn-secundary btn-block"
+              className="text-white text-nowrap font-weight-bold btn btn-secundary btn-block"
             >
               Direct Link
             </a>
@@ -82,10 +89,21 @@ const GroupCard = ({ name, url, id, password, editable, onDelete }) => {
               data-target="#emailmodaltoggle"
               data-backdrop="static"
               data-keyboard="false"
-
-              // onClick={e => showEmailModal(setEmail, loading)}
+              onClick={e => onModalOpen(id)}
             >
               <i className="fa fa-envelope"></i>
+            </button>
+          </div>
+          <div className="col">
+            <button
+              className="btn btn-secundary btn-block text-white font-weight"
+              data-toggle="modal"
+              data-target="#qrModalToggle"
+              data-backdrop="static"
+              data-keyboard="false"
+              onClick={e => setUrl(url)}
+            >
+              <i className="fa fa-qrcode"></i>
             </button>
           </div>
         </div>

@@ -1,24 +1,37 @@
 import React, { useState } from "react";
 import Axios from "axios";
 import EmailModal from "../../EmailModal";
+import QRModal from "../../QRModal";
 import GroupCard from "../GroupCard/GroupCard";
-// import { CSSTransition } from "react-transition-group";
 
 const GroupList = ({ groups, currentUserId, onDelete }) => {
   const [email, setEmail] = useState("");
   const [emailResponse, setEmailResponse] = useState({ message: "", type: "" });
   const [loading, setLoading] = useState(false);
+  const [url, setUrl] = useState("");
+  const onModalOpen = id => {
+    localStorage.setItem("GROUP", id);
+  };
 
-  const sendInviteLinkEmail = async (e, name, url) => {
+  const sendInviteLinkEmail = async e => {
     e.preventDefault();
+
+    let groupId = localStorage.getItem("GROUP");
+    if (!groupId) {
+      setEmailResponse({
+        message: "We couldn't send the mail, try later.",
+        type: "danger"
+      });
+      return;
+    }
+
     setEmailResponse({ message: "", type: "" });
     if (email === "") return;
     setLoading(true);
     try {
       let response = await Axios.post("/api/v1/group/mail", {
-        toEmail: email,
-        inviteUrl: url,
-        groupName: name
+        groupId,
+        toEmail: email
       });
 
       if (response.status === 200) {
@@ -27,10 +40,14 @@ const GroupList = ({ groups, currentUserId, onDelete }) => {
         setEmailResponse({ message: response.data.error, type: "warning" });
       }
     } catch (error) {
-      setEmailResponse({ message: error.response.data.error, type: "danger" });
+      setEmailResponse({
+        message: "We couldn't send the mail, try later.",
+        type: "danger"
+      });
     }
-
+    localStorage.removeItem("GROUP");
     setLoading(false);
+    setEmail("");
   };
 
   const renderGroupList = group => {
@@ -45,12 +62,8 @@ const GroupList = ({ groups, currentUserId, onDelete }) => {
           name={group.name}
           url={group.url}
           editable={editable}
-        />
-        <EmailModal
-          setEmail={setEmail}
-          loading={loading}
-          onSubmit={e => sendInviteLinkEmail(e, group.name, group.url)}
-          emailSendResponse={emailResponse}
+          onModalOpen={onModalOpen}
+          setUrl={setUrl}
         />
       </div>
     );
@@ -58,6 +71,13 @@ const GroupList = ({ groups, currentUserId, onDelete }) => {
   return (
     <div className="row mt-3 mb-5">
       {groups ? groups.map(group => renderGroupList(group)) : null}
+      <EmailModal
+        setEmail={setEmail}
+        loading={loading}
+        onSubmit={sendInviteLinkEmail}
+        emailSendResponse={emailResponse}
+      />
+      <QRModal url={url} />
     </div>
   );
 };

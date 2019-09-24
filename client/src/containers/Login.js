@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { setToken } from "../Helpers/auth-helper";
 import LoginForm from "../components/LoginForm/LoginForm";
 import Axios from "axios";
-const Login = ({ history }) => {
+const Login = () => {
   const [formValues, setFormValues] = useState({ email: "", password: "" });
   const [getError, setError] = useState({ error: "" });
   const [loading, setLoading] = useState(false);
@@ -14,30 +14,23 @@ const Login = ({ history }) => {
     e.preventDefault();
     setError({ error: "" });
     setLoading(true);
-    await signIn();
+    await LogIn();
   };
 
-  const signIn = async () => {
-    // let config = {
-    //   method: "POST",
-    //   body: ,
-    //   headers: { "Content-Type": "application/json" }
-    // };
+  const LogIn = async () => {
     try {
       let response = await Axios.post(`/api/v1/auth/login`, formValues);
 
       if (response.status === 200) {
         setToken(response.data.token);
       } else {
-        let messageFormatted = response.data.error
-          .split('"')
-          .join(" ")
-          .toUpperCase();
+        let messageFormatted = response.data.error.split('"').join(" ");
+
         setError({ error: messageFormatted });
       }
     } catch (error) {
       setError({
-        error: "Something went wrong!"
+        error: error.response.data.error
       });
     }
     setLoading(false);
@@ -48,7 +41,7 @@ const Login = ({ history }) => {
       <div className="row">
         {getError.error !== "" ? (
           <div className="col-sm-12 col-md-6 col-lg-8 ml-auto mr-auto mt-3 alert alert-danger">
-            {getError.error}
+            {getError.error.toUpperCase()}
           </div>
         ) : null}
       </div>
