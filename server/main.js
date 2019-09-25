@@ -12,7 +12,7 @@ require("./models");
 require("./routes")(app);
 
 if (process.env.NODE_ENV === "production") {
-  require("./config/prodClientPath")(app);
+  require("./config/prodClientPath")(app, express);
 }
 
 const PORT = process.env.PORT || 5000;

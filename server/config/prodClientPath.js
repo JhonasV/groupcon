@@ -1,4 +1,4 @@
-module.exports = app => {
+module.exports = (app, express) => {
   const path = require("path");
   app.use(express.static(path.resolve(__dirname, "../client", "build")));
 
