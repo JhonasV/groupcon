@@ -7,9 +7,9 @@
     "npm": "6.11.3"
   },
   "scripts": {
-    "start": "node main.js",
-    "server": "nodemon main.js",
-    "client": "npm start --prefix ../client",
+    "start": "node server/main.js",
+    "server": "nodemon server/main.js",
+    "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "dependencies": {
