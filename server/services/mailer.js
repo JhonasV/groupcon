@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
 const keys = require("../config/keys");
 const hbs = require("nodemailer-express-handlebars");
+const path = require("path");
 // const emailInviteTemplate = require("../emailTemplates/emailInviteTemplate");
 exports.sendInviteLinkMail = async (toEmail, inviteUrl, groupName) => {
   let transporter = await nodemailer.createTransport({
@@ -12,15 +13,15 @@ exports.sendInviteLinkMail = async (toEmail, inviteUrl, groupName) => {
       pass: keys.NODEMAILER_AUTH.EMAIL_AUTH.password // generated ethereal password
     }
   });
-
+  // services/emailTemplates
   const handlebarOptions = {
     viewEngine: {
       extName: ".handlebars",
-      partialsDir: "services/emailTemplates",
-      layoutsDir: "services/emailTemplates",
+      partialsDir: path.resolve(__dirname, "emailTemplates"),
+      layoutsDir: path.resolve(__dirname, "emailTemplates"),
       defaultLayout: "email.handlebars"
     },
-    viewPath: "services/emailTemplates",
+    viewPath: path.resolve(__dirname, "emailTemplates"),
     extName: ".handlebars"
   };
 
