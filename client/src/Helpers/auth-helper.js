@@ -4,7 +4,7 @@ const TOKEN_KEY = "GROUPCON_TOKEN";
 
 export function setToken(token) {
   localStorage.setItem(TOKEN_KEY, token);
-  window.location = "/";
+  window.location = "/dashboard";
 }
 export function getToken() {
   return localStorage.getItem(TOKEN_KEY);

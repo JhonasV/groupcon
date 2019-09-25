@@ -3,7 +3,7 @@ import React from "react";
 import style from "./footer.module.css";
 const Footer = () => (
   // <!-- Footer -->
-  <footer className={`${style.footer} text-center py-3 bg-primary`}>
+  <footer className={`${style.footer} text-center py-3 bg-primary mt-5`}>
     {/* <!-- Copyright --> */}
     <div className="footer-copyright ">
       <h4>

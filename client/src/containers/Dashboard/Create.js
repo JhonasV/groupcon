@@ -44,13 +44,6 @@ const Create = () => {
   return (
     <div className="row mt-1 container">
       <div className="col-md-8 ml-auto mr-auto">
-        {/* {message !== "" ? (
-          <div className={"alert alert-danger"}>
-            <h4>{message.toUpperCase()}</h4>
-          </div>
-        ) : (
-          ""
-        )} */}
         <Alert message={message} />
       </div>
       <div className="col-md-12 ">

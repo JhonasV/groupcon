@@ -56,7 +56,7 @@ const GroupList = ({ groups, currentUserId, onDelete }) => {
   const renderGroupList = group => {
     let editable = group.user === currentUserId;
     return (
-      <div key={group._id} className="col-md-6 col-sm-12 col-lg-4 mb-5">
+      <div key={group._id} className="col-md-6 col-sm-12 col-lg-4 mb-3 ">
         <GroupCard
           onDelete={onDelete}
           key={group._id}

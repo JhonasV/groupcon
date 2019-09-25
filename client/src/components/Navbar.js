@@ -20,20 +20,22 @@ const Navbar = ({ currentUser }) => {
               <NavLink
                 activeClassName="active"
                 className="nav-link"
-                to="/register"
+                to="/login"
                 style={{ fontSize: "17px" }}
               >
-                Register <span className="sr-only">(current)</span>
+                <i className="fa fa-sign-in"></i> Login{" "}
+                <span className="sr-only">(current)</span>
               </NavLink>
             </li>
             <li className="nav-item ">
               <NavLink
                 activeClassName="active"
                 className="nav-link"
-                to="/login"
+                to="/register"
                 style={{ fontSize: "17px" }}
               >
-                Login <span className="sr-only">(current)</span>
+                <i className="fa fa-user"></i> Register{" "}
+                <span className="sr-only">(current)</span>
               </NavLink>
             </li>
           </ul>
@@ -48,19 +50,17 @@ const Navbar = ({ currentUser }) => {
                 to={`/dashboard`}
                 style={{ fontSize: "17px" }}
               >
-                {currentUser.nickname}{" "}
+                <i className="fa fa-bar-chart"></i> Dashboard
                 <span className="sr-only">(current)</span>
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink
-                className="nav-link"
+                className="nav-link text-white"
                 to={`/dashboard/create`}
                 style={{ fontSize: "17px" }}
               >
-                <i className="fa fa-chart"></i>
-                New Group
-                <span className="sr-only">(current)</span>
+                <i className="fa fa-plus-circle"></i> New Group
               </NavLink>
             </li>
             <li className="nav-item ">
@@ -70,7 +70,8 @@ const Navbar = ({ currentUser }) => {
                 style={{ fontSize: "17px" }}
                 onClick={e => deleteToken(e)}
               >
-                Logout <span className="sr-only">(current)</span>
+                <i className="fa fa-sign-out"></i> Logout{" "}
+                <span className="sr-only">(current)</span>
               </a>
             </li>
           </ul>
@@ -106,7 +107,8 @@ const Navbar = ({ currentUser }) => {
                 to="/"
                 style={{ fontSize: "17px" }}
               >
-                Home <span className="sr-only">(current)</span>
+                <i className="fa fa-home"></i> Home{" "}
+                <span className="sr-only">(current)</span>
               </NavLink>
             </li>
           </ul>

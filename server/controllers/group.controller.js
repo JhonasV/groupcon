@@ -120,9 +120,8 @@ exports.delete = async (req, res, next) => {
 exports.sendEmail = async (req, res, next) => {
   let { groupId, toEmail } = req.body;
 
-  let group = await Group.findById(groupId);
-
   try {
+    let group = await Group.findById(groupId);
     await sendInviteLinkMail(toEmail, group.url, group.name);
   } catch (error) {
     console.log(error);
@@ -131,4 +130,16 @@ exports.sendEmail = async (req, res, next) => {
 
   res.json("Email sended!");
   next();
+};
+
+exports.latestGroups = async (req, res, next) => {
+  try {
+    let latestGroups = await Group.find()
+      .sort({ createdAt: -1 })
+      .limit(3);
+    res.json(latestGroups);
+    next();
+  } catch (error) {
+    res.status(500).json({ error });
+  }
 };

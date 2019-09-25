@@ -1,6 +1,9 @@
 const express = require("express");
+const morgan = require("morgan");
+
 const app = express();
 
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -9,19 +12,7 @@ require("./models");
 require("./routes")(app);
 
 if (process.env.NODE_ENV === "production") {
-  const path = require("path");
-  app.use(express.static(path.resolve(__dirname, "../client", "build")));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
-  });
-  console.log(
-    "path",
-    path.resolve(__dirname, "../client", "build", "index.html")
-  );
-} else {
-  const morgan = require("morgan");
-  app.use(morgan("dev"));
+  require("./config/prodClientPath")(app);
 }
 
 const PORT = process.env.PORT || 5000;
