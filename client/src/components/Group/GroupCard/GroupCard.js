@@ -23,18 +23,14 @@ const GroupCard = ({
 
   return (
     <div
-      className={`card ${groupCardColor(url)}`}
-      style={{ height: "auto", maxHeight: "205px" }}
+      className={`card ${groupCardColor(url)} mb-2`}
+      style={{ height: "auto", maxHeight: "260px" }}
     >
       <div className={`card-header`}>
         <div className="row">
-          <div className="col-sm-10">
-            <h3 className="text-white card-title">{name}</h3>
-          </div>
-
-          <div className="col-sm-2">
-            <h3 className="text-white">
-              {password ? <i className="fa fa-lock"></i> : ""}
+          <div className="col">
+            <h3 className="text-white card-title">
+              {name} {password ? <i className="fa fa-lock"></i> : ""}
               <i className={`fa ${groupCardIcon(url)}`}></i>
             </h3>
           </div>
@@ -59,7 +55,7 @@ const GroupCard = ({
               ""
             )}
           </div>
-          <div className="col">
+          <div className="col ">
             {editable && onDelete ? (
               <button
                 className="btn btn-danger btn-block"
@@ -73,7 +69,7 @@ const GroupCard = ({
           </div>
         </div>
         <div className="row mt-2">
-          <div className="col">
+          <div className="col  pb-3">
             <a
               target="_blank"
               rel="noopener noreferrer"
@@ -83,7 +79,7 @@ const GroupCard = ({
               <i className="fa fa-arrow-circle-right"></i> Direct Link
             </a>
           </div>
-          <div className="col">
+          <div className="col  pb-3">
             <button
               className="btn btn-secundary btn-block text-white font-weight-bold text-nowrap"
               data-placement="top"
@@ -97,7 +93,7 @@ const GroupCard = ({
               <i className="fa fa-envelope"></i>
             </button>
           </div>
-          <div className="col">
+          <div className="col  pb-3">
             <button
               className="btn btn-secundary btn-block text-nowrap text-white font-weight-bold"
               data-toggle="modal"

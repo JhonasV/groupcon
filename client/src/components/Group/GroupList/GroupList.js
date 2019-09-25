@@ -80,6 +80,7 @@ const GroupList = ({ groups, currentUserId, onDelete }) => {
         loading={loading}
         onSubmit={sendInviteLinkEmail}
         emailSendResponse={emailResponse}
+        setEmailResponse={setEmailResponse}
       />
       <QRModal url={url} />
     </div>

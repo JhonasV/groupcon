@@ -37,7 +37,11 @@ exports.create = async (req, res, next) => {
 
 exports.get = async (req, res, next) => {
   let groups = await Group.find();
-  res.json(groups);
+  let latestGroups = await Group.find()
+    .sort({ createdAt: -1 })
+    .limit(3);
+
+  res.json({ groups, latestGroups });
 
   next();
 };
@@ -53,23 +57,6 @@ exports.getById = async (req, res, next) => {
     console.log(error);
     if (error.name === "CastError")
       return res.json("The resources doesn't exists");
-
-    return res.status(500).json("Something wen't wrong");
-  }
-};
-
-exports.getByUserEmail = async (req, res, next) => {
-  let email = req.params.email;
-  try {
-    let user = await User.findOne({ email: email });
-    let groups = await Group.find({ user: user._id });
-
-    res.json(groups);
-
-    next();
-  } catch (error) {
-    if (error.name === "CastError")
-      return res.status(404).json("The resources doesn't exists");
 
     return res.status(500).json("Something wen't wrong");
   }
@@ -130,16 +117,4 @@ exports.sendEmail = async (req, res, next) => {
 
   res.json("Email sended!");
   next();
-};
-
-exports.latestGroups = async (req, res, next) => {
-  try {
-    let latestGroups = await Group.find()
-      .sort({ createdAt: -1 })
-      .limit(3);
-    res.json(latestGroups);
-    next();
-  } catch (error) {
-    res.status(500).json({ error });
-  }
 };

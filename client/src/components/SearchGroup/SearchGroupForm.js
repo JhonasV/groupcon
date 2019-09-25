@@ -16,13 +16,7 @@ const SearchGroupForm = ({ onChange, onSubmit }) => {
       >
         <div className="row pt-4">
           <div className="card-header-content col-sm-12 col-md-6 col-lg-6">
-            <h2 className="text-white">
-              Social groups directory
-              {/* <i className="fa fa-whatsapp ml-2 mr-2"></i>
-              <i className="fa fa-telegram mr-2"></i>
-              <i className="fa fa-facebook mr-2"></i>
-              <i className="fa fa-slack mr-2"></i> */}
-            </h2>
+            <h2 className="text-white">Social groups directory</h2>
             <h4 className="text-white mt-3">
               Find the group you are looking for!
             </h4>
@@ -39,40 +33,21 @@ const SearchGroupForm = ({ onChange, onSubmit }) => {
                 <i className="fa fa-slack mr-2"></i>
               </div>
             </div>
-            {/* <div className="row">
-              <div className="col-sm-12 col-md-6 col-lg-6 text-white ml-auto mr-auto">
-                <Link
-                  className="btn btn-secundary text-white font-weight-bold"
-                  to={"/dashboard/create"}
-                >
-                  <i className="fa fa-plus mr-4"></i>Add your group in the
-                  directory
-                </Link>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>
       <form className="card-body pt-3" onSubmit={e => onSubmit(e)}>
         <div className="form-group">
           <input
-            autoFocus={true}
             type="text"
+            autoComplete={"off"}
             className="form-control form-control-lg "
-            placeholder="Search your group name..."
+            placeholder="Search..."
             name="name"
             id="nameInput"
             onChange={e => onChange(e)}
           />
         </div>
-
-        {/* <div className="form-group">
-          <input
-            type="submit"
-            value="Search!"
-            className="btn btn-primary btn-lg btn-block"
-          />
-        </div> */}
       </form>
     </div>
   );

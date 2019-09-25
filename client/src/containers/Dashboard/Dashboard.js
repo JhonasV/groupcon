@@ -86,8 +86,9 @@ const Dashboard = ({ location, history }) => {
     setLoading(true);
     let response = await Axios.delete(`/api/v1/group/${id}`);
     if (response.status === 200) {
+      let groupsFiltered = getGroups.groups.filter(g => g._id !== id);
+      setGroups({ groups: groupsFiltered });
       setMessage("Group deleted succesfully!");
-      await getAllGroups(currentUser ? currentUser.id : null);
     } else {
       setMessage(response.data);
     }

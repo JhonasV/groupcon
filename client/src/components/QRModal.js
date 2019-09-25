@@ -36,7 +36,7 @@ const QRModal = ({ url }) => {
           </div>
           <div className="modal-footer">
             <button
-              className="btn btn-secundary ml-auto text-white"
+              className="btn btn btn-secondary ml-auto"
               data-dismiss="modal"
             >
               Close

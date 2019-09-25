@@ -5,7 +5,8 @@ const EmailModal = ({
   setEmail,
   loading,
   emailSendResponse,
-  email
+  email,
+  setEmailResponse
 }) => {
   return (
     <div
@@ -31,6 +32,12 @@ const EmailModal = ({
               data-dismiss="modal"
               aria-label="Close"
               disabled={loading}
+              onClick={e =>
+                setEmailResponse({
+                  message: "",
+                  type: ""
+                })
+              }
             >
               <span aria-hidden="true">&times;</span>
             </button>
@@ -77,6 +84,12 @@ const EmailModal = ({
               className="btn btn-secondary ml-auto"
               data-dismiss="modal"
               disabled={loading}
+              onClick={e =>
+                setEmailResponse({
+                  message: "",
+                  type: ""
+                })
+              }
             >
               Cancel
             </button>

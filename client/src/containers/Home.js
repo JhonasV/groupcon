@@ -33,11 +33,10 @@ const Home = () => {
 
   useEffect(() => {
     getAllGroups();
-    getLatestGroups();
+    // getLatestGroups();
   }, []);
 
   const getLatestGroups = () => {
-    setLoading(true);
     Axios.get("/api/v1/groups/latest")
       .then(res => setValues({ ...values, latestGroups: res.data }))
       .catch(err => console.error(err));
@@ -46,8 +45,12 @@ const Home = () => {
 
   const getAllGroups = () => {
     Axios.get(`/api/v1/group`)
-      .then(res => setGroups({ groups: res.data }))
+      .then(res => {
+        setGroups({ groups: res.data.groups });
+        setValues({ ...values, latestGroups: res.data.latestGroups });
+      })
       .catch(err => console.error(err));
+    setLoading(false);
   };
 
   const onSubmit = e => {
@@ -74,6 +77,7 @@ const Home = () => {
               ? `Search results: ${values.filteredGroups.length}`
               : "Latest groups added"}
           </h3>
+
           {loading ? (
             <div className="d-flex justify-content-center ">
               <div className="spinner-border mt-5" role="status">
@@ -81,15 +85,13 @@ const Home = () => {
               </div>
             </div>
           ) : (
-            <>
-              <GroupList
-                groups={
-                  values.filteredGroups.length || groupName.length > 0
-                    ? values.filteredGroups
-                    : values.latestGroups
-                }
-              />
-            </>
+            <GroupList
+              groups={
+                values.filteredGroups.length || groupName.length > 0
+                  ? values.filteredGroups
+                  : values.latestGroups
+              }
+            />
           )}
         </div>
       </div>
