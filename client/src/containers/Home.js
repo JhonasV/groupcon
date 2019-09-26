@@ -2,15 +2,18 @@ import React, { useState, useEffect } from "react";
 import SearchGroupForm from "../components/SearchGroup/SearchGroupForm";
 import GroupList from "../components/Group/GroupList/GroupList";
 import Axios from "axios";
+import Alert from "../components/Alert";
+
 const Home = () => {
   const [values, setValues] = useState({
     filteredGroups: [],
     latestGroups: []
   });
 
+  const [message, setMessage] = useState("");
+
   const [loading, setLoading] = useState(true);
   const [groupName, setGroupName] = useState("");
-
   const [getGroups, setGroups] = useState({
     groups: [{ _id: "", name: "", url: "" }]
   });
@@ -32,24 +35,19 @@ const Home = () => {
   };
 
   useEffect(() => {
-    getAllGroups();
-    // getLatestGroups();
+    const getAsync = async () => await getAllGroups();
+    getAsync();
   }, []);
 
-  const getLatestGroups = () => {
-    Axios.get("/api/v1/groups/latest")
-      .then(res => setValues({ ...values, latestGroups: res.data }))
-      .catch(err => console.error(err));
-    setLoading(false);
-  };
+  const getAllGroups = async () => {
+    let response = await Axios.get("/api/v1/group");
+    if (response.status === 200) {
+      setGroups({ groups: response.data.groups });
+      setValues({ ...values, latestGroups: response.data.latestGroups });
+    } else {
+      setMessage("Error trying to load the groups, try again later");
+    }
 
-  const getAllGroups = () => {
-    Axios.get(`/api/v1/group`)
-      .then(res => {
-        setGroups({ groups: res.data.groups });
-        setValues({ ...values, latestGroups: res.data.latestGroups });
-      })
-      .catch(err => console.error(err));
     setLoading(false);
   };
 
@@ -62,6 +60,7 @@ const Home = () => {
   return (
     <main>
       <div className="row mt-3">
+        <Alert message={message} />
         <div className="col">
           <SearchGroupForm
             setGroupName={setGroupName}

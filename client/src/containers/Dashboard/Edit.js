@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
-import CreateGroupForm from "../../components/Dashboard/CreateGroupForm/CreateGroupForm";
+import CreateGroupForm from "../../components/Dashboard/CreateGroupForm";
 import { Redirect } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
+
 import Alert from "../../components/Alert";
 
 const Edit = props => {
@@ -11,9 +12,9 @@ const Edit = props => {
   const [message, setMessage] = useState("");
   const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     let groupId = props.location.state.id;
-
     const fetchGroupAsync = async groupId => await fetchGroup(groupId);
     fetchGroupAsync(groupId);
   }, [props.location.state.id]);
@@ -30,20 +31,23 @@ const Edit = props => {
 
   const onSubmit = async e => {
     e.preventDefault();
+
     confirmAlert({
       customUI: ({ onClose }) => {
         return (
           <div className="custom-ui card">
-            <div className="card-header">
-              <h1>Update Warning!</h1>
+            <div className="card-header bg-warning">
+              <h3 className="text-white">
+                <i className="fa fa-warning"></i>Update Warning!
+              </h3>
             </div>
             <div className="card-body">
-              <p>Are you sure to do this?</p>
+              <h4>Are you sure to do this?</h4>
             </div>
-            <div className="card-footer">
+            <div className="card-footer bg-warning">
               <button className="btn btn-secondary" onClick={onClose}>
                 No
-              </button>
+              </button>{" "}
               <button
                 className="btn btn-primary"
                 onClick={async () => {
@@ -96,13 +100,6 @@ const Edit = props => {
   return (
     <div className="row mt-1">
       <div className="col-md-8 ml-auto mr-auto">
-        {/* {message !== "" ? (
-          <div className={"alert alert-danger"}>
-            <h4>{message.toUpperCase()}</h4>
-          </div>
-        ) : (
-          ""
-        )} */}
         <Alert message={message} />
       </div>
       <div className="col-md-12">

@@ -3,7 +3,7 @@ import { setToken } from "../Helpers/auth-helper";
 import LoginForm from "../components/LoginForm/LoginForm";
 import Axios from "axios";
 import Alert from "../components/Alert";
-const Login = () => {
+const Login = ({ location }) => {
   const [formValues, setFormValues] = useState({ email: "", password: "" });
   const [getError, setError] = useState({ error: "" });
   const [loading, setLoading] = useState(false);
@@ -23,7 +23,10 @@ const Login = () => {
       let response = await Axios.post(`/api/v1/auth/login`, formValues);
 
       if (response.status === 200) {
-        setToken(response.data.token);
+        setToken(
+          response.data.token,
+          location.state ? location.state.urlRedirectAfterLogin : "/dashboard"
+        );
       } else {
         let messageFormatted = response.data.error.split('"').join(" ");
 

@@ -4,7 +4,7 @@ const CreateGroupForm = ({ group, onChange, onSubmit, create, loading }) => {
   let buttonTitle = create ? "CREATE" : "UPDATE";
   return (
     <div className="row mb-5">
-      <div className="col-md-8 ml-auto mr-auto">
+      <div className="col-md-8 ml-auto mr-auto w-100">
         <Link to="/dashboard" className="btn btn-primary mb-2">
           {" "}
           <i className="fa fa-chevron-left"></i> Back to Dashboard

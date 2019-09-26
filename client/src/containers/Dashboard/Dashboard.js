@@ -8,23 +8,22 @@ import Axios from "axios";
 import { confirmAlert } from "react-confirm-alert";
 import Alert from "../../components/Alert";
 
-const Dashboard = ({ location, history }) => {
-  const [currentUser, setCurrentUser] = useState(null);
+const Dashboard = ({ location, history, currentUser }) => {
+  // const [currentUser, setCurrentUser] = useState(null);
   const [getGroups, setGroups] = useState({
     groups: []
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   useEffect(() => {
-    const getCurrentUserAsync = async () => {
+    const getAsync = async () => {
       setLoading(true);
-      let user = await getCurrentUser();
-      setCurrentUser(user ? user : false);
-      await getAllGroups(user ? user.id : null);
+      await getAllGroups(currentUser ? currentUser.id : null);
       setLoading(false);
     };
 
-    getCurrentUserAsync();
+    getAsync();
+
     if (message === "") {
       setMessage(location.state ? location.state.message : "");
     } else {
@@ -45,10 +44,12 @@ const Dashboard = ({ location, history }) => {
         return (
           <div className="custom-ui card">
             <div className="card-header bg-warning">
-              <h1 className="text-white">Delete Warning!</h1>
+              <h3 className="text-white">
+                <i className="fa fa-warning"></i> Delete Warning!
+              </h3>
             </div>
             <div className="card-body">
-              <p>Are you sure to do this?</p>
+              <h4>Are you sure to do this?</h4>
             </div>
             <div className="card-footer bg-warning">
               <button
@@ -57,7 +58,7 @@ const Dashboard = ({ location, history }) => {
                 onClick={onClose}
               >
                 No
-              </button>
+              </button>{" "}
               <button
                 disabled={loading}
                 className="btn btn-primary"

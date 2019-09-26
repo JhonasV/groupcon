@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
-import CreateGroupForm from "../../components/Dashboard/CreateGroupForm/CreateGroupForm";
+import CreateGroupForm from "../../components/Dashboard/CreateGroupForm";
 import Axios from "axios";
 import Alert from "../../components/Alert";
 const Create = () => {
@@ -8,6 +8,7 @@ const Create = () => {
   const [message, setMessage] = useState("");
   const [isRedirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const onChange = e => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
@@ -42,7 +43,7 @@ const Create = () => {
   }
 
   return (
-    <div className="row mt-1 container">
+    <div className="row mt-1">
       <div className="col-md-8 ml-auto mr-auto">
         <Alert message={message} />
       </div>

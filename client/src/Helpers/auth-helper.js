@@ -2,9 +2,9 @@ import Axios from "axios";
 
 const TOKEN_KEY = "GROUPCON_TOKEN";
 
-export function setToken(token) {
+export function setToken(token, redirectUrl) {
   localStorage.setItem(TOKEN_KEY, token);
-  window.location = "/dashboard";
+  window.location = redirectUrl;
 }
 export function getToken() {
   return localStorage.getItem(TOKEN_KEY);
@@ -17,7 +17,7 @@ export function deleteToken(e) {
 }
 
 export async function getCurrentUser() {
-  if (!getToken()) return;
+  if (!getToken()) return false;
   try {
     let response = await Axios.get("/api/v1/auth/current");
     return response.data;

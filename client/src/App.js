@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import Layout from "./components/Layout";
 import Home from "./containers/Home";
 import Login from "./containers/Login";
@@ -13,63 +13,109 @@ initAxiosInterceptors();
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    const saveCurrentUser = async () => {
-      setLoading(true);
+    const getCurrentUserAync = async () => {
       let currentUser = await getCurrentUser();
       setCurrentUser(currentUser ? currentUser : false);
-      setLoading(false);
     };
-    saveCurrentUser();
+    getCurrentUserAync();
   }, []);
 
-  const AutenticatedRoutes = () => (
+  const validateAuthRoutes = (
+    ComponentToRender,
+    pathToRender,
+    currentUser,
+    props,
+    redirectPath = "/login"
+  ) => {
+    switch (currentUser) {
+      case false:
+        return (
+          <Redirect
+            {...props}
+            to={{
+              pathname: redirectPath,
+              state: { urlRedirectAfterLogin: pathToRender }
+            }}
+          />
+        );
+      default:
+        return <ComponentToRender {...props} />;
+    }
+  };
+
+  const validateGuessRoutes = (ComponentToRender, currentUser, props) => {
+    console.log(props);
+    switch (currentUser) {
+      case false:
+        return <ComponentToRender {...props} />;
+      default:
+        return <Redirect to={"/"} />;
+    }
+  };
+
+  const Routes = () => (
     <Switch>
       <Route path="/" exact render={props => <Home {...props} />} />
       <Route
         path="/dashboard"
         exact
-        render={props => <Dashboard {...props} />}
+        render={props =>
+          validateAuthRoutes(Dashboard, "/dashboard", currentUser, {
+            ...props,
+            currentUser
+          })
+        }
       />
       <Route
         path="/dashboard/create"
         exact
-        render={props => <Create {...props} />}
+        render={props =>
+          validateAuthRoutes(Create, "/dashboard/create", currentUser, props)
+        }
       />
       <Route
         path="/dashboard/edit"
         exact
-        render={props => <Edit {...props} />}
+        render={props =>
+          validateAuthRoutes(Edit, "/dashboard/edit", currentUser, props)
+        }
       />
+      <Route
+        path="/login"
+        exact
+        render={props => validateGuessRoutes(Login, currentUser, props)}
+      />
+
+      <Route
+        path="/register"
+        exact
+        render={props => validateGuessRoutes(Register, currentUser, props)}
+      />
+
       <Route component={NotFound} />
     </Switch>
   );
 
-  const GuessRoutes = () => (
-    <Switch>
-      <Route path="/" exact render={props => <Home {...props} />} />
-      <Route path="/login" exact render={props => <Login {...props} />} />
-      <Route path="/register" exact render={props => <Register {...props} />} />
-      <Route component={NotFound} />
-    </Switch>
-  );
-  const correctRoutes = () => {
-    return currentUser ? <AutenticatedRoutes /> : <GuessRoutes />;
-  };
-  return (
-    <BrowserRouter>
-      <Layout currentUser={currentUser}>
-        {loading ? (
+  const renderRoutes = () => {
+    switch (currentUser) {
+      case null:
+        return (
           <div className="d-flex justify-content-center ">
             <div className="spinner-border mt-5" role="status">
               <span className="sr-only">Loading...</span>
             </div>
           </div>
-        ) : (
-          correctRoutes()
-        )}
-      </Layout>
+        );
+      default:
+        return <Routes />;
+    }
+  };
+
+  return (
+    <BrowserRouter>
+      <Layout currentUser={currentUser}>{renderRoutes()}</Layout>
     </BrowserRouter>
   );
 }
