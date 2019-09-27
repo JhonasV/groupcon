@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { setToken } from "../Helpers/auth-helper";
+import { setToken } from "../helpers/auth-helper";
 import LoginForm from "../components/LoginForm/LoginForm";
 import Axios from "axios";
 import Alert from "../components/Alert";
@@ -23,10 +23,11 @@ const Login = ({ location }) => {
       let response = await Axios.post(`/api/v1/auth/login`, formValues);
 
       if (response.status === 200) {
-        setToken(
-          response.data.token,
-          location.state ? location.state.urlRedirectAfterLogin : "/dashboard"
-        );
+        setToken(response.data.token);
+
+        window.location = location.state
+          ? location.state.urlRedirectAfterLogin
+          : "/dashboard";
       } else {
         let messageFormatted = response.data.error.split('"').join(" ");
 

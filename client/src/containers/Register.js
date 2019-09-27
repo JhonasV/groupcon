@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { setToken } from "../Helpers/auth-helper";
+import { setToken } from "../helpers/auth-helper";
 import RegisterForm from "../components/RegisterForm/RegisterForm";
 import Axios from "axios";
 import Alert from "../components/Alert";
@@ -48,6 +48,7 @@ const Register = () => {
       });
       if (response.status === 200) {
         setToken(response.data.token);
+        window.location = "/dashboard";
       } else {
         let error = response.data.error;
         let messageFormatted = error

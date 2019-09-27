@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import Layout from "./components/Layout";
-import Home from "./containers/Home";
-import Login from "./containers/Login";
-import Register from "./containers/Register";
-import Dashboard from "./containers/Dashboard/Dashboard";
-import Create from "./containers/Dashboard/Create";
-import Edit from "./containers/Dashboard/Edit";
-import NotFound from "./components/NotFound";
-import { getCurrentUser, initAxiosInterceptors } from "./Helpers/auth-helper";
+import Layout from "./Layout";
+import Home from "../containers/Home";
+import Login from "../containers/Login";
+import Register from "../containers/Register";
+import Dashboard from "../containers/Dashboard/Dashboard";
+import Create from "../containers/Dashboard/Create";
+import Edit from "../containers/Dashboard/Edit";
+import NotFound from "./NotFound";
+import { getCurrentUser, initAxiosInterceptors } from "../helpers/auth-helper";
 initAxiosInterceptors();
 
 function App() {
@@ -23,36 +23,39 @@ function App() {
   }, []);
 
   const validateAuthRoutes = (
-    ComponentToRender,
-    pathToRender,
-    currentUser,
-    props,
+    ComponentToRender, //Component itself
+    pathToRender, //Component pathroute
+    currentUser, //CurrentUser Authenticated
+    props, // React Router props
     redirectPath = "/login"
   ) => {
-    switch (currentUser) {
-      case false:
-        return (
-          <Redirect
-            {...props}
-            to={{
-              pathname: redirectPath,
-              state: { urlRedirectAfterLogin: pathToRender }
-            }}
-          />
-        );
-      default:
-        return <ComponentToRender {...props} />;
-    }
+    //This method validate if not exists a user connected
+    //in that case we redirect the user to the Login page with
+    //the path for the component that tried access, when get log in
+    //the user is redirect to the path that he tried to access.
+    return currentUser === false ? (
+      <Redirect
+        {...props}
+        to={{
+          pathname: redirectPath,
+          state: { urlRedirectAfterLogin: pathToRender }
+        }}
+      />
+    ) : (
+      <ComponentToRender {...props} />
+    );
   };
 
   const validateGuessRoutes = (ComponentToRender, currentUser, props) => {
-    console.log(props);
-    switch (currentUser) {
-      case false:
-        return <ComponentToRender {...props} />;
-      default:
-        return <Redirect to={"/"} />;
-    }
+    //This method validate if exists a connected user, in that case, while
+    //the user is authenticated and tried to go to Login or Register
+    //we redirect him to the Home page.
+
+    return currentUser ? (
+      <Redirect to={"/"} />
+    ) : (
+      <ComponentToRender {...props} />
+    );
   };
 
   const Routes = () => (
@@ -79,7 +82,7 @@ function App() {
         path="/dashboard/edit"
         exact
         render={props =>
-          validateAuthRoutes(Edit, "/dashboard/edit", currentUser, props)
+          validateAuthRoutes(Edit, "/dashboard", currentUser, props)
         }
       />
       <Route

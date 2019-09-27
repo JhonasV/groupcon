@@ -100,7 +100,7 @@ exports.delete = async (req, res, next) => {
   let { id } = req.params;
 
   let groupRemoved = await Group.findOneAndRemove({ _id: id });
-  res.json(groupRemoved);
+  res.json({ removed: groupRemoved ? true : false });
   next();
 };
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { deleteToken } from "../Helpers/auth-helper";
+import { deleteToken } from "../helpers/auth-helper";
 
 import { NavLink, Link } from "react-router-dom";
 const Navbar = ({ currentUser }) => {
@@ -56,7 +56,7 @@ const Navbar = ({ currentUser }) => {
             </li>
             <li className="nav-item">
               <NavLink
-                className="nav-link text-white"
+                className="nav-link"
                 to={`/dashboard/create`}
                 style={{ fontSize: "17px" }}
               >

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 // import CardUserInfo from "../../components/Dashboard/CardUserInfo";
-import { getCurrentUser } from "../../Helpers/auth-helper";
 import GroupList from "../../components/Group/GroupList/GroupList";
 import { Link } from "react-router-dom";
 import Axios from "axios";
@@ -9,12 +8,11 @@ import { confirmAlert } from "react-confirm-alert";
 import Alert from "../../components/Alert";
 
 const Dashboard = ({ location, history, currentUser }) => {
-  // const [currentUser, setCurrentUser] = useState(null);
   const [getGroups, setGroups] = useState({
     groups: []
   });
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState({ details: "", type: "" });
   useEffect(() => {
     const getAsync = async () => {
       setLoading(true);
@@ -24,12 +22,15 @@ const Dashboard = ({ location, history, currentUser }) => {
 
     getAsync();
 
-    if (message === "") {
-      setMessage(location.state ? location.state.message : "");
+    if (message.details === "") {
+      setMessage({
+        details: location.state ? location.state.message : "",
+        type: "success"
+      });
     } else {
       history.replace();
     }
-  }, [location.state, history, message]);
+  }, [location.state, history, message.details]);
 
   const getAllGroups = async currentUserId => {
     if (currentUserId === null) return;
@@ -87,9 +88,16 @@ const Dashboard = ({ location, history, currentUser }) => {
     setLoading(true);
     let response = await Axios.delete(`/api/v1/group/${id}`);
     if (response.status === 200) {
-      let groupsFiltered = getGroups.groups.filter(g => g._id !== id);
-      setGroups({ groups: groupsFiltered });
-      setMessage("Group deleted succesfully!");
+      if (response.data.removed) {
+        let groupsFiltered = getGroups.groups.filter(g => g._id !== id);
+        setGroups({ groups: groupsFiltered });
+        setMessage({ details: "Group deleted succesfully!", type: "success" });
+      } else {
+        setMessage({
+          details: "Error trying to delete the group, try again later!",
+          type: "danger"
+        });
+      }
     } else {
       setMessage(response.data);
     }
@@ -117,7 +125,7 @@ const Dashboard = ({ location, history, currentUser }) => {
   return (
     <main>
       <div className="row mt-2">
-        <Alert message={message} type={"success"} />
+        <Alert message={message.details} type={message.type} />
       </div>
       <div className="row mt-2">
         {/* <div className="col-md-2 col-lg-2 col-sm-2  ">

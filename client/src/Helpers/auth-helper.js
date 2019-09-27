@@ -2,9 +2,8 @@ import Axios from "axios";
 
 const TOKEN_KEY = "GROUPCON_TOKEN";
 
-export function setToken(token, redirectUrl) {
+export function setToken(token) {
   localStorage.setItem(TOKEN_KEY, token);
-  window.location = redirectUrl;
 }
 export function getToken() {
   return localStorage.getItem(TOKEN_KEY);
