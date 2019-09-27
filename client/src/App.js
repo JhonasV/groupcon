@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import Layout from "./Layout";
-import Home from "../containers/Home";
-import Login from "../containers/Login";
-import Register from "../containers/Register";
-import Dashboard from "../containers/Dashboard/Dashboard";
-import Create from "../containers/Dashboard/Create";
-import Edit from "../containers/Dashboard/Edit";
-import NotFound from "./NotFound";
-import { getCurrentUser, initAxiosInterceptors } from "../helpers/auth-helper";
+import Layout from "./components/Layout";
+import Home from "./containers/Home";
+import Login from "./containers/Login";
+import Register from "./containers/Register";
+import Dashboard from "./containers/Dashboard/Dashboard";
+import Create from "./containers/Dashboard/Create";
+import Edit from "./containers/Dashboard/Edit";
+import NotFound from "./components/NotFound";
+import { getCurrentUser, initAxiosInterceptors } from "./helpers/auth-helper";
 initAxiosInterceptors();
 
 function App() {
