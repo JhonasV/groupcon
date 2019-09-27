@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { setToken } from "../helpers/auth-helper";
+import { setToken } from "../Helpers/auth-helper";
 import LoginForm from "../components/LoginForm/LoginForm";
 import Axios from "axios";
 import Alert from "../components/Alert";

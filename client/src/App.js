@@ -8,7 +8,7 @@ import Dashboard from "./containers/Dashboard/Dashboard";
 import Create from "./containers/Dashboard/Create";
 import Edit from "./containers/Dashboard/Edit";
 import NotFound from "./components/NotFound";
-import { getCurrentUser, initAxiosInterceptors } from "./helpers/auth-helper";
+import { getCurrentUser, initAxiosInterceptors } from "./Helpers/auth-helper";
 initAxiosInterceptors();
 
 function App() {
