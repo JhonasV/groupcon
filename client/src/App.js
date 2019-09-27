@@ -8,6 +8,7 @@ import Dashboard from "./containers/Dashboard/Dashboard";
 import Create from "./containers/Dashboard/Create";
 import Edit from "./containers/Dashboard/Edit";
 import NotFound from "./components/NotFound";
+import Loading from "./components/Loading";
 import { getCurrentUser, initAxiosInterceptors } from "./Helpers/auth-helper";
 initAxiosInterceptors();
 
@@ -104,13 +105,7 @@ function App() {
   const renderRoutes = () => {
     switch (currentUser) {
       case null:
-        return (
-          <div className="d-flex justify-content-center ">
-            <div className="spinner-border mt-5" role="status">
-              <span className="sr-only">Loading...</span>
-            </div>
-          </div>
-        );
+        return <Loading className="d-flex justify-content-center mt-5" />;
       default:
         return <Routes />;
     }

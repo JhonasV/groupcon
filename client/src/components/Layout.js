@@ -4,15 +4,15 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 
 const Layout = ({ children, currentUser }) => (
-  <div>
-    <div>
+  <>
+    <header>
       <Navbar currentUser={currentUser} />
-    </div>
-    <div className="container">{children}</div>
+    </header>
+    <main className="container">{children}</main>
     <div className="fixed-bottom">
       <Footer />
     </div>
-  </div>
+  </>
 );
 
 export default Layout;

@@ -54,7 +54,6 @@ const Create = () => {
           onSubmit={onSubmit}
           group={values}
           loading={loading}
-          setLoading={setLoading}
         />
       </div>
     </div>

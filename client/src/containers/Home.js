@@ -3,6 +3,7 @@ import SearchGroupForm from "../components/SearchGroup/SearchGroupForm";
 import GroupList from "../components/Group/GroupList/GroupList";
 import Axios from "axios";
 import Alert from "../components/Alert";
+import Loading from "../components/Loading";
 
 const Home = () => {
   const [values, setValues] = useState({
@@ -76,13 +77,8 @@ const Home = () => {
               ? `Search results: ${values.filteredGroups.length}`
               : "Latest groups added"}
           </h3>
-
           {loading ? (
-            <div className="d-flex justify-content-center ">
-              <div className="spinner-border mt-5" role="status">
-                <span className="sr-only">Loading...</span>
-              </div>
-            </div>
+            <Loading className="d-flex justify-content-center" />
           ) : (
             <GroupList
               groups={
