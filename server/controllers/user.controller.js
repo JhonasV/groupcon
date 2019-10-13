@@ -1,6 +1,12 @@
 const mongoose = require("mongoose");
 const User = mongoose.model("user");
-const { validateRegister } = require("../validation");
+const {
+  validateRegister,
+  validateEmail,
+  validatePassword
+} = require("../validation");
+
+const bcrypt = require("bcrypt");
 
 const tokenHelper = require("../helpers/token.helper");
 exports.create = async (req, res, next) => {
@@ -30,5 +36,27 @@ exports.create = async (req, res, next) => {
 
 exports.currentUser = (req, res, next) => {
   res.json(req.user);
+  next();
+};
+
+exports.updatePassword = async (req, res, next) => {
+  let { password, email } = req.body;
+  let validatePasswordError = validatePassword({ password });
+  if (validatePasswordError.error)
+    return res.status(400).json(validatePasswordError.error.details[0].message);
+
+  let validateEmailError = validateEmail({ email });
+  if (validateEmailError.error)
+    return res.status(400).json(validateEmailError.error.details[0].message);
+
+  let user = await User.findOne({ email });
+  let passwordHashed = await bcrypt.hash(password, 10);
+  user.password = passwordHashed;
+  user.recoverCode = "";
+
+  let updatedUser = await User.findByIdAndUpdate(user._id, user);
+  if (updatedUser) {
+    res.json({ message: "Password updated succesfully" });
+  }
   next();
 };

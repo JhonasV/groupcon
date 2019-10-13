@@ -8,5 +8,6 @@ module.exports = {
     },
     PORT: process.env.NODEMAILER_PORT,
     HOST: process.env.NODEMAILER_HOST
-  }
+  },
+  DOMAIN: process.env.DOMAIN
 };

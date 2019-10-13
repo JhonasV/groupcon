@@ -5,4 +5,7 @@ module.exports = app => {
   app.post("/api/v1/auth/login", authController.login);
 
   app.get("/api/v1/auth/current", verifyToken, authController.currentUser);
+  app.post("/api/v1/auth/forgotten", authController.forgottenPassword);
+
+  app.post("/api/v1/auth/verifyCode", authController.verifyPasswordChangeCode);
 };

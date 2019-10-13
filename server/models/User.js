@@ -7,7 +7,8 @@ const userSchema = new Schema(
   {
     email: { type: String, unique: true },
     password: String,
-    nickname: { type: String, unique: true }
+    nickname: { type: String, unique: true },
+    recoverCode: { type: String }
   },
   { timestamps: true }
 );

@@ -27,7 +27,7 @@ exports.sendInviteLinkMail = async (toEmail, inviteUrl, groupName) => {
 
   transporter.use("compile", hbs(handlebarOptions));
 
-  let info = await transporter.sendMail({
+  await transporter.sendMail({
     from: `"GroupCon 👻" <${keys.NODEMAILER_AUTH.EMAIL_AUTH.email}>`,
     to: toEmail,
     subject: `GroupCon invite to ${groupName} ✔`,
@@ -36,6 +36,44 @@ exports.sendInviteLinkMail = async (toEmail, inviteUrl, groupName) => {
     context: {
       groupName,
       inviteUrl
+    }
+  });
+};
+
+exports.sendForgottenPasswordEmail = async user => {
+  let transporter = await nodemailer.createTransport({
+    host: keys.NODEMAILER_AUTH.HOST,
+    port: keys.NODEMAILER_AUTH.PORT,
+    secure: false,
+    auth: {
+      user: keys.NODEMAILER_AUTH.EMAIL_AUTH.email,
+      pass: keys.NODEMAILER_AUTH.EMAIL_AUTH.password
+    }
+  });
+
+  const handlebarOptions = {
+    viewEngine: {
+      extName: ".handlebars",
+      partialsDir: path.resolve(__dirname, "emailTemplates"),
+      layoutsDir: path.resolve(__dirname, "emailTemplates"),
+      defaultLayout: "forgotten.handlebars"
+    },
+    viewPath: path.resolve(__dirname, "emailTemplates"),
+    extName: ".handlebars"
+  };
+
+  transporter.use("compile", hbs(handlebarOptions));
+  console.log(user);
+  let linkRecover = `${keys.DOMAIN}/forgotten/recover/${user.recoverCode}/${user.email}`;
+  await transporter.sendMail({
+    from: `"GroupCon 👻" <${keys.NODEMAILER_AUTH.EMAIL_AUTH.email}>`,
+    to: user.email,
+    subject: `Recover your password ✔`,
+    text: "",
+    template: "forgotten",
+    context: {
+      linkRecover,
+      user
     }
   });
 };

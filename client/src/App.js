@@ -8,6 +8,9 @@ import Dashboard from "./containers/Dashboard/Dashboard";
 import Create from "./containers/Dashboard/Create";
 import Edit from "./containers/Dashboard/Edit";
 import NotFound from "./components/NotFound";
+import ForgottenPassword from "./containers/Forgotten/ForgottenPassword";
+import ForgottenChange from "./containers/Forgotten/ForgottenChange";
+import ProtectedRoute from "./components/ProtectedRoute";
 import { getCurrentUser, initAxiosInterceptors } from "./Helpers/auth-helper";
 initAxiosInterceptors();
 
@@ -71,6 +74,12 @@ function App() {
           })
         }
       />
+
+      {/* <ProtectedRoute
+        Component={Dashboard}
+        path={"/dashboard"}
+        currentUser={currentUser}
+      /> */}
       <Route
         path="/dashboard/create"
         exact
@@ -95,6 +104,21 @@ function App() {
         path="/register"
         exact
         render={props => validateGuessRoutes(Register, currentUser, props)}
+      />
+      <Route
+        path="/forgotten"
+        exact
+        render={props =>
+          validateGuessRoutes(ForgottenPassword, currentUser, props)
+        }
+      />
+
+      <Route
+        path="/forgotten/recover/:code/:email"
+        exact
+        render={props =>
+          validateGuessRoutes(ForgottenChange, currentUser, props)
+        }
       />
 
       <Route component={NotFound} />

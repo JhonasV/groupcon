@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 const LoginForm = ({ onChange, onSubmit, title, loading, setLoading }) => (
   <form className="card" onSubmit={e => onSubmit(e)}>
     <div className="card-header bg-primary text-white">
@@ -34,21 +34,32 @@ const LoginForm = ({ onChange, onSubmit, title, loading, setLoading }) => (
       </div>
     </div>
     <div className="card-footer">
-      <button
-        className="btn btn-primary btn-block"
-        disabled={loading}
-        type="submit"
-      >
-        {loading ? (
-          <span
-            class="spinner-border spinner-border-sm"
-            role="status"
-            aria-hidden="true"
-          ></span>
-        ) : (
-          "Submit"
-        )}
-      </button>
+      <div className="row">
+        <div className="col">
+          <button
+            className="btn btn-primary btn-block"
+            disabled={loading}
+            type="submit"
+          >
+            {loading ? (
+              <span
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+            ) : (
+              "Submit"
+            )}
+          </button>
+        </div>
+      </div>
+      <div className="row mt-2">
+        <div className="col">
+          <Link to="/forgotten" className="font-weight-bold">
+            Have forgotten your password? click here
+          </Link>
+        </div>
+      </div>
     </div>
   </form>
 );
