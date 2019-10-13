@@ -12,6 +12,7 @@ import ForgottenPassword from "./containers/Forgotten/ForgottenPassword";
 import ForgottenChange from "./containers/Forgotten/ForgottenChange";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { getCurrentUser, initAxiosInterceptors } from "./Helpers/auth-helper";
+import Loading from "./components/Loading";
 initAxiosInterceptors();
 
 function App() {
