@@ -1,4 +1,5 @@
 import React from "react";
+import Loading from "../Loading";
 
 const RegisterForm = ({ onChange, onSubmit, passwordMatch, loading }) => (
   <form className="card" onSubmit={e => onSubmit(e)}>
@@ -68,15 +69,7 @@ const RegisterForm = ({ onChange, onSubmit, passwordMatch, loading }) => (
         disabled={loading}
         type="submit"
       >
-        {loading ? (
-          <span
-            class="spinner-border spinner-border-sm"
-            role="status"
-            aria-hidden="true"
-          ></span>
-        ) : (
-          "Submit"
-        )}
+        {loading ? <Loading /> : "Submit"}
       </button>
     </div>
   </form>

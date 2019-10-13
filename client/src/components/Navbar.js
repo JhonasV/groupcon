@@ -2,17 +2,12 @@ import React from "react";
 import { deleteToken } from "../Helpers/auth-helper";
 
 import { NavLink, Link } from "react-router-dom";
+import Loading from "./Loading";
 const Navbar = ({ currentUser }) => {
   const renderNav = () => {
     switch (currentUser) {
       case null:
-        return (
-          <span
-            className="spinner-border spinner-border-sm text-white"
-            role="status"
-            aria-hidden="true"
-          ></span>
-        );
+        return <Loading className="spinner-border-sm text-white" />;
       case false: {
         return (
           <ul className="navbar-nav ml-auto">

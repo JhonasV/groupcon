@@ -1,6 +1,12 @@
 import React from "react";
+<<<<<<< HEAD
 import { Link } from "react-router-dom";
 const LoginForm = ({ onChange, onSubmit, title, loading, setLoading }) => (
+=======
+import Loading from "../Loading";
+
+const LoginForm = ({ onChange, onSubmit, title, loading }) => (
+>>>>>>> 9481c23cbe416b090286dcc7f9a20b1efc458cf7
   <form className="card" onSubmit={e => onSubmit(e)}>
     <div className="card-header bg-primary text-white">
       <h3>{title ? title : "Login"}</h3>
@@ -34,6 +40,7 @@ const LoginForm = ({ onChange, onSubmit, title, loading, setLoading }) => (
       </div>
     </div>
     <div className="card-footer">
+<<<<<<< HEAD
       <div className="row">
         <div className="col">
           <button
@@ -60,6 +67,15 @@ const LoginForm = ({ onChange, onSubmit, title, loading, setLoading }) => (
           </Link>
         </div>
       </div>
+=======
+      <button
+        className="btn btn-primary btn-block"
+        disabled={loading}
+        type="submit"
+      >
+        {loading ? <Loading /> : "Submit"}
+      </button>
+>>>>>>> 9481c23cbe416b090286dcc7f9a20b1efc458cf7
     </div>
   </form>
 );

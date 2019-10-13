@@ -75,11 +75,6 @@ function App() {
         }
       />
 
-      {/* <ProtectedRoute
-        Component={Dashboard}
-        path={"/dashboard"}
-        currentUser={currentUser}
-      /> */}
       <Route
         path="/dashboard/create"
         exact
@@ -128,13 +123,7 @@ function App() {
   const renderRoutes = () => {
     switch (currentUser) {
       case null:
-        return (
-          <div className="d-flex justify-content-center ">
-            <div className="spinner-border mt-5" role="status">
-              <span className="sr-only">Loading...</span>
-            </div>
-          </div>
-        );
+        return <Loading className="d-flex justify-content-center mt-5" />;
       default:
         return <Routes />;
     }

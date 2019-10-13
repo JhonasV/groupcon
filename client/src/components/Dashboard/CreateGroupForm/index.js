@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Loading from "../../Loading";
 const CreateGroupForm = ({ group, onChange, onSubmit, create, loading }) => {
   let buttonTitle = create ? "CREATE" : "UPDATE";
   return (
@@ -60,15 +61,7 @@ const CreateGroupForm = ({ group, onChange, onSubmit, create, loading }) => {
                   className="form-control btn btn-primary btn-block"
                   disabled={loading}
                 >
-                  {loading ? (
-                    <span
-                      className="spinner-border spinner-border-sm"
-                      role="status"
-                      aria-hidden="true"
-                    ></span>
-                  ) : (
-                    buttonTitle
-                  )}
+                  {loading ? <Loading /> : buttonTitle}
                 </button>
               </div>
             </div>

@@ -108,7 +108,6 @@ const Edit = props => {
           onChange={onChange}
           onSubmit={onSubmit}
           loading={loading}
-          setLoading={setLoading}
         />
       </div>
     </div>

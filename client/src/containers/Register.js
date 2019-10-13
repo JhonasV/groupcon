@@ -51,10 +51,8 @@ const Register = () => {
         window.location = "/dashboard";
       } else {
         let error = response.data.error;
-        let messageFormatted = error
-          .split('"')
-          .join(" ")
-          .toUpperCase();
+        let messageFormatted = error;
+
         setError({ error: messageFormatted });
       }
     } catch (error) {
@@ -70,7 +68,7 @@ const Register = () => {
   return (
     <div className="mb-5">
       <div className="row ">
-        <div className="col-md-8 ml-auto mr-auto mt-3">
+        <div className="col-md-8 ml-auto mr-auto mt-2">
           <Alert message={getError.error} />
         </div>
       </div>

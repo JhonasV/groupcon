@@ -5,7 +5,9 @@ import Axios from "axios";
 import Alert from "../components/Alert";
 const Login = ({ location }) => {
   const [formValues, setFormValues] = useState({ email: "", password: "" });
-  const [getError, setError] = useState({ error: "" });
+  const [getError, setError] = useState({
+    error: ""
+  });
   const [loading, setLoading] = useState(false);
   const onChange = e => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
@@ -44,15 +46,14 @@ const Login = ({ location }) => {
   return (
     <div>
       <div className="row">
-        <div className="col-md-8 ml-auto mr-auto mt-3">
+        <div className="col-sm-12 col-md-6 col-lg-8 ml-auto mr-auto mt-2">
           <Alert message={getError.error} />
         </div>
       </div>
       <div className="row">
-        <div className="col-sm-12 col-md-6 col-lg-8 ml-auto mr-auto mt-3">
+        <div className="col-sm-12 col-md-6 col-lg-8 ml-auto mr-auto mt-2">
           <LoginForm
             loading={loading}
-            setLoading={setLoading}
             onChange={onChange}
             onSubmit={onSubmit}
           />
