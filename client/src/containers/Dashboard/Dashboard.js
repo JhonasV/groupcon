@@ -1,27 +1,39 @@
 import React, { useEffect, useState } from "react";
-
-// import CardUserInfo from "../../components/Dashboard/CardUserInfo";
 import GroupList from "../../components/Group/GroupList/GroupList";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import { confirmAlert } from "react-confirm-alert";
 import Alert from "../../components/Alert";
 
-const Dashboard = ({ location, history, currentUser }) => {
+import * as action from "../../actions";
+import { connect } from "react-redux";
+
+const Dashboard = ({
+  location,
+  history,
+  currentUser,
+  deleteGroup,
+  getUserGroups,
+  pending,
+  removed,
+  userGroups
+}) => {
+  console.log(userGroups);
   const [getGroups, setGroups] = useState({
     groups: []
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ details: "", type: "" });
   useEffect(() => {
-    const getAsync = async () => {
-      setLoading(true);
-      await getAllGroups(currentUser ? currentUser.id : null);
-      setLoading(false);
-    };
+    // const getGroups = () => {
+    //   getUserGroups(currentUser ? currentUser.id : null);
+    //   setGroups({ groups: userGroups });
+    // };
+    setLoading(true);
+    // getGroups();
 
-    getAsync();
-
+    getAllGroups(currentUser ? currentUser.id : null);
+    setLoading(false);
     if (message.details === "") {
       setMessage({
         details: location.state ? location.state.message : "",
@@ -30,7 +42,7 @@ const Dashboard = ({ location, history, currentUser }) => {
     } else {
       history.replace();
     }
-  }, [location.state, history, message.details]);
+  }, [location.state, history, message.details, currentUser]);
 
   const getAllGroups = async currentUserId => {
     if (currentUserId === null) return;
@@ -63,8 +75,8 @@ const Dashboard = ({ location, history, currentUser }) => {
               <button
                 disabled={loading}
                 className="btn btn-primary"
-                onClick={async () => {
-                  await deleteGroup(id);
+                onClick={() => {
+                  deleteGroupHandle(id);
                   onClose();
                 }}
               >
@@ -84,24 +96,17 @@ const Dashboard = ({ location, history, currentUser }) => {
       }
     });
   };
-  const deleteGroup = async id => {
-    setLoading(true);
-    let response = await Axios.delete(`/api/v1/group/${id}`);
-    if (response.status === 200) {
-      if (response.data.removed) {
-        let groupsFiltered = getGroups.groups.filter(g => g._id !== id);
-        setGroups({ groups: groupsFiltered });
-        setMessage({ details: "Group deleted succesfully!", type: "success" });
-      } else {
-        setMessage({
-          details: "Error trying to delete the group, try again later!",
-          type: "danger"
-        });
-      }
-    } else {
-      setMessage(response.data);
+  const deleteGroupHandle = id => {
+    setLoading(pending);
+
+    deleteGroup(id);
+    if (removed) {
+      let groupsFiltered = getGroups.groups.filter(g => g._id !== id);
+      setGroups({ groups: groupsFiltered });
+      setMessage({ details: "Group deleted succesfully!", type: "success" });
     }
-    setLoading(false);
+
+    setLoading(pending);
   };
 
   const renderGroups = () => {
@@ -128,9 +133,6 @@ const Dashboard = ({ location, history, currentUser }) => {
         <Alert message={message.details} type={message.type} />
       </div>
       <div className="row mt-2">
-        {/* <div className="col-md-2 col-lg-2 col-sm-2  ">
-          <CardUserInfo user={currentUser} />
-        </div> */}
         <div className="col-md-12 col-sm-12">
           <Link to="/dashboard/create" className="btn btn-primary mb-2">
             {" "}
@@ -154,5 +156,15 @@ const Dashboard = ({ location, history, currentUser }) => {
     </main>
   );
 };
+const mapStateToProps = state => {
+  return {
+    removed: state.groupReducer.deleted,
+    pending: state.groupReducer.pending,
+    userGroups: state.groupReducer.userGroups
+  };
+};
 
-export default Dashboard;
+export default connect(
+  mapStateToProps,
+  action
+)(Dashboard);

@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const User = mongoose.model("user");
 const bcrypt = require("bcrypt");
 const { sendForgottenPasswordEmail } = require("../services/mailer");
+
 exports.login = async (req, res, next) => {
   let { error } = validateLogin(req.body);
   if (error) return res.status(400).json({ error: error.details[0].message });
@@ -16,6 +17,7 @@ exports.login = async (req, res, next) => {
   let validPass = await bcrypt.compare(password, user.password);
   if (!validPass)
     return res.status(400).json({ error: "Email or password is wrong" });
+
   const token = tokenHelper.generateToken({
     id: user._id,
     email,

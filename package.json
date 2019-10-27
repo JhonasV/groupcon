@@ -23,6 +23,7 @@
     "morgan": "^1.9.1",
     "nodemailer": "^6.3.0",
     "nodemailer-express-handlebars": "^3.1.0",
-    "nodemon": "^1.19.2"
+    "nodemon": "^1.19.2",
+    "redux-thunk": "^2.3.0"
   }
 }

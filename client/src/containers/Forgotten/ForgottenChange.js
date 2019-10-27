@@ -14,23 +14,23 @@ const ForgottenPassword = ({ match }) => {
 
   useEffect(() => {
     if (!match.params.code) setRedirect(true);
-    verifyRecoverCode();
-  }, []);
 
-  const verifyRecoverCode = () => {
-    setLoading(true);
-    Axios.post("/api/v1/auth/verifyCode", {
-      code: match.params.code,
-      email: match.params.email
-    })
-      .then(res => {
-        if (res.status === 200)
-          setMessage({ details: res.data.message, type: "warning" });
-        else setRedirect(true);
+    const verifyRecoverCode = () => {
+      setLoading(true);
+      Axios.post("/api/v1/auth/verifyCode", {
+        code: match.params.code,
+        email: match.params.email
       })
-      .catch(err => setRedirect(true));
-    setLoading(false);
-  };
+        .then(res => {
+          if (res.status === 200)
+            setMessage({ details: res.data.message, type: "warning" });
+          else setRedirect(true);
+        })
+        .catch(err => setRedirect(true));
+      setLoading(false);
+    };
+    verifyRecoverCode();
+  }, [match.params.code, match.params.email]);
 
   const submitChangePassword = async e => {
     e.preventDefault();

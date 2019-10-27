@@ -31,11 +31,13 @@ const Login = ({ location }) => {
           ? location.state.urlRedirectAfterLogin
           : "/dashboard";
       } else {
+        setFormValues({ ...formValues, password: "" });
         let messageFormatted = response.data.error.split('"').join(" ");
 
         setError({ error: messageFormatted });
       }
     } catch (error) {
+      setFormValues({ ...formValues, password: "" });
       setError({
         error: error.response.data.error
       });

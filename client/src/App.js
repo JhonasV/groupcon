@@ -10,9 +10,13 @@ import Edit from "./containers/Dashboard/Edit";
 import NotFound from "./components/NotFound";
 import ForgottenPassword from "./containers/Forgotten/ForgottenPassword";
 import ForgottenChange from "./containers/Forgotten/ForgottenChange";
-import ProtectedRoute from "./components/ProtectedRoute";
+// import ProtectedRoute from "./components/ProtectedRoute";
 import { getCurrentUser, initAxiosInterceptors } from "./Helpers/auth-helper";
 import Loading from "./components/Loading";
+
+// import Axios from "axios";
+import { connect } from "react-redux";
+
 initAxiosInterceptors();
 
 function App() {
@@ -137,4 +141,11 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    pending: state.groupReducer.pending,
+    groups: state.groupReducer.groups
+  };
+};
+
+export default connect(mapStateToProps)(App);

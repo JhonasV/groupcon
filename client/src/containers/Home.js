@@ -1,23 +1,18 @@
 import React, { useState, useEffect } from "react";
+// components
 import SearchGroupForm from "../components/SearchGroup/SearchGroupForm";
 import GroupList from "../components/Group/GroupList/GroupList";
-import Axios from "axios";
-import Alert from "../components/Alert";
 import Loading from "../components/Loading";
 
-const Home = () => {
+import * as action from "../actions";
+import { connect } from "react-redux";
+const Home = ({ groups, fetchGroups, pending, latestGroups }) => {
   const [values, setValues] = useState({
     filteredGroups: [],
     latestGroups: []
   });
 
-  const [message, setMessage] = useState("");
-
-  const [loading, setLoading] = useState(true);
   const [groupName, setGroupName] = useState("");
-  const [getGroups, setGroups] = useState({
-    groups: [{ _id: "", name: "", url: "" }]
-  });
 
   const onChange = e => {
     setGroupName(e.target.value);
@@ -30,27 +25,14 @@ const Home = () => {
   };
 
   const getFilteredList = query => {
-    return getGroups.groups.filter(e =>
+    return groups.filter(e =>
       e.name.toUpperCase().includes(query.toUpperCase())
     );
   };
 
   useEffect(() => {
-    const getAsync = async () => await getAllGroups();
-    getAsync();
-  }, []);
-
-  const getAllGroups = async () => {
-    let response = await Axios.get("/api/v1/group");
-    if (response.status === 200) {
-      setGroups({ groups: response.data.groups });
-      setValues({ ...values, latestGroups: response.data.latestGroups });
-    } else {
-      setMessage("Error trying to load the groups, try again later");
-    }
-
-    setLoading(false);
-  };
+    if (pending) fetchGroups();
+  }, [fetchGroups, pending]);
 
   const onSubmit = e => {
     e.preventDefault();
@@ -61,7 +43,6 @@ const Home = () => {
   return (
     <main>
       <div className="row mt-3">
-        <Alert message={message} />
         <div className="col">
           <SearchGroupForm
             setGroupName={setGroupName}
@@ -77,14 +58,14 @@ const Home = () => {
               ? `Search results: ${values.filteredGroups.length}`
               : "Latest groups added"}
           </h3>
-          {loading ? (
+          {pending ? (
             <Loading className="d-flex justify-content-center" />
           ) : (
             <GroupList
               groups={
                 values.filteredGroups.length || groupName.length > 0
                   ? values.filteredGroups
-                  : values.latestGroups
+                  : latestGroups
               }
             />
           )}
@@ -93,5 +74,15 @@ const Home = () => {
     </main>
   );
 };
+const mapStateToProps = state => {
+  return {
+    pending: state.groupReducer.pending,
+    groups: state.groupReducer.groups,
+    latestGroups: state.groupReducer.latestGroups
+  };
+};
 
-export default Home;
+export default connect(
+  mapStateToProps,
+  action
+)(Home);

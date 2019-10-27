@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const User = mongoose.model("user");
+
 const {
   validateRegister,
   validateEmail,
@@ -49,13 +50,15 @@ exports.updatePassword = async (req, res, next) => {
   if (validateEmailError.error)
     return res.status(400).json(validateEmailError.error.details[0].message);
 
-  let user = await User.findOne({ email });
   let passwordHashed = await bcrypt.hash(password, 10);
+
+  let user = await User.findOne({ email });
   user.password = passwordHashed;
   user.recoverCode = "";
 
   let updatedUser = await User.findByIdAndUpdate(user._id, user);
   if (updatedUser) {
+    // authController.login(req, res, next);
     res.json({ message: "Password updated succesfully" });
   }
   next();
