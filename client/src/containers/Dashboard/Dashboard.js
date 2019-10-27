@@ -18,22 +18,18 @@ const Dashboard = ({
   removed,
   userGroups
 }) => {
-  console.log(userGroups);
   const [getGroups, setGroups] = useState({
     groups: []
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ details: "", type: "" });
   useEffect(() => {
-    // const getGroups = () => {
-    //   getUserGroups(currentUser ? currentUser.id : null);
-    //   setGroups({ groups: userGroups });
-    // };
-    setLoading(true);
-    // getGroups();
+    const getGroups = async () => {
+      await getAllGroups(currentUser ? currentUser.id : null);
+    };
 
-    getAllGroups(currentUser ? currentUser.id : null);
-    setLoading(false);
+    getGroups();
+
     if (message.details === "") {
       setMessage({
         details: location.state ? location.state.message : "",
@@ -46,8 +42,10 @@ const Dashboard = ({
 
   const getAllGroups = async currentUserId => {
     if (currentUserId === null) return;
+    setLoading(true);
     let response = await Axios(`/api/v1/${currentUserId}/groups`);
     if (response.status === 200) setGroups({ groups: response.data });
+    setLoading(false);
   };
 
   const onDelete = async (e, id) => {

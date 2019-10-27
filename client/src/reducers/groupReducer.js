@@ -19,7 +19,6 @@ const initState = {
   message: ""
 };
 export const groupReducer = (state = initState, action) => {
-  console.log(action);
   switch (action.type) {
     case FETCH_GROUPS_SUCCESS:
       return {
