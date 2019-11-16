@@ -1,15 +1,28 @@
 import React, { useState } from "react";
 import Axios from "axios";
 import EmailModal from "../../EmailModal";
+import GroupPasswordModal from "../../GroupPasswordModal";
 import QRModal from "../../QRModal";
 import GroupCard from "../GroupCard/GroupCard";
-
+import UnlockedGroupModal from "../../UnlockedGroupModal";
+// onSubmit,
+// setPassword,
+// loading,
+// passwordResponse,
+// password,
+// setPasswordResponse
 const GroupList = ({ groups, currentUserId, onDelete }) => {
   const [email, setEmail] = useState("");
   const [emailResponse, setEmailResponse] = useState({
     message: "",
     type: ""
   });
+  const [password, setPassword] = useState("");
+  const [passwordResponse, setPasswordResponse] = useState({
+    message: "",
+    type: ""
+  });
+  const [groupUnlock, setGroupUnlock] = useState(null);
   const [loading, setLoading] = useState(false);
   const [url, setUrl] = useState("");
   const onModalOpen = id => {
@@ -53,11 +66,62 @@ const GroupList = ({ groups, currentUserId, onDelete }) => {
     setLoading(false);
   };
 
+  const unlockGroup = async (e, cb) => {
+    e.preventDefault();
+
+    //1. Create request object
+    //...
+    let groupId = localStorage.getItem("GROUP");
+    if (!groupId) return;
+    let paswordRequest = {
+      groupId,
+      password
+    };
+    //2. Send request
+    //...
+    try {
+      let response = await Axios.post("/api/v1/group/unlock", paswordRequest);
+      //3. Manage response
+      //...
+      if (response.status === 200) {
+        // saveUnlockGroups(groupId);
+        cb(response.data);
+      } else {
+        setPasswordResponse({ message: "Password wrong", type: "warning" });
+        cb(null);
+      }
+    } catch (error) {
+      setPasswordResponse({
+        message: "We couldn't send the request, try later.",
+        type: "danger"
+      });
+      cb(null);
+    }
+    localStorage.removeItem("GROUP");
+    setLoading(false);
+  };
+
+  // const saveUnlockGroups = groupId => {
+  //   let groupsUnlock = localStorage.getItem("groupsUnlock");
+  //   groupsUnlock = JSON.parse(groupsUnlock);
+  //   if (groupsUnlock) {
+  //     groupsUnlock.push({ groupId });
+  //   } else {
+  //     let newUnlocks = [];
+  //     newUnlocks.push(groupId);
+
+  //     localStorage.setItem("groupsUnlock", JSON.stringify(newUnlocks));
+  //   }
+  // };
+
   const renderGroupList = group => {
     let editable = group.user === currentUserId;
     return (
       <div key={group._id} className="col-md-6 col-sm-12 col-lg-4 mb-3 ">
         <GroupCard
+          // groupUnlock={groupUnlock}
+          currentUserId={currentUserId}
+          groupCreator={group.user}
           onDelete={onDelete}
           key={group._id}
           id={group._id}
@@ -67,6 +131,7 @@ const GroupList = ({ groups, currentUserId, onDelete }) => {
           editable={editable}
           onModalOpen={onModalOpen}
           setUrl={setUrl}
+          privateGroup={group.private}
         />
       </div>
     );
@@ -83,6 +148,24 @@ const GroupList = ({ groups, currentUserId, onDelete }) => {
         setEmailResponse={setEmailResponse}
       />
       <QRModal url={url} />
+
+      <GroupPasswordModal
+        password={password}
+        setPassword={setPassword}
+        loading={loading}
+        onSubmit={unlockGroup}
+        passwordResponse={passwordResponse}
+        setPasswordResponse={setPasswordResponse}
+        setGroupUnlock={setGroupUnlock}
+        setUrl={setUrl}
+        setLoading={setLoading}
+      />
+
+      <UnlockedGroupModal
+        groupUnlocked={groupUnlock}
+        onModalOpen={onModalOpen}
+        setUrl={setUrl}
+      />
     </div>
   );
 };

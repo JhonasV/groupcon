@@ -9,4 +9,6 @@ module.exports = app => {
   app.delete("/api/v1/group/:id", verifyToken, groupController.delete);
   app.post("/api/v1/group", verifyToken, groupController.create);
   app.get("/api/v1/:id/group", verifyToken, groupController.getById);
+
+  app.post("/api/v1/group/unlock", groupController.unlock);
 };

@@ -8,7 +8,13 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 import Alert from "../../components/Alert";
 
 const Edit = props => {
-  const [group, setGroup] = useState({ name: "", url: "", _id: "", user: "" });
+  const [group, setGroup] = useState({
+    name: "",
+    url: "",
+    _id: "",
+    user: "",
+    password: ""
+  });
   const [message, setMessage] = useState("");
   const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -74,7 +80,8 @@ const Edit = props => {
       let response = await Axios.put(`/api/v1/${group._id}/group`, {
         name: group.name,
         url: group.url,
-        _id: group._id
+        _id: group._id,
+        password: group.password
       });
       if (response.status === 200) {
         setRedirect(true);

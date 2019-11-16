@@ -4,11 +4,11 @@ const { Schema } = mongoose;
 const groupSchema = new Schema(
   {
     name: { type: String, required: true, unique: true },
-    passsword: { type: String, required: false },
+    private: { type: Boolean, default: false },
     url: { type: String, required: true },
     user: { type: mongoose.Types.ObjectId, ref: "user" }
   },
   { timestamps: true }
 );
 
-mongoose.model("Groups", groupSchema);
+mongoose.model("group", groupSchema);

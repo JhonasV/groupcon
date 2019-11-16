@@ -1,22 +1,23 @@
 const mongoose = require("mongoose");
-const Group = mongoose.model("Groups");
-const User = mongoose.model("user");
+const Group = mongoose.model("group");
+const GroupPassword = mongoose.model("grouppassword");
 
 const { validateGroups } = require("../validation");
 const { sendInviteLinkMail } = require("../services/mailer");
 exports.create = async (req, res, next) => {
-  let { url, name } = req.body;
+  let { url, name, password } = req.body;
   let { error } = validateGroups({ url, name });
   if (error)
     return res.status(400).json({
       error: error.details[0].message.split('"').join(" ")
     });
 
+  let isPrivate = password.length > 0;
   let group = {
     name: req.body.name,
     url: req.body.url,
     user: req.user.id,
-    password: req.body.password
+    private: isPrivate
   };
 
   try {
@@ -27,6 +28,7 @@ exports.create = async (req, res, next) => {
       });
 
     let isCreated = await new Group(group).save();
+    await insertGroupPasswordData(isCreated.id, password);
     res.json(isCreated);
 
     next();
@@ -40,10 +42,20 @@ exports.get = async (req, res, next) => {
   let latestGroups = await Group.find()
     .sort({ createdAt: -1 })
     .limit(3);
-
+  groups = hideUrlForPrivateGroups(groups);
+  latestGroups = hideUrlForPrivateGroups(latestGroups);
   res.json({ groups, latestGroups });
 
   next();
+};
+
+const hideUrlForPrivateGroups = groups => {
+  return groups.map(group => {
+    if (group.private) {
+      group.url = "";
+    }
+    return group;
+  });
 };
 
 exports.getById = async (req, res, next) => {
@@ -79,7 +91,9 @@ exports.getByUserId = async (req, res, next) => {
 };
 
 exports.update = async (req, res, next) => {
-  let { url, name, _id } = req.body;
+  console.log(req.body);
+  console.log(req.params);
+  let { url, name, _id, password } = req.body;
   let { id } = req.params;
   let { error } = validateGroups({ url, name });
   if (error)
@@ -88,11 +102,29 @@ exports.update = async (req, res, next) => {
       .json({ error: error.details[0].message.split('"').join(" ") });
 
   try {
-    let isModified = await Group.findByIdAndUpdate(id, { url, name });
+    let isPrivate = false;
+    if (password.length > 0) isPrivate = true;
+    let isModified = await Group.findByIdAndUpdate(id, {
+      url,
+      name,
+      private: isPrivate
+    });
+    await insertGroupPasswordData(id, password);
     if (isModified) res.json(isModified);
     next();
   } catch (error) {
     return res.status(500).json({ error: "Something went wrong" });
+  }
+};
+
+const insertGroupPasswordData = async (group, password) => {
+  console.log("insertGroupPasswordData", { group, password });
+  let groupPasswordReg = await GroupPassword.findOne({ group });
+  console.log("groupPasswordReg", { group, password });
+  if (groupPasswordReg) {
+    await GroupPassword.findOneAndUpdate({ group }, { password });
+  } else {
+    await new GroupPassword({ group, password }).save();
   }
 };
 
@@ -111,10 +143,29 @@ exports.sendEmail = async (req, res, next) => {
     let group = await Group.findById(groupId);
     await sendInviteLinkMail(toEmail, group.url, group.name);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: "Error sending the email, try later." });
   }
 
   res.json("Email sended!");
   next();
+};
+
+exports.unlock = async (req, res, next) => {
+  let { groupId, password } = req.body;
+  //1. Search for the group by groupId
+  //..
+  let groupPassword = await GroupPassword.findOne({ group: groupId }).populate(
+    "group"
+  );
+  //2. Validate if it exists
+  //..
+  if (!groupPassword) {
+    return res.status(202).json({ unlock: false });
+  }
+  //3. Validate if the password match
+  //..
+  if (groupPassword.password === password) {
+    res.status(200).json({ unlock: true, group: groupPassword.group });
+    next();
+  }
 };
