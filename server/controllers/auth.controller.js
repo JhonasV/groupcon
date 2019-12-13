@@ -24,7 +24,13 @@ exports.login = async (req, res, next) => {
     nickname: user.nickname
   });
 
-  res.json({ ...token, current: req.user });
+  let responseObject = {
+    token: token.token,
+    expiresIn: token.expiresIn,
+    userId: user.id
+  };
+
+  res.json(responseObject);
   next();
 };
 

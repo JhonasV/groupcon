@@ -5,12 +5,7 @@ import GroupPasswordModal from "../../GroupPasswordModal";
 import QRModal from "../../QRModal";
 import GroupCard from "../GroupCard/GroupCard";
 import UnlockedGroupModal from "../../UnlockedGroupModal";
-// onSubmit,
-// setPassword,
-// loading,
-// passwordResponse,
-// password,
-// setPasswordResponse
+
 const GroupList = ({ groups, currentUserId, onDelete }) => {
   const [email, setEmail] = useState("");
   const [emailResponse, setEmailResponse] = useState({
@@ -73,18 +68,17 @@ const GroupList = ({ groups, currentUserId, onDelete }) => {
     //...
     let groupId = localStorage.getItem("GROUP");
     if (!groupId) return;
-    let paswordRequest = {
+    let passwordRequest = {
       groupId,
       password
     };
     //2. Send request
     //...
     try {
-      let response = await Axios.post("/api/v1/group/unlock", paswordRequest);
+      let response = await Axios.post("/api/v1/group/unlock", passwordRequest);
       //3. Manage response
       //...
       if (response.status === 200) {
-        // saveUnlockGroups(groupId);
         cb(response.data);
       } else {
         setPasswordResponse({ message: "Password wrong", type: "warning" });
@@ -97,29 +91,15 @@ const GroupList = ({ groups, currentUserId, onDelete }) => {
       });
       cb(null);
     }
-    localStorage.removeItem("GROUP");
+    setPassword("");
     setLoading(false);
   };
-
-  // const saveUnlockGroups = groupId => {
-  //   let groupsUnlock = localStorage.getItem("groupsUnlock");
-  //   groupsUnlock = JSON.parse(groupsUnlock);
-  //   if (groupsUnlock) {
-  //     groupsUnlock.push({ groupId });
-  //   } else {
-  //     let newUnlocks = [];
-  //     newUnlocks.push(groupId);
-
-  //     localStorage.setItem("groupsUnlock", JSON.stringify(newUnlocks));
-  //   }
-  // };
 
   const renderGroupList = group => {
     let editable = group.user === currentUserId;
     return (
       <div key={group._id} className="col-md-6 col-sm-12 col-lg-4 mb-3 ">
         <GroupCard
-          // groupUnlock={groupUnlock}
           currentUserId={currentUserId}
           groupCreator={group.user}
           onDelete={onDelete}

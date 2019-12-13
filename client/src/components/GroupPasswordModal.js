@@ -14,6 +14,7 @@ const GroupPasswordModal = ({
   const submit = async e => {
     setLoading(!loading);
     await onSubmit(e, unlockGroup => {
+      console.log("[GroupPasswordModal.js]", unlockGroup);
       if (unlockGroup) {
         setGroupUnlock(unlockGroup);
         document.querySelector("#closeGroupPasswordModal").click();

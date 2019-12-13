@@ -157,15 +157,14 @@ exports.unlock = async (req, res, next) => {
   let groupPassword = await GroupPassword.findOne({ group: groupId }).populate(
     "group"
   );
-  //2. Validate if it exists
+  console.log("[group.controller.js]", groupPassword);
+
+  //2. Validate if the password match
   //..
-  if (!groupPassword) {
-    return res.status(202).json({ unlock: false });
-  }
-  //3. Validate if the password match
-  //..
-  if (groupPassword.password === password) {
+  if (groupPassword && groupPassword.password === password) {
     res.status(200).json({ unlock: true, group: groupPassword.group });
     next();
   }
+  //3. If reach this line if because the password is wrong
+  return res.status(202).json({ unlock: false });
 };

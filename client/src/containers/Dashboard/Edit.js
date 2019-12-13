@@ -13,7 +13,9 @@ const Edit = props => {
     url: "",
     _id: "",
     user: "",
-    password: ""
+    password: "",
+    confirmPassword: "",
+    oldPassword: ""
   });
   const [message, setMessage] = useState("");
   const [redirect, setRedirect] = useState(false);
@@ -76,12 +78,33 @@ const Edit = props => {
 
   const updateGroup = async () => {
     setLoading(true);
+    console.log(group);
+    console.log(group.password, group.oldPassword, group.confirmPassword);
     try {
+      setMessage("");
+
+      if (
+        group.password.length > 0 &&
+        group.confirmPassword.length > 0 &&
+        group.oldPassword.length === 0
+      ) {
+        setMessage("The old password field is required");
+      }
+
+      if (group.password !== group.confirmPassword) {
+        setMessage("The password and confirm group does'nt match");
+        return;
+      }
+
+      if (group.confirmPassword.length > 0 && group.password.length === 0) {
+        setMessage("The confirm password field is required");
+        return;
+      }
       let response = await Axios.put(`/api/v1/${group._id}/group`, {
         name: group.name,
         url: group.url,
         _id: group._id,
-        password: group.password
+        password: group.password ? group.password : ""
       });
       if (response.status === 200) {
         setRedirect(true);
@@ -89,6 +112,7 @@ const Edit = props => {
         setMessage(response.data.error);
       }
     } catch (error) {
+      console.log(error);
       setMessage(error.response.data.error);
     }
     setLoading(false);

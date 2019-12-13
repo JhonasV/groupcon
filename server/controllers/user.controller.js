@@ -30,8 +30,13 @@ exports.create = async (req, res, next) => {
     email,
     nickname
   });
+  let responseObject = {
+    token: token.token,
+    expiresIn: token.expiresIn,
+    userId: userCreated.id
+  };
 
-  res.json({ ...token, ...userCreated });
+  res.json(responseObject);
   next();
 };
 

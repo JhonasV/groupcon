@@ -4,7 +4,13 @@ import CreateGroupForm from "../../components/Dashboard/CreateGroupForm";
 import Axios from "axios";
 import Alert from "../../components/Alert";
 const Create = () => {
-  const [values, setValues] = useState({ name: "", url: "", password: "" });
+  const [values, setValues] = useState({
+    name: "",
+    url: "",
+    password: "",
+    oldPassword: "",
+    confirmPassword: ""
+  });
   const [message, setMessage] = useState("");
   const [isRedirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -21,6 +27,7 @@ const Create = () => {
   };
 
   const createGroup = async () => {
+    console.log(values);
     try {
       let response = await Axios.post("/api/v1/group", values);
       if (response.status === 200) {

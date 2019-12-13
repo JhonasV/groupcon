@@ -35,14 +35,16 @@ const Login = ({ location }) => {
         let messageFormatted = response.data.error.split('"').join(" ");
 
         setError({ error: messageFormatted });
+
+        setLoading(false);
       }
     } catch (error) {
       setFormValues({ ...formValues, password: "" });
       setError({
         error: error.response.data.error
       });
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
