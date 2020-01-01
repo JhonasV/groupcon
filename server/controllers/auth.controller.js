@@ -56,7 +56,7 @@ exports.verifyPasswordChangeCode = async (req, res, next) => {
   let user = await User.findOne({ email });
 
   if (!user)
-    return res.status(404).json({ message: "The email could't be found" });
+    return res.status(404).json({ message: "The email couldn't be found" });
 
   if (code === user.recoverCode)
     res.status(200).json({ message: "Can continue to change the password" });
