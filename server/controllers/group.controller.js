@@ -103,13 +103,18 @@ exports.update = async (req, res, next) => {
 
   try {
     let isPrivate = false;
-    if (password.length > 0) isPrivate = true;
+
+    if (password.length > 0) {
+      isPrivate = true;
+      await insertGroupPasswordData(id, password);
+    }
+
     let isModified = await Group.findByIdAndUpdate(id, {
       url,
       name,
       private: isPrivate
     });
-    await insertGroupPasswordData(id, password);
+
     if (isModified) res.json(isModified);
     next();
   } catch (err) {
