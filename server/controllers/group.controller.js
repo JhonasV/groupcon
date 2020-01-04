@@ -112,8 +112,10 @@ exports.update = async (req, res, next) => {
     await insertGroupPasswordData(id, password);
     if (isModified) res.json(isModified);
     next();
-  } catch (error) {
-    return res.status(500).json({ error: "Something went wrong" });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ error: "Something went wrong", errorDetail: err });
   }
 };
 
