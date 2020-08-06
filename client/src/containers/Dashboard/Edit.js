@@ -7,7 +7,7 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 
 import Alert from "../../components/Alert";
 
-const Edit = props => {
+const Edit = (props) => {
   const [group, setGroup] = useState({
     name: "",
     url: "",
@@ -15,29 +15,31 @@ const Edit = props => {
     user: "",
     password: "",
     confirmPassword: "",
-    oldPassword: ""
+    oldPassword: "",
   });
+  const [checked, setChecked] = useState(false);
   const [message, setMessage] = useState("");
   const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let groupId = props.location.state.id;
-    const fetchGroupAsync = async groupId => await fetchGroup(groupId);
+    const fetchGroupAsync = async (groupId) => await fetchGroup(groupId);
     fetchGroupAsync(groupId);
   }, [props.location.state.id]);
 
-  const fetchGroup = async id => {
+  const fetchGroup = async (id) => {
     setLoading(true);
     let response = await Axios.get(`/api/v1/${id}/group`);
     if (response.status === 200) {
       setGroup(response.data);
+      setChecked(response.data.private);
     } else {
     }
     setLoading(false);
   };
 
-  const onSubmit = async e => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     confirmAlert({
@@ -68,11 +70,11 @@ const Edit = props => {
             </div>
           </div>
         );
-      }
+      },
     });
   };
 
-  const onChange = e => {
+  const onChange = (e) => {
     setGroup({ ...group, [e.target.name]: e.target.value });
   };
 
@@ -107,7 +109,7 @@ const Edit = props => {
         name: group.name,
         url: group.url,
         _id: group._id,
-        password: group.password ? group.password : ""
+        password: group.password ? group.password : "",
       });
 
       if (response.status === 200) {
@@ -126,7 +128,7 @@ const Edit = props => {
       <Redirect
         to={{
           pathname: "/dashboard",
-          state: { message: `Group modified succesfully` }
+          state: { message: `Group modified succesfully` },
         }}
       />
     );
@@ -143,6 +145,8 @@ const Edit = props => {
           onChange={onChange}
           onSubmit={onSubmit}
           loading={loading}
+          checked={checked}
+          setChecked={setChecked}
         />
       </div>
     </div>

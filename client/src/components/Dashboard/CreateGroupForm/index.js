@@ -1,39 +1,64 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Loading from "../../Loading";
-const CreateGroupForm = ({ group, onChange, onSubmit, create, loading }) => {
+const CreateGroupForm = ({
+  group,
+  onChange,
+  onSubmit,
+  create,
+  loading,
+  checked,
+  setChecked,
+}) => {
   let buttonTitle = create ? "CREATE" : "UPDATE";
 
   const renderPasswordUpdate = () => {
-    console.log(group);
-    if (create) {
-      return (
+    // checked = create ? checked : group.private;
+    return (
+      <>
         <div className="form-group">
-          <input
-            type="text"
-            className="form-control"
-            onChange={onChange}
-            name="password"
-            placeholder="password"
-            value={group ? group.password : ""}
-            disabled={loading}
-          />
-        </div>
-      );
-    } else {
-      return (
-        <>
-          <div className="form-group">
+          <div class="custom-control custom-checkbox">
             <input
-              type="text"
-              className="form-control"
-              onChange={onChange}
-              name="oldPassword"
-              placeholder="Old password"
-              value={group ? group.oldPassword : ""}
-              disabled={loading}
+              type="checkbox"
+              class="custom-control-input"
+              checked={checked}
+              id="private"
+              onChange={() => setChecked(!checked)}
             />
+            <label class="custom-control-label" for="private">
+              Is going to be private?
+            </label>
           </div>
+        </div>
+
+        {checked ? (
+          <>
+            <div className="form-group">
+              <input
+                type="text"
+                className="form-control"
+                onChange={onChange}
+                name="password"
+                placeholder="password"
+                value={group ? group.password : ""}
+                disabled={loading}
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="text"
+                className="form-control"
+                onChange={onChange}
+                name="newPassword"
+                placeholder="Confirm new password"
+                value={group ? group.newPassword : ""}
+                disabled={loading}
+              />
+            </div>
+          </>
+        ) : null}
+
+        {checked && !create ? (
           <div className="form-group">
             <input
               type="text"
@@ -45,20 +70,48 @@ const CreateGroupForm = ({ group, onChange, onSubmit, create, loading }) => {
               disabled={loading}
             />
           </div>
-          <div className="form-group">
-            <input
-              type="text"
-              className="form-control"
-              onChange={onChange}
-              name="newPassword"
-              placeholder="Confirm new password"
-              value={group ? group.newPassword : ""}
-              disabled={loading}
-            />
-          </div>
-        </>
-      );
-    }
+        ) : null}
+      </>
+    );
+    // } else {
+    //   return (
+    //     <>
+    //       <div className="form-group">
+    //         <input
+    //           type="text"
+    //           className="form-control"
+    //           onChange={onChange}
+    //           name="oldPassword"
+    //           placeholder="Old password"
+    //           value={group ? group.oldPassword : ""}
+    //           disabled={loading}
+    //         />
+    //       </div>
+    //       <div className="form-group">
+    //         <input
+    //           type="text"
+    //           className="form-control"
+    //           onChange={onChange}
+    //           name="password"
+    //           placeholder="new password"
+    //           value={group ? group.password : ""}
+    //           disabled={loading}
+    //         />
+    //       </div>
+    //       <div className="form-group">
+    //         <input
+    //           type="text"
+    //           className="form-control"
+    //           onChange={onChange}
+    //           name="newPassword"
+    //           placeholder="Confirm new password"
+    //           value={group ? group.newPassword : ""}
+    //           disabled={loading}
+    //         />
+    //       </div>
+    //     </>
+    //   );
+    // }
   };
   return (
     <div className="row mb-5">

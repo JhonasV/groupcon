@@ -9,17 +9,19 @@ const Create = () => {
     url: "",
     password: "",
     oldPassword: "",
-    confirmPassword: ""
+    confirmPassword: "",
+    private: false,
   });
+  const [checked, setChecked] = useState(false);
   const [message, setMessage] = useState("");
   const [isRedirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const onChange = e => {
+  const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = async e => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
@@ -28,6 +30,7 @@ const Create = () => {
 
   const createGroup = async () => {
     console.log(values);
+    values.private = checked;
     try {
       let response = await Axios.post("/api/v1/group", values);
       if (response.status === 200) {
@@ -59,6 +62,8 @@ const Create = () => {
           create={true}
           onChange={onChange}
           onSubmit={onSubmit}
+          checked={checked}
+          setChecked={setChecked}
           group={values}
           loading={loading}
         />

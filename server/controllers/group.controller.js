@@ -5,26 +5,26 @@ const GroupPassword = mongoose.model("grouppassword");
 const { validateGroups } = require("../validation");
 const { sendInviteLinkMail } = require("../services/mailer");
 exports.create = async (req, res, next) => {
-  let { url, name, password } = req.body;
+  let { url, name, password, private } = req.body;
   let { error } = validateGroups({ url, name });
   if (error)
     return res.status(400).json({
-      error: error.details[0].message.split('"').join(" ")
+      error: error.details[0].message.split('"').join(" "),
     });
 
-  let isPrivate = password.length > 0;
+  let isPrivate = password.length > 0 || private;
   let group = {
     name: req.body.name,
     url: req.body.url,
     user: req.user.id,
-    private: isPrivate
+    private: isPrivate,
   };
 
   try {
     let groupExists = await Group.findOne({ name: group.name });
     if (groupExists)
       return res.status(400).json({
-        error: "Group Name already exists"
+        error: "Group Name already exists",
       });
 
     let isCreated = await new Group(group).save();
@@ -39,9 +39,7 @@ exports.create = async (req, res, next) => {
 
 exports.get = async (req, res, next) => {
   let groups = await Group.find();
-  let latestGroups = await Group.find()
-    .sort({ createdAt: -1 })
-    .limit(3);
+  let latestGroups = await Group.find().sort({ createdAt: -1 }).limit(3);
   groups = hideUrlForPrivateGroups(groups);
   latestGroups = hideUrlForPrivateGroups(latestGroups);
   res.json({ groups, latestGroups });
@@ -49,8 +47,8 @@ exports.get = async (req, res, next) => {
   next();
 };
 
-const hideUrlForPrivateGroups = groups => {
-  return groups.map(group => {
+const hideUrlForPrivateGroups = (groups) => {
+  return groups.map((group) => {
     if (group.private) {
       group.url = "";
     }
@@ -112,7 +110,7 @@ exports.update = async (req, res, next) => {
     let isModified = await Group.findByIdAndUpdate(id, {
       url,
       name,
-      private: isPrivate
+      private: isPrivate,
     });
 
     if (isModified) res.json(isModified);
