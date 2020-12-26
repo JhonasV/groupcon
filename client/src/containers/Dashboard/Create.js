@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import CreateGroupForm from "../../components/Dashboard/CreateGroupForm";
 
 import Alert from "../../components/Alert";
 import { connect } from 'react-redux';
-import { createGroup } from '../../actions';
-const Create = ({ createGroups }) => {
+import { createGroup, clearCreateMessages } from '../../actions';
+const Create = ({ createGroups, createSuccessMessage, createErrorMessage, clearCreateMessages }) => {
   
   const [values, setValues] = useState({
     name: "",
@@ -19,6 +19,19 @@ const Create = ({ createGroups }) => {
   const [message, setMessage] = useState("");
   const [isRedirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
+ 
+  useEffect(()=>{
+    if(createSuccessMessage.length > 0){
+      setMessage(createSuccessMessage);
+      setRedirect(true);
+ 
+    }
+
+    if(createErrorMessage.length > 0){
+      setMessage(createErrorMessage);
+    }
+    clearCreateMessages();
+  }, [createErrorMessage, createSuccessMessage, clearCreateMessages])
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -34,20 +47,9 @@ const Create = ({ createGroups }) => {
   const createGroupAsync = async () => {
     console.log(values);
     values.private = checked;
-    // try {
-      createGroups(values);
-    //   if (response.status === 200) {
-    //     setMessage(`Group '${response.data.name}' created succesfully!`);
-    //     setRedirect(true);
-    //   } else {
-    //     let errorMessage = response.data.error
-    //       ? response.data.error
-    //       : response.data;
-    //     setMessage(errorMessage);
-    //   }
-    // } catch (error) {
-    //   setMessage(error.response.data.error);
-    // }
+
+     await createGroups(values);
+
     setLoading(false);
   };
 
@@ -75,12 +77,18 @@ const Create = ({ createGroups }) => {
   );
 };
 
-
+const mapStateToProps = state =>{
+  return {
+    createSuccessMessage: state.groupReducer.createSuccessMessage,
+    createErrorMessage: state.groupReducer.createErrorMessage
+  }
+}
 
 const mapDispatchToProps = dispatch =>{
   return {
-    createGroups: (values) => createGroup(values)(dispatch)
+    createGroups: (values) => createGroup(values)(dispatch),
+    clearCreateMessages: () => clearCreateMessages()(dispatch)
   };
 }
 
-export default connect(mapDispatchToProps)(Create);
+export default connect(mapStateToProps,mapDispatchToProps)(Create);

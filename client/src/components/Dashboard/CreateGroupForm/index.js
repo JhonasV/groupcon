@@ -24,7 +24,7 @@ const CreateGroupForm = ({
               id="private"
               onChange={() => setChecked(!checked)}
             />
-            <label class="custom-control-label" for="private">
+            <label class="custom-control-label" htmlFor="private">
               Is going to be private?
             </label>
           </div>

@@ -10,20 +10,33 @@ import {
   FETCH_USER_GROUPS_ERROR,
   CREATE_GROUPS_SUCCESS,
   CREATE_GROUPS_PENDING,
-  CREATE_GROUPS_ERROR
+  CREATE_GROUPS_ERROR,
+  CLEAR_CREATE_MESSAGES
 } from "./types";
 
 import Axios from "axios";
 
 export const createGroup = (values) => async dispatch => {
-  try{
+  try {
     let response = await Axios.post("/api/v1/group", values);
+    if(response.status === 200){
+
+    
     dispatch({type: CREATE_GROUPS_SUCCESS, payload: response.data});
     dispatch({type: CREATE_GROUPS_PENDING, payload: false});
-  }catch (error){
-    console.log(error);
-    dispatch({type: CREATE_GROUPS_ERROR, payload: error});
+  }else{
+    dispatch({type: CREATE_GROUPS_ERROR, payload: response.data.error});
   }
+  } catch (error) {
+    dispatch({type: CREATE_GROUPS_ERROR, payload: error.response});
+  }
+
+
+ 
+}
+
+export const clearCreateMessages = () => async dispatch => {
+  dispatch({ type: CLEAR_CREATE_MESSAGES, payload: "" })
 }
 
 export const fetchGroups = () => async dispatch => {

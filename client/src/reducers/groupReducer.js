@@ -9,8 +9,8 @@ import {
   FETCH_USER_GROUPS_PENDING,
   FETCH_USER_GROUPS_ERROR,
   CREATE_GROUPS_SUCCESS,
-  CREATE_GROUPS_PENDING,
-  CREATE_GROUPS_ERROR
+  CREATE_GROUPS_ERROR,
+  CLEAR_CREATE_MESSAGES
 } from "../actions/types";
 
 const initState = {
@@ -20,7 +20,9 @@ const initState = {
   pending: true,
   error: false,
   message: "",
-  latestGroups: []
+  latestGroups: [],
+  createSuccessMessage: "",
+  createErrorMessage: ""
 };
 export const groupReducer = (state = initState, action) => {
   switch (action.type) {
@@ -28,9 +30,28 @@ export const groupReducer = (state = initState, action) => {
       return {
         ...state,
         groups: [ ...state.groups , action.payload ],
-        latestGroups: [...state.latestGroups, action.payload ]
+        latestGroups: [...state.latestGroups, action.payload ],
+        createSuccessMessage: `Group '${ action.payload.name}' created succesfully!` 
       }
+    case CREATE_GROUPS_ERROR:
+      console.log('CREATE_GROUPS_ERROR', action.payload);
+      let errorMessage = action.payload.data.error
+            ? action.payload.data.error
+            : action.payload.data;
 
+   
+      return {
+        ...state,
+        createErrorMessage: errorMessage
+      }  
+
+    case CLEAR_CREATE_MESSAGES:
+    return {
+      ...state,
+      createErrorMessage: action.payload,
+      createSuccessMessage: action.payload
+
+    }
     case FETCH_GROUPS_SUCCESS:
       return {
         ...state,
