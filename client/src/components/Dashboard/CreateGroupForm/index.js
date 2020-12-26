@@ -13,7 +13,6 @@ const CreateGroupForm = ({
   let buttonTitle = create ? "CREATE" : "UPDATE";
 
   const renderPasswordUpdate = () => {
-    // checked = create ? checked : group.private;
     return (
       <>
         <div className="form-group">

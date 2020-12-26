@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import CreateGroupForm from "../../components/Dashboard/CreateGroupForm";
-import Axios from "axios";
+
 import Alert from "../../components/Alert";
-const Create = () => {
+import { connect } from 'react-redux';
+import { createGroup } from '../../actions';
+const Create = ({ createGroups }) => {
+  
   const [values, setValues] = useState({
     name: "",
     url: "",
@@ -25,26 +28,26 @@ const Create = () => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
-    await createGroup();
+    await createGroupAsync();
   };
 
-  const createGroup = async () => {
+  const createGroupAsync = async () => {
     console.log(values);
     values.private = checked;
-    try {
-      let response = await Axios.post("/api/v1/group", values);
-      if (response.status === 200) {
-        setMessage(`Group '${response.data.name}' created succesfully!`);
-        setRedirect(true);
-      } else {
-        let errorMessage = response.data.error
-          ? response.data.error
-          : response.data;
-        setMessage(errorMessage);
-      }
-    } catch (error) {
-      setMessage(error.response.data.error);
-    }
+    // try {
+      createGroups(values);
+    //   if (response.status === 200) {
+    //     setMessage(`Group '${response.data.name}' created succesfully!`);
+    //     setRedirect(true);
+    //   } else {
+    //     let errorMessage = response.data.error
+    //       ? response.data.error
+    //       : response.data;
+    //     setMessage(errorMessage);
+    //   }
+    // } catch (error) {
+    //   setMessage(error.response.data.error);
+    // }
     setLoading(false);
   };
 
@@ -72,4 +75,12 @@ const Create = () => {
   );
 };
 
-export default Create;
+
+
+const mapDispatchToProps = dispatch =>{
+  return {
+    createGroups: (values) => createGroup(values)(dispatch)
+  };
+}
+
+export default connect(mapDispatchToProps)(Create);

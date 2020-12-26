@@ -28,7 +28,12 @@ exports.create = async (req, res, next) => {
       });
 
     let isCreated = await new Group(group).save();
-    await insertGroupPasswordData(isCreated.id, password);
+
+    if(password?.length > 0){
+      await insertGroupPasswordData(isCreated.id, password);
+    }
+
+
     res.json(isCreated);
 
     next();
@@ -123,9 +128,9 @@ exports.update = async (req, res, next) => {
 };
 
 const insertGroupPasswordData = async (group, password) => {
-  console.log("insertGroupPasswordData", { group, password });
+
   let groupPasswordReg = await GroupPassword.findOne({ group });
-  console.log("groupPasswordReg", { group, password });
+
   if (groupPasswordReg) {
     await GroupPassword.findOneAndUpdate({ group }, { password });
   } else {

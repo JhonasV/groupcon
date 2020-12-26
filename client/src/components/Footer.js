@@ -7,9 +7,7 @@ const Footer = () => (
     {/* <!-- Copyright --> */}
     <div className="footer-copyright ">
       <h4>
-        Made with{" "}
-        <i className={`fa fa-heart ${style.text_red}`} aria-hidden="true"></i>{" "}
-        by{" "}
+        Created by {" "}
         <a className="text-white" href="https://github.com/JhonasV">
           Jhonas Veras
         </a>

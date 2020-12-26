@@ -7,7 +7,10 @@ import {
   DELETE_GROUPS_PENDING,
   FETCH_USER_GROUPS_SUCCESS,
   FETCH_USER_GROUPS_PENDING,
-  FETCH_USER_GROUPS_ERROR
+  FETCH_USER_GROUPS_ERROR,
+  CREATE_GROUPS_SUCCESS,
+  CREATE_GROUPS_PENDING,
+  CREATE_GROUPS_ERROR
 } from "../actions/types";
 
 const initState = {
@@ -16,10 +19,18 @@ const initState = {
   deleted: null,
   pending: true,
   error: false,
-  message: ""
+  message: "",
+  latestGroups: []
 };
 export const groupReducer = (state = initState, action) => {
   switch (action.type) {
+    case CREATE_GROUPS_SUCCESS:
+      return {
+        ...state,
+        groups: [ ...state.groups , action.payload ],
+        latestGroups: [...state.latestGroups, action.payload ]
+      }
+
     case FETCH_GROUPS_SUCCESS:
       return {
         ...state,
