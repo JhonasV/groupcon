@@ -3,9 +3,12 @@ import { deleteToken } from "../Helpers/auth-helper";
 
 import { NavLink, Link } from "react-router-dom";
 import Loading from "./Loading";
-const Navbar = ({ currentUser }) => {
+
+import { connect } from 'react-redux';
+
+const Navbar = ({ isAuthenticated, currentUser }) => {
   const renderNav = () => {
-    switch (currentUser) {
+    switch (isAuthenticated) {
       case null:
         return <Loading className="spinner-border-sm text-white" />;
       case false: {
@@ -39,6 +42,16 @@ const Navbar = ({ currentUser }) => {
       default:
         return (
           <ul className="navbar-nav ml-auto">
+            <li className="nav-item">
+              
+              <NavLink
+                className="nav-link"
+                to={`/`}
+                style={{ fontSize: "17px" }}
+              >
+                <i className="fa fa-user"></i> Welcome: { currentUser.nickname }                
+              </NavLink>
+            </li>
             <li className="nav-item">
               <NavLink
                 className="nav-link"
@@ -114,4 +127,12 @@ const Navbar = ({ currentUser }) => {
   );
 };
 
-export default Navbar;
+
+const mapStateToProps = state =>{
+  return {
+    currentUser: state.authReducer.currentUser,
+    isAuthenticated: state.authReducer.isAuthenticated
+  }
+}
+
+export default connect(mapStateToProps)(Navbar);

@@ -12,7 +12,7 @@ const CreateGroupForm = ({
 }) => {
   let buttonTitle = create ? "CREATE" : "UPDATE";
 
-  const renderPasswordUpdate = () => {
+  const renderPasswordFields= () => {
     return (
       <>
         <div className="form-group">
@@ -45,10 +45,10 @@ const CreateGroupForm = ({
             </div>
             <div className="form-group">
               <input
-                type="text"
+                type="password"
                 className="form-control"
                 onChange={onChange}
-                name="newPassword"
+                name="confirmPassword"
                 placeholder="Confirm new password"
                 value={group ? group.newPassword : ""}
                 disabled={loading}
@@ -60,7 +60,7 @@ const CreateGroupForm = ({
         {checked && !create ? (
           <div className="form-group">
             <input
-              type="text"
+              type="password"
               className="form-control"
               onChange={onChange}
               name="password"
@@ -151,7 +151,7 @@ const CreateGroupForm = ({
                   disabled={loading}
                 />
               </div>
-              {renderPasswordUpdate()}
+              {renderPasswordFields()}
             </div>
             <div className="card-footer">
               <div className="form-group">

@@ -3,10 +3,10 @@ import React from "react";
 import Navbar from "./Navbar";
 
 
-const Layout = ({ children, currentUser }) => (
+const Layout = ({ children }) => (
   <>
     <header>
-      <Navbar currentUser={currentUser} />
+      <Navbar />
     </header>
     <main className="container">{children}</main>
   </>

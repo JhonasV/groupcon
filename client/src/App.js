@@ -14,26 +14,29 @@ import ForgottenChange from "./containers/Forgotten/ForgottenChange";
 import { getCurrentUser, initAxiosInterceptors } from "./Helpers/auth-helper";
 import Loading from "./components/Loading";
 
-// import Axios from "axios";
+// actions
+import { fetchCurrentUser } from './actions/authActions';
+
 import { connect } from "react-redux";
 
 initAxiosInterceptors();
 
-function App() {
-  const [currentUser, setCurrentUser] = useState(null);
+function App({ fetchCurrentUser, currentUser, isAuthenticanted }) {
+  // const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-    const getCurrentUserAync = async () => {
-      let currentUser = await getCurrentUser();
-      setCurrentUser(currentUser ? currentUser : false);
-    };
-    getCurrentUserAync();
+    // const getCurrentUserAync = async () => {
+    //   let currentUser = await getCurrentUser();
+    //   setCurrentUser(currentUser ? currentUser : false);
+    // };
+    // getCurrentUserAync();
+    fetchCurrentUser();
   }, []);
 
   const validateAuthRoutes = (
     ComponentToRender, //Component itself
     pathToRender, //Component pathroute
-    currentUser, //CurrentUser Authenticated
+    isAuthenticanted, //CurrentUser Authenticated
     props, // React Router props
     redirectPath = "/login"
   ) => {
@@ -41,7 +44,7 @@ function App() {
     //in that case we redirect the user to the Login page with
     //the path for the component that tried access, when get log in
     //the user is redirect to the path that he tried to access.
-    return currentUser === false ? (
+    return !isAuthenticanted ? (
       <Redirect
         {...props}
         to={{
@@ -54,12 +57,12 @@ function App() {
     );
   };
 
-  const validateGuessRoutes = (ComponentToRender, currentUser, props) => {
+  const validateGuessRoutes = (ComponentToRender, isAuthenticanted, props) => {
     //This method validate if exists a connected user, in that case, while
     //the user is authenticated and tried to go to Login or Register
     //we redirect him to the Home page.
 
-    return currentUser ? (
+    return isAuthenticanted ? (
       <Redirect to={"/"} />
     ) : (
       <ComponentToRender {...props} />
@@ -73,9 +76,9 @@ function App() {
         path="/dashboard"
         exact
         render={props =>
-          validateAuthRoutes(Dashboard, "/dashboard", currentUser, {
+          validateAuthRoutes(Dashboard, "/dashboard", isAuthenticanted, {
             ...props,
-            currentUser
+            isAuthenticanted
           })
         }
       />
@@ -84,32 +87,32 @@ function App() {
         path="/dashboard/create"
         exact
         render={props =>
-          validateAuthRoutes(Create, "/dashboard/create", currentUser, props)
+          validateAuthRoutes(Create, "/dashboard/create", isAuthenticanted, props)
         }
       />
       <Route
         path="/dashboard/edit"
         exact
         render={props =>
-          validateAuthRoutes(Edit, "/dashboard", currentUser, props)
+          validateAuthRoutes(Edit, "/dashboard", isAuthenticanted, props)
         }
       />
       <Route
         path="/login"
         exact
-        render={props => validateGuessRoutes(Login, currentUser, props)}
+        render={props => validateGuessRoutes(Login, isAuthenticanted, props)}
       />
 
       <Route
         path="/register"
         exact
-        render={props => validateGuessRoutes(Register, currentUser, props)}
+        render={props => validateGuessRoutes(Register, isAuthenticanted, props)}
       />
       <Route
         path="/forgotten"
         exact
         render={props =>
-          validateGuessRoutes(ForgottenPassword, currentUser, props)
+          validateGuessRoutes(ForgottenPassword, isAuthenticanted, props)
         }
       />
 
@@ -117,7 +120,7 @@ function App() {
         path="/forgotten/recover/:code/:email"
         exact
         render={props =>
-          validateGuessRoutes(ForgottenChange, currentUser, props)
+          validateGuessRoutes(ForgottenChange, isAuthenticanted, props)
         }
       />
 
@@ -136,7 +139,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Layout currentUser={currentUser}>{renderRoutes()}</Layout>
+      <Layout >{renderRoutes()}</Layout>
     </BrowserRouter>
   );
 }
@@ -144,8 +147,16 @@ function App() {
 const mapStateToProps = state => {
   return {
     pending: state.groupReducer.pending,
-    groups: state.groupReducer.groups
+    groups: state.groupReducer.groups,
+    currentUser: state.authReducer.currentUser,
+    isAuthenticanted: state.authReducer.isAuthenticated
   };
 };
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchCurrentUser: () => fetchCurrentUser()(dispatch),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -5,14 +5,20 @@ const GroupPassword = mongoose.model("grouppassword");
 const { validateGroups } = require("../validation");
 const { sendInviteLinkMail } = require("../services/mailer");
 exports.create = async (req, res, next) => {
-  let { url, name, password, private } = req.body;
+  let { url, name, password, private, confirmPassword } = req.body;
   let { error } = validateGroups({ url, name });
   if (error)
     return res.status(400).json({
       error: error.details[0].message.split('"').join(" "),
     });
-
   let isPrivate = password.length > 0 || private;
+
+  if(isPrivate && password !== confirmPassword)
+    return res.status(400).json({
+      error: "password and confirm password does not match"
+    });
+
+
   let group = {
     name: req.body.name,
     url: req.body.url,
