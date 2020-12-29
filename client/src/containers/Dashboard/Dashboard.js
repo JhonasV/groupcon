@@ -24,12 +24,9 @@ const Dashboard = ({
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ details: "", type: "" });
   useEffect(() => {
-    const getGroups = async () => {
-      await getAllGroups(currentUser ? currentUser.id : null);
-    };
-
-    getGroups();
-
+      getUserGroups(currentUser.id);
+      setGroups({groups: userGroups});
+  
     if (message.details === "") {
       setMessage({
         details: location.state ? location.state.message : "",
@@ -39,14 +36,6 @@ const Dashboard = ({
       history.replace();
     }
   }, [location.state, history, message.details, currentUser]);
-
-  const getAllGroups = async currentUserId => {
-    if (currentUserId === null) return;
-    setLoading(true);
-    let response = await Axios(`/api/v1/${currentUserId}/groups`);
-    if (response.status === 200) setGroups({ groups: response.data });
-    setLoading(false);
-  };
 
   const onDelete = async (e, id) => {
     e.preventDefault();
@@ -98,11 +87,11 @@ const Dashboard = ({
     setLoading(pending);
 
     deleteGroup(id);
-    if (removed) {
-      let groupsFiltered = getGroups.groups.filter(g => g._id !== id);
-      setGroups({ groups: groupsFiltered });
-      setMessage({ details: "Group deleted succesfully!", type: "success" });
-    }
+    // if (removed) {
+    //   let groupsFiltered = getGroups.groups.filter(g => g._id !== id);
+    //   setGroups({ groups: groupsFiltered });
+    //   setMessage({ details: "Group deleted succesfully!", type: "success" });
+    // }
 
     setLoading(pending);
   };
@@ -158,9 +147,14 @@ const mapStateToProps = state => {
   return {
     removed: state.groupReducer.deleted,
     pending: state.groupReducer.pending,
-    userGroups: state.groupReducer.userGroups
+    userGroups: state.groupReducer.userGroups,
+    currentUser: state.authReducer.currentUser
   };
 };
+
+// const mapDispatchToProps = (dispatch) => {
+//   getUserGroups: (currentUserId) => action.getUserGroups(currentUserId)(dispatch)
+// }
 
 export default connect(
   mapStateToProps,

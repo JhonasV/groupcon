@@ -7,6 +7,7 @@ import Loading from "../components/Loading";
 import * as action from "../actions";
 import { connect } from "react-redux";
 const Home = ({ groups, fetchGroups, pending, latestGroups }) => {
+  console.log(latestGroups, groups);
   const [values, setValues] = useState({
     filteredGroups: [],
     latestGroups: []

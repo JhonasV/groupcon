@@ -54,7 +54,7 @@ export const deleteGroup = id => async dispatch => {
   try {
     const response = await Axios.delete(`/api/v1/group/${id}`);
     if (response.status === 200)
-      dispatch({ type: DELETE_GROUPS_SUCCESS, payload: response.data.removed });
+      dispatch({ type: DELETE_GROUPS_SUCCESS, payload: {isDeleted: response.data, id} });
   } catch (error) {
     dispatch({ type: DELETE_GROUPS_ERROR, payload: error });
   }

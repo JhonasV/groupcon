@@ -34,7 +34,7 @@ const CreateGroupForm = ({
           <>
             <div className="form-group">
               <input
-                type="text"
+                type="password"
                 className="form-control"
                 onChange={onChange}
                 name="password"

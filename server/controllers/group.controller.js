@@ -18,6 +18,7 @@ exports.create = async (req, res, next) => {
       error: "password and confirm password does not match"
     });
 
+    
 
   let group = {
     name: req.body.name,
@@ -111,12 +112,9 @@ exports.update = async (req, res, next) => {
       .json({ error: error.details[0].message.split('"').join(" ") });
 
   try {
-    let isPrivate = false;
+    let isPrivate = password.length > 0;
 
-    if (password.length > 0) {
-      isPrivate = true;
-      await insertGroupPasswordData(id, password);
-    }
+     await insertGroupPasswordData(id, password);
 
     let isModified = await Group.findByIdAndUpdate(id, {
       url,
@@ -137,10 +135,23 @@ const insertGroupPasswordData = async (group, password) => {
 
   let groupPasswordReg = await GroupPassword.findOne({ group });
 
+  // IF the password length is 0 and groupPasswordRef is defined
+  // means that the group was private but  is no more
+  // we removed the GroupPassword data
+  if(password.length === 0 && groupPasswordReg){
+    await GroupPassword.findByIdAndDelete(groupPasswordReg._id);
+    return;
+  }
+
   if (groupPasswordReg) {
+    // if exists update
     await GroupPassword.findOneAndUpdate({ group }, { password });
-  } else {
+    return;
+  }
+  
+  if(password.length > 0){
     await new GroupPassword({ group, password }).save();
+    return;
   }
 };
 

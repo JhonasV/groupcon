@@ -31,10 +31,10 @@ export const groupReducer = (state = initState, action) => {
         ...state,
         groups: [ ...state.groups , action.payload ],
         latestGroups: [...state.latestGroups, action.payload ],
-        createSuccessMessage: `Group '${ action.payload.name}' created succesfully!` 
+        createSuccessMessage: `Group '${ action.payload.name}' created succesfully!` ,
+        userGroups: [...state.userGroups, action.payload]
       }
     case CREATE_GROUPS_ERROR:
-      console.log('CREATE_GROUPS_ERROR', action.payload);
       let errorMessage = action.payload.data.error
             ? action.payload.data.error
             : action.payload.data;
@@ -72,8 +72,11 @@ export const groupReducer = (state = initState, action) => {
     case DELETE_GROUPS_SUCCESS:
       return {
         ...state,
-        deleted: action.payload,
-        pending: false
+        deleted: action.payload.isDeleted.removed,
+        pending: false,
+        userGroups: state.userGroups.filter(e => e._id !== action.payload.id),
+        latestGroups: state.latestGroups.filter(e => e._id !== action.payload.id),
+        groups: state.groups.filter(e => e._id !== action.payload.id)
       };
 
     case DELETE_GROUPS_PENDING:
