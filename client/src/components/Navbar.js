@@ -46,7 +46,7 @@ const Navbar = ({ isAuthenticated, currentUser }) => {
               
               <NavLink
                 className="nav-link"
-                to={`/`}
+                to={`/dashboard`}
                 style={{ fontSize: "17px" }}
               >
                 <i className="fa fa-user"></i> Welcome: { currentUser.nickname }                

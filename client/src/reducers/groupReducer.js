@@ -18,6 +18,7 @@ const initState = {
   userGroups: [],
   deleted: null,
   pending: true,
+  pendingUserGroups: true, 
   error: false,
   message: "",
   latestGroups: [],
@@ -94,7 +95,8 @@ export const groupReducer = (state = initState, action) => {
     case FETCH_USER_GROUPS_SUCCESS:
       return {
         ...state,
-        userGroups: action.payload
+        userGroups: action.payload,
+        pendingUserGroups: false
       };
     case FETCH_USER_GROUPS_PENDING:
       return {

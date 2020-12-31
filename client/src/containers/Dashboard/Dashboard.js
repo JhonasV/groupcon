@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import GroupList from "../../components/Group/GroupList/GroupList";
 import { Link } from "react-router-dom";
-import Axios from "axios";
 import { confirmAlert } from "react-confirm-alert";
 import Alert from "../../components/Alert";
 
@@ -14,19 +13,13 @@ const Dashboard = ({
   currentUser,
   deleteGroup,
   getUserGroups,
-  pending,
-  removed,
-  userGroups
+  userGroups,
+  pendingUserGroups
 }) => {
-  const [getGroups, setGroups] = useState({
-    groups: []
-  });
-  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ details: "", type: "" });
+
   useEffect(() => {
-      getUserGroups(currentUser.id);
-      setGroups({groups: userGroups});
-  
+    getUserGroups(currentUser.id);
     if (message.details === "") {
       setMessage({
         details: location.state ? location.state.message : "",
@@ -53,21 +46,21 @@ const Dashboard = ({
             </div>
             <div className="card-footer bg-warning">
               <button
-                disabled={loading}
+                disabled={pendingUserGroups}
                 className="btn btn-secondary"
                 onClick={onClose}
               >
                 No
               </button>{" "}
               <button
-                disabled={loading}
+                disabled={pendingUserGroups}
                 className="btn btn-primary"
                 onClick={() => {
                   deleteGroupHandle(id);
                   onClose();
                 }}
               >
-                {loading ? (
+                {pendingUserGroups ? (
                   <span
                     class="spinner-border spinner-border-sm"
                     role="status"
@@ -84,22 +77,13 @@ const Dashboard = ({
     });
   };
   const deleteGroupHandle = id => {
-    setLoading(pending);
-
     deleteGroup(id);
-    // if (removed) {
-    //   let groupsFiltered = getGroups.groups.filter(g => g._id !== id);
-    //   setGroups({ groups: groupsFiltered });
-    //   setMessage({ details: "Group deleted succesfully!", type: "success" });
-    // }
-
-    setLoading(pending);
   };
 
   const renderGroups = () => {
-    return getGroups.groups.length !== 0 ? (
+    return userGroups.length !== 0 ? (
       <GroupList
-        groups={getGroups.groups}
+        groups={userGroups}
         onDelete={onDelete}
         currentUserId={currentUser ? currentUser.id : ""}
       />
@@ -129,7 +113,7 @@ const Dashboard = ({
           <div className="alert bg-primary">
             <h3>Your groups!</h3>
           </div>
-          {loading ? (
+          {pendingUserGroups ? (
             <div className="d-flex justify-content-center ">
               <div className="spinner-border mt-5" role="status">
                 <span className="sr-only">Loading...</span>
@@ -148,13 +132,10 @@ const mapStateToProps = state => {
     removed: state.groupReducer.deleted,
     pending: state.groupReducer.pending,
     userGroups: state.groupReducer.userGroups,
-    currentUser: state.authReducer.currentUser
+    currentUser: state.authReducer.currentUser,
+    pendingUserGroups: state.groupReducer.pendingUserGroups
   };
 };
-
-// const mapDispatchToProps = (dispatch) => {
-//   getUserGroups: (currentUserId) => action.getUserGroups(currentUserId)(dispatch)
-// }
 
 export default connect(
   mapStateToProps,

@@ -62,8 +62,6 @@ export const deleteGroup = id => async dispatch => {
 };
 
 export const getUserGroups = currentUserId => async dispatch => {
-  //   dispatch({ type: FETCH_USER_GROUPS_PENDING, payload: true });
-  if (currentUserId === null) return;
   try {
     let response = await Axios(`/api/v1/${currentUserId}/groups`);
     if (response.status === 200)
@@ -71,5 +69,4 @@ export const getUserGroups = currentUserId => async dispatch => {
   } catch (error) {
     dispatch({ type: FETCH_USER_GROUPS_ERROR, payload: error });
   }
-  dispatch({ type: FETCH_USER_GROUPS_PENDING, payload: false });
 };

@@ -7,13 +7,17 @@ import Loading from "../components/Loading";
 import * as action from "../actions";
 import { connect } from "react-redux";
 const Home = ({ groups, fetchGroups, pending, latestGroups }) => {
-  console.log(latestGroups, groups);
   const [values, setValues] = useState({
     filteredGroups: [],
     latestGroups: []
   });
 
   const [groupName, setGroupName] = useState("");
+
+
+  useEffect(() => {
+    fetchGroups();
+  }, [] )
 
   const onChange = e => {
     setGroupName(e.target.value);
@@ -31,9 +35,7 @@ const Home = ({ groups, fetchGroups, pending, latestGroups }) => {
     );
   };
 
-  useEffect(() => {
-    if (pending) fetchGroups();
-  }, [fetchGroups, pending]);
+
 
   const onSubmit = e => {
     e.preventDefault();

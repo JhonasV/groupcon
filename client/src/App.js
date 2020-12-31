@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import Layout from "./components/Layout";
 import Home from "./containers/Home";
@@ -22,14 +22,10 @@ import { connect } from "react-redux";
 initAxiosInterceptors();
 
 function App({ fetchCurrentUser, currentUser, isAuthenticanted }) {
-  // const [currentUser, setCurrentUser] = useState(null);
+
 
   useEffect(() => {
-    // const getCurrentUserAync = async () => {
-    //   let currentUser = await getCurrentUser();
-    //   setCurrentUser(currentUser ? currentUser : false);
-    // };
-    // getCurrentUserAync();
+
     fetchCurrentUser();
   }, []);
 
