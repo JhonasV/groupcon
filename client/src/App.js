@@ -10,8 +10,8 @@ import Edit from "./containers/Dashboard/Edit";
 import NotFound from "./components/NotFound";
 import ForgottenPassword from "./containers/Forgotten/ForgottenPassword";
 import ForgottenChange from "./containers/Forgotten/ForgottenChange";
-// import ProtectedRoute from "./components/ProtectedRoute";
-import { getCurrentUser, initAxiosInterceptors } from "./Helpers/auth-helper";
+
+import { initAxiosInterceptors } from "./Helpers/auth-helper";
 import Loading from "./components/Loading";
 
 // actions
@@ -27,7 +27,7 @@ function App({ fetchCurrentUser, currentUser, isAuthenticanted }) {
   useEffect(() => {
 
     fetchCurrentUser();
-  }, []);
+  }, [fetchCurrentUser]);
 
   const validateAuthRoutes = (
     ComponentToRender, //Component itself
@@ -67,7 +67,7 @@ function App({ fetchCurrentUser, currentUser, isAuthenticanted }) {
 
   const Routes = () => (
     <Switch>
-      <Route path="/" exact render={props => <Home {...props} />} />
+      <Route path="/" exact component={Home} />
       <Route
         path="/dashboard"
         exact
@@ -142,8 +142,7 @@ function App({ fetchCurrentUser, currentUser, isAuthenticanted }) {
 
 const mapStateToProps = state => {
   return {
-    pending: state.groupReducer.pending,
-    groups: state.groupReducer.groups,
+
     currentUser: state.authReducer.currentUser,
     isAuthenticanted: state.authReducer.isAuthenticated
   };

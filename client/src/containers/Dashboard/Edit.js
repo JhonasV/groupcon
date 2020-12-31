@@ -15,7 +15,7 @@ const Edit = (props) => {
     user: "",
     password: "",
     confirmPassword: "",
-    oldPassword: "",
+    newPassword: "",
   });
   const [checked, setChecked] = useState(false);
   const [message, setMessage] = useState("");

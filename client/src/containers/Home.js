@@ -17,7 +17,7 @@ const Home = ({ groups, fetchGroups, pending, latestGroups }) => {
 
   useEffect(() => {
     fetchGroups();
-  }, [] )
+  }, [fetchGroups] )
 
   const onChange = e => {
     setGroupName(e.target.value);

@@ -6,7 +6,6 @@ import {
   DELETE_GROUPS_PENDING,
   DELETE_GROUPS_ERROR,
   FETCH_USER_GROUPS_SUCCESS,
-  FETCH_USER_GROUPS_PENDING,
   FETCH_USER_GROUPS_ERROR,
   CREATE_GROUPS_SUCCESS,
   CREATE_GROUPS_PENDING,
@@ -40,7 +39,7 @@ export const clearCreateMessages = () => async dispatch => {
 }
 
 export const fetchGroups = () => async dispatch => {
-  try {
+  try { 
     const response = await Axios.get("/api/v1/group");
     dispatch({ type: FETCH_GROUPS_SUCCESS, payload: response.data });
     dispatch({ type: FETCH_GROUPS_PENDING, payload: false });

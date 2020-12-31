@@ -12,24 +12,58 @@ const CreateGroupForm = ({
 }) => {
   let buttonTitle = create ? "CREATE" : "UPDATE";
 
+  const renderOldPasswordField = () => (
+    <div className="form-group">
+    <input
+      type="password"
+      className="form-control"
+      onChange={onChange}
+      name="newPassword"
+      placeholder="New password"
+      value={group ? group.newPassword : ""}
+      disabled={loading}
+    />
+    </div>
+  );
+
+  const renderEditPasswordFields = () =>{
+    return (
+      <>
+        {checked && (
+          <>
+          <div className="form-group">
+            <input
+              type="password"
+              className="form-control"
+              onChange={onChange}
+              name="password"
+              placeholder="password"
+              value={group ? group.password : ""}
+              disabled={loading}
+            />
+          </div>
+          {group.password > 0 && renderOldPasswordField()}
+            <div className="form-group">
+            <input
+              type="password"
+              className="form-control"
+              onChange={onChange}
+              name="confirmPassword"
+              placeholder="Confirm password"
+              value={group ? group.confirmPassword : ""}
+              disabled={loading}
+            />
+          </div>
+          </>
+        )}
+      </>
+    );
+  }
+
+
   const renderPasswordFields= () => {
     return (
       <>
-        <div className="form-group">
-          <div class="custom-control custom-checkbox">
-            <input
-              type="checkbox"
-              class="custom-control-input"
-              checked={checked}
-              id="private"
-              onChange={() => setChecked(!checked)}
-            />
-            <label class="custom-control-label" htmlFor="private">
-              Is going to be private?
-            </label>
-          </div>
-        </div>
-
         {checked ? (
           <>
             <div className="form-group">
@@ -56,62 +90,10 @@ const CreateGroupForm = ({
             </div>
           </>
         ) : null}
-
-        {checked && !create ? (
-          <div className="form-group">
-            <input
-              type="password"
-              className="form-control"
-              onChange={onChange}
-              name="password"
-              placeholder="new password"
-              value={group ? group.password : ""}
-              disabled={loading}
-            />
-          </div>
-        ) : null}
       </>
     );
-    // } else {
-    //   return (
-    //     <>
-    //       <div className="form-group">
-    //         <input
-    //           type="text"
-    //           className="form-control"
-    //           onChange={onChange}
-    //           name="oldPassword"
-    //           placeholder="Old password"
-    //           value={group ? group.oldPassword : ""}
-    //           disabled={loading}
-    //         />
-    //       </div>
-    //       <div className="form-group">
-    //         <input
-    //           type="text"
-    //           className="form-control"
-    //           onChange={onChange}
-    //           name="password"
-    //           placeholder="new password"
-    //           value={group ? group.password : ""}
-    //           disabled={loading}
-    //         />
-    //       </div>
-    //       <div className="form-group">
-    //         <input
-    //           type="text"
-    //           className="form-control"
-    //           onChange={onChange}
-    //           name="newPassword"
-    //           placeholder="Confirm new password"
-    //           value={group ? group.newPassword : ""}
-    //           disabled={loading}
-    //         />
-    //       </div>
-    //     </>
-    //   );
-    // }
   };
+
   return (
     <div className="row mb-5">
       <div className="col-md-8 ml-auto mr-auto w-100">
@@ -151,7 +133,21 @@ const CreateGroupForm = ({
                   disabled={loading}
                 />
               </div>
-              {renderPasswordFields()}
+              <div className="form-group">
+              <div className="custom-control custom-checkbox">
+                <input
+                  type="checkbox"
+                  className="custom-control-input"
+                  checked={checked}
+                  id="private"
+                  onChange={() => setChecked(!checked)}
+                />
+                <label className="custom-control-label" htmlFor="private">
+                  Is going to be private?
+                </label>
+              </div>
+            </div>
+              {create ? renderPasswordFields() : renderEditPasswordFields()}
             </div>
             <div className="card-footer">
               <div className="form-group">

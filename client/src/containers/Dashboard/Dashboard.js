@@ -17,7 +17,7 @@ const Dashboard = ({
   pendingUserGroups
 }) => {
   const [message, setMessage] = useState({ details: "", type: "" });
-
+ 
   useEffect(() => {
     getUserGroups(currentUser.id);
     if (message.details === "") {
@@ -28,7 +28,7 @@ const Dashboard = ({
     } else {
       history.replace();
     }
-  }, [location.state, history, message.details, currentUser]);
+  }, [location.state, history, message.details, currentUser, getUserGroups]);
 
   const onDelete = async (e, id) => {
     e.preventDefault();
@@ -129,8 +129,6 @@ const Dashboard = ({
 };
 const mapStateToProps = state => {
   return {
-    removed: state.groupReducer.deleted,
-    pending: state.groupReducer.pending,
     userGroups: state.groupReducer.userGroups,
     currentUser: state.authReducer.currentUser,
     pendingUserGroups: state.groupReducer.pendingUserGroups
