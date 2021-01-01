@@ -76,7 +76,6 @@ exports.getById = async (req, res, next) => {
 
     next();
   } catch (error) {
-    console.log(error);
     if (error.name === "CastError")
       return res.json("The resources doesn't exists");
 
@@ -101,9 +100,7 @@ exports.getByUserId = async (req, res, next) => {
 };
 
 exports.update = async (req, res, next) => {
-  console.log(req.body);
-  console.log(req.params);
-  let { url, name, _id, password } = req.body;
+  let { url, name, password } = req.body;
   let { id } = req.params;
   let { error } = validateGroups({ url, name });
   if (error)
@@ -184,7 +181,6 @@ exports.unlock = async (req, res, next) => {
   let groupPassword = await GroupPassword.findOne({ group: groupId }).populate(
     "group"
   );
-  console.log("[group.controller.js]", groupPassword);
 
   //2. Validate if the password match
   //..

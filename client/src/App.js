@@ -15,24 +15,26 @@ import { initAxiosInterceptors } from "./Helpers/auth-helper";
 import Loading from "./components/Loading";
 
 // actions
-import { fetchCurrentUser } from './actions/authActions';
+import { fetchCurrentUser } from './store/actions/authActions';
 
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 
 initAxiosInterceptors();
 
-function App({ fetchCurrentUser, currentUser, isAuthenticanted }) {
+function App() {
 
-
+  const { isAuthenticated, currentUser } = useSelector(state => state.authReducer);
+  const dispatch = useDispatch();
+ 
   useEffect(() => {
+    dispatch(fetchCurrentUser());
+  }, [dispatch]);
 
-    fetchCurrentUser();
-  }, [fetchCurrentUser]);
 
   const validateAuthRoutes = (
     ComponentToRender, //Component itself
     pathToRender, //Component pathroute
-    isAuthenticanted, //CurrentUser Authenticated
+    isAuthenticated, //CurrentUser Authenticated
     props, // React Router props
     redirectPath = "/login"
   ) => {
@@ -40,7 +42,7 @@ function App({ fetchCurrentUser, currentUser, isAuthenticanted }) {
     //in that case we redirect the user to the Login page with
     //the path for the component that tried access, when get log in
     //the user is redirect to the path that he tried to access.
-    return !isAuthenticanted ? (
+    return !isAuthenticated ? (
       <Redirect
         {...props}
         to={{
@@ -53,12 +55,12 @@ function App({ fetchCurrentUser, currentUser, isAuthenticanted }) {
     );
   };
 
-  const validateGuessRoutes = (ComponentToRender, isAuthenticanted, props) => {
+  const validateGuessRoutes = (ComponentToRender, isAuthenticated, props) => {
     //This method validate if exists a connected user, in that case, while
     //the user is authenticated and tried to go to Login or Register
     //we redirect him to the Home page.
 
-    return isAuthenticanted ? (
+    return isAuthenticated ? (
       <Redirect to={"/"} />
     ) : (
       <ComponentToRender {...props} />
@@ -72,9 +74,9 @@ function App({ fetchCurrentUser, currentUser, isAuthenticanted }) {
         path="/dashboard"
         exact
         render={props =>
-          validateAuthRoutes(Dashboard, "/dashboard", isAuthenticanted, {
+          validateAuthRoutes(Dashboard, "/dashboard", isAuthenticated, {
             ...props,
-            isAuthenticanted
+            isAuthenticated
           })
         }
       />
@@ -83,32 +85,32 @@ function App({ fetchCurrentUser, currentUser, isAuthenticanted }) {
         path="/dashboard/create"
         exact
         render={props =>
-          validateAuthRoutes(Create, "/dashboard/create", isAuthenticanted, props)
+          validateAuthRoutes(Create, "/dashboard/create", isAuthenticated, props)
         }
       />
       <Route
         path="/dashboard/edit"
         exact
         render={props =>
-          validateAuthRoutes(Edit, "/dashboard", isAuthenticanted, props)
+          validateAuthRoutes(Edit, "/dashboard", isAuthenticated, props)
         }
       />
       <Route
         path="/login"
         exact
-        render={props => validateGuessRoutes(Login, isAuthenticanted, props)}
+        render={props => validateGuessRoutes(Login, isAuthenticated, props)}
       />
 
       <Route
         path="/register"
         exact
-        render={props => validateGuessRoutes(Register, isAuthenticanted, props)}
+        render={props => validateGuessRoutes(Register, isAuthenticated, props)}
       />
       <Route
         path="/forgotten"
         exact
         render={props =>
-          validateGuessRoutes(ForgottenPassword, isAuthenticanted, props)
+          validateGuessRoutes(ForgottenPassword, isAuthenticated, props)
         }
       />
 
@@ -116,7 +118,7 @@ function App({ fetchCurrentUser, currentUser, isAuthenticanted }) {
         path="/forgotten/recover/:code/:email"
         exact
         render={props =>
-          validateGuessRoutes(ForgottenChange, isAuthenticanted, props)
+          validateGuessRoutes(ForgottenChange, isAuthenticated, props)
         }
       />
 
@@ -140,18 +142,4 @@ function App({ fetchCurrentUser, currentUser, isAuthenticanted }) {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-
-    currentUser: state.authReducer.currentUser,
-    isAuthenticanted: state.authReducer.isAuthenticated
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchCurrentUser: () => fetchCurrentUser()(dispatch),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

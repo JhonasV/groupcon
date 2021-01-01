@@ -4,9 +4,15 @@ import SearchGroupForm from "../components/SearchGroup/SearchGroupForm";
 import GroupList from "../components/Group/GroupList/GroupList";
 import Loading from "../components/Loading";
 
-import * as action from "../actions";
-import { connect } from "react-redux";
-const Home = ({ groups, fetchGroups, pending, latestGroups }) => {
+import * as groupsActions from "../store/actions/groupsActions";
+import { useSelector, useDispatch } from "react-redux";
+const Home = () => {
+ 
+ const dispatch = useDispatch();
+ const { groupReducer } = useSelector(state => state);
+ const { groups, pending, latestGroups } = groupReducer;
+ const { fetchGroups } = groupsActions;
+
   const [values, setValues] = useState({
     filteredGroups: [],
     latestGroups: []
@@ -14,10 +20,9 @@ const Home = ({ groups, fetchGroups, pending, latestGroups }) => {
 
   const [groupName, setGroupName] = useState("");
 
-
   useEffect(() => {
-    fetchGroups();
-  }, [fetchGroups] )
+    dispatch(fetchGroups());
+  }, [fetchGroups, dispatch] )
 
   const onChange = e => {
     setGroupName(e.target.value);
@@ -34,8 +39,6 @@ const Home = ({ groups, fetchGroups, pending, latestGroups }) => {
       e.name.toUpperCase().includes(query.toUpperCase())
     );
   };
-
-
 
   const onSubmit = e => {
     e.preventDefault();
@@ -77,15 +80,5 @@ const Home = ({ groups, fetchGroups, pending, latestGroups }) => {
     </main>
   );
 };
-const mapStateToProps = state => {
-  return {
-    pending: state.groupReducer.pending,
-    groups: state.groupReducer.groups,
-    latestGroups: state.groupReducer.latestGroups
-  };
-};
 
-export default connect(
-  mapStateToProps,
-  action
-)(Home);
+export default Home;

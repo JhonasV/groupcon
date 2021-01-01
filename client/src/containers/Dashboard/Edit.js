@@ -16,6 +16,7 @@ const Edit = (props) => {
     password: "",
     confirmPassword: "",
     newPassword: "",
+    private: false
   });
   const [checked, setChecked] = useState(false);
   const [message, setMessage] = useState("");
@@ -84,7 +85,11 @@ const Edit = (props) => {
     console.log(group.password, group.oldPassword, group.confirmPassword);
     try {
       setMessage("");
+      if(group.private){
 
+      }else{
+        
+      }
       if (group.passoword && group.confirmPassword && group.oldPassword) {
         if (
           group.password.length > 0 &&
@@ -118,7 +123,6 @@ const Edit = (props) => {
         setMessage(response.data.error);
       }
     } catch (error) {
-      console.log(error);
       setMessage(error.response.data.error);
     }
     setLoading(false);

@@ -3,10 +3,18 @@ import { Redirect } from "react-router-dom";
 import CreateGroupForm from "../../components/Dashboard/CreateGroupForm";
 
 import Alert from "../../components/Alert";
-import { connect } from 'react-redux';
-import { createGroup, clearCreateMessages } from '../../actions';
-const Create = ({ createGroups, createSuccessMessage, createErrorMessage, clearCreateMessages }) => {
+import * as groupsActions from '../../store/actions/groupsActions';
+
+import { useDispatch, useSelector } from "react-redux";
+
+const Create = () => {
   
+  const dispatch = useDispatch();
+  const { groupReducer  } = useSelector(state => state);
+
+  const { createSuccessMessage, createErrorMessage } = groupReducer;
+  const { createGroup, clearCreateMessages } = groupsActions;
+
   const [values, setValues] = useState({
     name: "",
     url: "",
@@ -30,8 +38,8 @@ const Create = ({ createGroups, createSuccessMessage, createErrorMessage, clearC
     if(createErrorMessage.length > 0){
       setMessage(createErrorMessage);
     }
-    clearCreateMessages();
-  }, [createErrorMessage, createSuccessMessage, clearCreateMessages])
+    dispatch(clearCreateMessages());
+  }, [createErrorMessage, createSuccessMessage, clearCreateMessages, dispatch])
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -48,7 +56,7 @@ const Create = ({ createGroups, createSuccessMessage, createErrorMessage, clearC
     console.log(values);
     values.private = checked;
 
-     await createGroups(values);
+    dispatch(createGroup(values));
 
     setLoading(false);
   };
@@ -77,18 +85,4 @@ const Create = ({ createGroups, createSuccessMessage, createErrorMessage, clearC
   );
 };
 
-const mapStateToProps = state =>{
-  return {
-    createSuccessMessage: state.groupReducer.createSuccessMessage,
-    createErrorMessage: state.groupReducer.createErrorMessage
-  }
-}
-
-const mapDispatchToProps = dispatch =>{
-  return {
-    createGroups: (values) => createGroup(values)(dispatch),
-    clearCreateMessages: () => clearCreateMessages()(dispatch)
-  };
-}
-
-export default connect(mapStateToProps,mapDispatchToProps)(Create);
+export default Create;

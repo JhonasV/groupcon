@@ -3,6 +3,7 @@ import { setToken } from "../Helpers/auth-helper";
 import RegisterForm from "../components/RegisterForm/RegisterForm";
 import Axios from "axios";
 import Alert from "../components/Alert";
+
 const Register = () => {
   const [formValues, setFormValues] = useState({
     email: "",
@@ -10,6 +11,7 @@ const Register = () => {
     nickname: "",
     confirmPassword: ""
   });
+  
   const [getError, setError] = useState({ error: "" });
   const [loading, setLoading] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState(true);

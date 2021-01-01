@@ -4,22 +4,26 @@ import { Link } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import Alert from "../../components/Alert";
 
-import * as action from "../../actions";
-import { connect } from "react-redux";
+import * as groupsActions from "../../store/actions/groupsActions";
+
+import { useDispatch, useSelector } from 'react-redux';
 
 const Dashboard = ({
   location,
   history,
-  currentUser,
-  deleteGroup,
-  getUserGroups,
-  userGroups,
-  pendingUserGroups
 }) => {
   const [message, setMessage] = useState({ details: "", type: "" });
  
+  const dispatch = useDispatch();
+  const { authReducer, groupReducer } = useSelector(state => state);
+  const { currentUser } = authReducer;
+  const { userGroups, pendingUserGroups } = groupReducer;
+  const { getUserGroups, deleteGroup } = groupsActions;
+
   useEffect(() => {
-    getUserGroups(currentUser.id);
+
+    dispatch(getUserGroups(currentUser.id));
+
     if (message.details === "") {
       setMessage({
         details: location.state ? location.state.message : "",
@@ -28,7 +32,7 @@ const Dashboard = ({
     } else {
       history.replace();
     }
-  }, [location.state, history, message.details, currentUser, getUserGroups]);
+  }, [location.state, history, message.details, currentUser, getUserGroups, dispatch]);
 
   const onDelete = async (e, id) => {
     e.preventDefault();
@@ -77,7 +81,7 @@ const Dashboard = ({
     });
   };
   const deleteGroupHandle = id => {
-    deleteGroup(id);
+    dispatch(deleteGroup(id));
   };
 
   const renderGroups = () => {
@@ -127,15 +131,6 @@ const Dashboard = ({
     </main>
   );
 };
-const mapStateToProps = state => {
-  return {
-    userGroups: state.groupReducer.userGroups,
-    currentUser: state.authReducer.currentUser,
-    pendingUserGroups: state.groupReducer.pendingUserGroups
-  };
-};
 
-export default connect(
-  mapStateToProps,
-  action
-)(Dashboard);
+
+export default Dashboard;

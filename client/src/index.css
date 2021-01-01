@@ -1,3 +1,9 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+}
+
 html,
 body {
   margin: 0;
@@ -6,7 +12,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url("./Whiteboard.svg");
+  background-image: url("assets/img/Whiteboard.svg");
   background-repeat: repeat-y;
   background-position: bottom;
   background-size: 100% 100%;
