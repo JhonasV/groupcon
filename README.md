@@ -3,12 +3,16 @@
 ### Technologies
 
 - ReactJs
+
+  - Bootstrap (Botswatch theme `Material`)
+  - Redux
+
 - NodeJs
-- ExpressJs
-- MongoDB
-- Bootstrap (Botswatch theme `Material`)
-- JWT
-- Nodemailer
+
+  - ExpressJs
+  - MongoDB
+  - JWT
+  - Nodemailer
 
 ## How to start
 
@@ -19,4 +23,4 @@
 
 ## Preview
 
-![Preview](https://github.com/JhonasV/groupcon/blob/master/client/src/assets/img/preview.gif?raw=true)
+![Preview](https://github.com/JhonasV/groupcon/blob/master/client/src/assets/imgpreview.gif?raw=true)
