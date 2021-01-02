@@ -36,7 +36,7 @@ exports.create = async (req, res, next) => {
 
     let isCreated = await new Group(group).save();
 
-    if(password?.length > 0){
+    if(password.length > 0){
       await insertGroupPasswordData(isCreated.id, password);
     }
 
