@@ -4,11 +4,15 @@ import { deleteToken } from "../Helpers/auth-helper";
 import { NavLink, Link } from "react-router-dom";
 import Loading from "./Loading";
 
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import Logo from '../assets/img/GroupConLogo2200x200.png';
+import Logo from '../assets/img/logo.png';
 
-const Navbar = ({ isAuthenticated, currentUser }) => {
+const Navbar = () => {
+
+  const { authReducer } = useSelector(state => state);
+  const { isAuthenticated, currentUser } = authReducer;
+
   const renderNav = () => {
     switch (isAuthenticated) {
       case null:
@@ -93,9 +97,7 @@ const Navbar = ({ isAuthenticated, currentUser }) => {
       <div className="container">
         <Link to="/">
           <span className="navbar-brand ">
-            
-            
-            <h3 className='d-flex align-items-center'><img width="40" height="40" src={Logo} alt='GroupCon' />GroupCon</h3>
+             <h3 className='d-flex align-items-center'><img width="40" height="40" src={Logo} alt='GroupCon' />GroupCon</h3>
           </span>
         </Link>
         <button
@@ -131,12 +133,4 @@ const Navbar = ({ isAuthenticated, currentUser }) => {
   );
 };
 
-
-const mapStateToProps = state =>{
-  return {
-    currentUser: state.authReducer.currentUser,
-    isAuthenticated: state.authReducer.isAuthenticated
-  }
-}
-
-export default connect(mapStateToProps)(Navbar);
+export default Navbar;
