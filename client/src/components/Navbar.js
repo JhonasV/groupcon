@@ -6,6 +6,8 @@ import Loading from "./Loading";
 
 import { connect } from 'react-redux';
 
+import Logo from '../assets/img/GroupConLogo2200x200.png';
+
 const Navbar = ({ isAuthenticated, currentUser }) => {
   const renderNav = () => {
     switch (isAuthenticated) {
@@ -90,8 +92,10 @@ const Navbar = ({ isAuthenticated, currentUser }) => {
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <div className="container">
         <Link to="/">
-          <span className="navbar-brand">
-            <h3>GroupCon</h3>
+          <span className="navbar-brand ">
+            
+            
+            <h3 className='d-flex align-items-center'><img width="40" height="40" src={Logo} alt='GroupCon' />GroupCon</h3>
           </span>
         </Link>
         <button
