@@ -23,4 +23,4 @@
 
 ## Preview
 
-![Preview](https://github.com/JhonasV/groupcon/blob/master/client/src/assets/imgpreview.gif?raw=true)
+![Preview](https://github.com/JhonasV/groupcon/blob/master/client/src/assets/preview.gif?raw=true)
