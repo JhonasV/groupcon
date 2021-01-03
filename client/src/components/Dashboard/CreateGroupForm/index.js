@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Loading from "../../Loading";
+import LineSeparator from '../../LineSeparator';
+
 const CreateGroupForm = ({
   group,
   onChange,
@@ -11,7 +13,7 @@ const CreateGroupForm = ({
   setChecked,
 }) => {
   let buttonTitle = create ? "CREATE" : "UPDATE";
-
+  
   const renderOldPasswordField = () => (
     <div className="form-group">
     <input
@@ -26,10 +28,11 @@ const CreateGroupForm = ({
     </div>
   );
 
-  const renderEditPasswordFields = () =>{
+
+  const renderEditPasswordFields = (showFields) =>{
     return (
       <>
-        {checked && (
+        {showFields && (
           <>
           <div className="form-group">
             <input
@@ -61,38 +64,151 @@ const CreateGroupForm = ({
   }
 
 
-  const renderPasswordFields= () => {
+  const renderCreatePasswordFields = () => {
+    // TODO:
+    // Show passwords fields in create form
+    let isCreatePrivateGroup = create && checked;
+    if(isCreatePrivateGroup){
+      return passwordFields();
+    }
+
+    //Make group private - required: a password and password confirmation.
+    // let showFieldsToMakeGroupPrivate = !create && !checked;
+    // if(showFieldsToMakeGroupPrivate){
+    //   return passwordFields()
+    // }
+
+     //Make private group public - required: current password and  password confirmation.
+    // let showFieldsToMakeGroupPublic = !create && checked;
+    // if(showFieldsToMakeGroupPublic){
+    //   return passwordFields();
+    // }
+
+    //Update group private password - required: current password, new password and password confirmation.
+    // let showFieldsToUpdatePassword = !create && group.is
+
+
+  
+  }
+
+  const renderChangeGroupVisibility = () =>{
+    let isEdit = !create;
+    let text = checked ? "private" : "public";
+ 
     return (
       <>
-        {checked ? (
-          <>
-            <div className="form-group">
-              <input
-                type="password"
-                className="form-control"
-                onChange={onChange}
-                name="password"
-                placeholder="password"
-                value={group ? group.password : ""}
-                disabled={loading}
-              />
+        {isEdit && (   
+          <div className="row p-2">
+            <div className='col'>
+              <span className='font-weight-bold'>Change Group Visibility</span> 
+              <br/>
+              This group is currently {text}
             </div>
-            <div className="form-group">
-              <input
-                type="password"
-                className="form-control"
-                onChange={onChange}
-                name="confirmPassword"
-                placeholder="Confirm new password"
-                value={group ? group.newPassword : ""}
-                disabled={loading}
-              />
+          
+            <div className='col d-flex justify-content-end'>
+              <button className="btn btn-default w-75 font-weight-bold">Change Visibility</button>
             </div>
-          </>
-        ) : null}
+          </div>        
+        )}
+      </>
+    )
+  }
+
+  const renderUpdatePassword = () =>{
+    let showUpdatePassword = !create && checked;
+    return (
+      <>
+        {showUpdatePassword && (    
+          <div className="row p-2">
+            <div className='col'>
+              <span className='font-weight-bold'>Update Group Password</span> 
+            </div>
+            <div className='col d-flex justify-content-end'>
+                <input 
+                  type='button'
+                  data-placement="top"
+                  title="Send a email with the invite link"
+                  data-toggle="modal"
+                  data-target="#updatePasswordToggle"
+                  data-backdrop="static"
+                  data-keyboard="false"
+                  value='Update Password'
+                className="btn btn-default w-75 font-weight-bold"/>
+            </div>
+          </div>      
+        )}
+      </>
+    )
+  }
+
+  const renderMakePrivateCheck = () =>{
+
+    return (
+      <>
+      {create && (
+        <div className="form-group">
+          <div className="custom-control custom-checkbox">
+            <input
+              type="checkbox"
+              className="custom-control-input"
+              checked={checked}
+              id="private"
+              onChange={() => setChecked(!checked)}
+            />
+          <label className="custom-control-label" htmlFor="private">
+            Is going to be private?
+          </label>
+        </div>
+      </div>
+      )}
+      </>
+    )
+  }
+
+  const passwordFields= () => {
+  
+    return (
+      <>
+          <div className="form-group">
+            <input
+              type="password"
+              className="form-control"
+              onChange={onChange}
+              name="password"
+              placeholder="password"
+              value={group ? group.password : ""}
+              disabled={loading}
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="password"
+              className="form-control"
+              onChange={onChange}
+              name="confirmPassword"
+              placeholder="Confirm new password"
+              value={group ? group.newPassword : ""}
+              disabled={loading}
+            />
+          </div>
       </>
     );
   };
+
+  const renderUpdateGroupOptions = () =>{
+    let isEdit = !create;
+    if(isEdit)
+      return (                 
+        <div>
+          <h4>Group Options</h4>
+          <div style={{border: '1px solid #2196F3', borderRadius: '7px'}}>
+            {renderChangeGroupVisibility()}
+            <LineSeparator/>
+            {renderUpdatePassword()}
+          </div>
+        </div>
+      )
+  }
 
   return (
     <div className="row mb-5">
@@ -133,21 +249,8 @@ const CreateGroupForm = ({
                   disabled={loading}
                 />
               </div>
-              <div className="form-group">
-              <div className="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  className="custom-control-input"
-                  checked={checked}
-                  id="private"
-                  onChange={() => setChecked(!checked)}
-                />
-                <label className="custom-control-label" htmlFor="private">
-                  Is going to be private?
-                </label>
-              </div>
-            </div>
-              {create ? renderPasswordFields() : renderEditPasswordFields()}
+              {renderMakePrivateCheck()}
+              {renderCreatePasswordFields()}
             </div>
             <div className="card-footer">
               <div className="form-group">
@@ -159,6 +262,8 @@ const CreateGroupForm = ({
                   {loading ? <Loading /> : buttonTitle}
                 </button>
               </div>
+              <LineSeparator/>
+              {renderUpdateGroupOptions()}
             </div>
           </div>
         </form>

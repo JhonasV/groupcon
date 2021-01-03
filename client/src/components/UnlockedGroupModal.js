@@ -20,9 +20,7 @@ const UnlockedGroupModal = ({
         <div className="modal-content bg-primary">
           <div className="modal-header">
             <h5
-              className="modal-title text-white text-weight-bold"
-              id="exampleModalLongTitle"
-            >
+              className="modal-title text-white text-weight-bold">
               Unlock the group
             </h5>
             <button
